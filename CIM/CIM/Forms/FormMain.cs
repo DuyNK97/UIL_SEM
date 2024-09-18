@@ -310,6 +310,50 @@ namespace CIM
                 {
                     SingleTonPlcControl.Instance.SetValueRegister(obj.CurrentValue, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
                 }
+                else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == true && obj.IndexPLC == 1)
+                {
+                    CheckIsDuplicate();
+                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_INPUT_BARCODE", true, EnumReadOrWrite.WRITE);
+                }
+                else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == false && obj.IndexPLC == 1)
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_INPUT_BARCODE", true, EnumReadOrWrite.WRITE);
+                }
+            }
+        }
+
+        private void CheckIsDuplicate()
+        {
+            //set ng -> 2 type: word
+            if (SingleTonPlcControl.Instance.GetValueRegister(1, "INPUT_BOX1_BARCODE") == null)
+            {
+                short[] rs = new short[1] { 2 };
+                SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
+                return;
+            }
+
+            var QRcode = SingleTonPlcControl.Instance.GetValueRegister(1, "INPUT_BOX1_BARCODE").ToString().Trim();
+
+            if (string.IsNullOrWhiteSpace(QRcode))
+            {
+                //set ng -> 2 word
+                short[] rs = new short[1] { 2 };
+                SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
+                return;
+            }
+
+            //duplicate
+            if (!SqlLite.Instance.CheckQRcode(QRcode))
+            {
+                //set ng -> 2 word
+                short[] rs = new short[1] { 2 };
+                SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
+            }
+            else
+            {
+                //set ok => 1 word
+                short[] rs = new short[1] { 1 };
+                SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
             }
         }
 
@@ -1317,6 +1361,12 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34101, "MISS_DATA", EnumRegisterType.BIT, 1, true, true, 1)); //miss data
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34111, "WRITE_IS_ALIVE", EnumRegisterType.BIT, 1, true, true, 1)); //write alive
+
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 34002, "READ_INPUT_BARCODE", EnumRegisterType.BIT, 1, true, true, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34102, "WRITE_INPUT_BARCODE", EnumRegisterType.BIT, 1, true, true, 1));
+
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45000, "INPUT_BOX1_BARCODE", EnumRegisterType.STRING, 27, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 45301, "WRITE_CHANGE_MODE_STATE", EnumRegisterType.WORD, 1, true, true, 1));
         }
         public void AddPLCI2(PLCIOCollection pLCIOs)
         {
