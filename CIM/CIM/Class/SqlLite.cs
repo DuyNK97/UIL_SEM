@@ -190,7 +190,7 @@ namespace CIM
 
             try
             {
-                string sql = "SELECT * FROM SEM_DATA WHERE TOPHOUSING=@qrCode"; // Sửa thành TOPHOUSING=@qrCode
+                string sql = "SELECT TOPHOUSING FROM SEM_DATA WHERE TOPHOUSING=@qrCode"; // Sửa thành TOPHOUSING=@qrCode
                 using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
                 {
                     conn.Open();
@@ -270,6 +270,128 @@ namespace CIM
                 }
             }
             return false;
+        }
+
+        public DataSet GetDataByBarCodeAndResult(string qrCode)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                string sql = "SELECT TOPHOUSING,BOX4_AIR_LEAKAGE_TEST_RESULT FROM SEM_DATA WHERE TOPHOUSING = @qrCode";
+
+                using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@qrCode", qrCode);
+
+                        using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd))
+                        {
+                            adapter.Fill(ds);
+                        }
+                    }
+                }
+
+                return ds;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return ds;
+        }
+
+
+        public void InsertBox1Barcode(string barCode)
+        {
+            string insertQuery = @"INSERT INTO SEM_DATA (TOPHOUSING) VALUES (@TOPHOUSING)";
+
+            using (var command = new SQLiteCommand(insertQuery, _connection))
+            {
+                command.Parameters.AddWithValue("@TOPHOUSING", barCode);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public bool UpdateDataByQrCode(string qrCode, EXCELDATA data)
+        {
+            try
+            {
+                string sql = "UPDATE SEM_DATA SET" +
+                    " BOX1_GLUE_AMOUNT = @BOX1_GLUE_AMOUNT," +
+                    " BOX1_GLUE_DISCHARGE_VOLUME_VISION = @BOX1_GLUE_DISCHARGE_VOLUME_VISION," +
+                    " INSULATOR_BAR_CODE = @INSULATOR_BAR_CODE," +
+                    " BOX1_GLUE_OVERFLOW_VISION = @BOX1_GLUE_OVERFLOW_VISION," +
+                    " BOX2_GLUE_AMOUNT = @BOX2_GLUE_AMOUNT," +
+                    " BOX2_GLUE_DISCHARGE_VOLUME_VISION = @BOX2_GLUE_DISCHARGE_VOLUME_VISION," +
+                    " FPCB_BAR_CODE = @FPCB_BAR_CODE," +
+                    " BOX2_GLUE_OVERFLOW_VISION = @BOX2_GLUE_OVERFLOW_VISION," +
+                    " BOX1_HEATED_AIR_CURING = @BOX1_HEATED_AIR_CURING," +
+                    " BOX2_HEATED_AIR_CURING = @BOX2_HEATED_AIR_CURING," +
+                    " BOX3_DISTANCE = @BOX3_DISTANCE," +
+                    " BOX3_GLUE_AMOUNT = @BOX3_GLUE_AMOUNT," +
+                    " BOX3_GLUE_DISCHARGE_VOLUME_VISION = @BOX3_GLUE_DISCHARGE_VOLUME_VISION," +
+                    " BOX3_GLUE_OVERFLOW_VISION = @BOX3_GLUE_OVERFLOW_VISION," +
+                    " BOX4_AIR_LEAKAGE_TEST_DETAIL = @BOX4_AIR_LEAKAGE_TEST_DETAIL," +
+                    " BOX3_HEATED_AIR_CURING = @BOX3_HEATED_AIR_CURING," +
+                    " BOX4_TIGHTNESS_AND_LOCATION_VISION = @BOX4_TIGHTNESS_AND_LOCATION_VISION," +
+                    " BOX4_HEIGHT_PARALLELISM = @BOX4_HEIGHT_PARALLELISM," +
+                    " BOX4_RESISTANCE = @BOX4_RESISTANCE," +
+                    " BOX4_AIR_LEAKAGE_TEST_RESULT = @BOX4_AIR_LEAKAGE_TEST_RESULT," +
+                    " BOX4_TestTime = @BOX4_TestTime" +
+                    " WHERE TOPHOUSING = @qrCode";
+
+                using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@qrCode", qrCode);
+
+                        cmd.Parameters.AddWithValue("@BOX1_GLUE_AMOUNT", data.BOX1_GLUE_AMOUNT);
+                        cmd.Parameters.AddWithValue("@BOX1_GLUE_DISCHARGE_VOLUME_VISION", data.BOX1_GLUE_DISCHARGE_VOLUME_VISION);
+                        cmd.Parameters.AddWithValue("@INSULATOR_BAR_CODE", data.INSULATOR_BAR_CODE);
+                        cmd.Parameters.AddWithValue("@BOX1_GLUE_OVERFLOW_VISION", data.BOX1_GLUE_OVERFLOW_VISION);
+                        cmd.Parameters.AddWithValue("@BOX2_GLUE_AMOUNT", data.BOX2_GLUE_AMOUNT);
+                        cmd.Parameters.AddWithValue("@BOX2_GLUE_DISCHARGE_VOLUME_VISION", data.BOX2_GLUE_DISCHARGE_VOLUME_VISION);
+                        cmd.Parameters.AddWithValue("@FPCB_BAR_CODE", data.FPCB_BAR_CODE);
+                        cmd.Parameters.AddWithValue("@BOX2_GLUE_OVERFLOW_VISION", data.BOX2_GLUE_OVERFLOW_VISION);
+                        cmd.Parameters.AddWithValue("@BOX1_HEATED_AIR_CURING", data.BOX1_HEATED_AIR_CURING);
+                        cmd.Parameters.AddWithValue("@BOX2_HEATED_AIR_CURING", data.BOX2_HEATED_AIR_CURING);
+                        cmd.Parameters.AddWithValue("@BOX3_DISTANCE", data.BOX3_DISTANCE);
+                        cmd.Parameters.AddWithValue("@BOX3_GLUE_AMOUNT", data.BOX3_GLUE_AMOUNT);
+                        cmd.Parameters.AddWithValue("@BOX3_GLUE_DISCHARGE_VOLUME_VISION", data.BOX3_GLUE_DISCHARGE_VOLUME_VISION);
+                        cmd.Parameters.AddWithValue("@BOX3_GLUE_OVERFLOW_VISION", data.BOX3_GLUE_OVERFLOW_VISION);
+                        cmd.Parameters.AddWithValue("@BOX4_AIR_LEAKAGE_TEST_DETAIL", data.BOX4_AIR_LEAKAGE_TEST_DETAIL);
+                        cmd.Parameters.AddWithValue("@BOX3_HEATED_AIR_CURING", data.BOX3_HEATED_AIR_CURING);
+                        cmd.Parameters.AddWithValue("@BOX4_TIGHTNESS_AND_LOCATION_VISION", data.BOX4_TIGHTNESS_AND_LOCATION_VISION);
+                        cmd.Parameters.AddWithValue("@BOX4_HEIGHT_PARALLELISM", data.BOX4_HEIGHT_PARALLELISM);
+                        cmd.Parameters.AddWithValue("@BOX4_RESISTANCE", data.BOX4_RESISTANCE);
+                        cmd.Parameters.AddWithValue("@BOX4_AIR_LEAKAGE_TEST_RESULT", data.BOX4_AIR_LEAKAGE_TEST_RESULT);
+                        cmd.Parameters.AddWithValue("@BOX4_TestTime", DateTime.Now);
+
+                        int rowsUpdated = cmd.ExecuteNonQuery();
+
+                        if (rowsUpdated == 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
         }
 
 

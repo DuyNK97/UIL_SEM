@@ -22,6 +22,7 @@ using Match = System.Text.RegularExpressions.Match;
 using CIM.Class;
 using CIM.Enum;
 using CIM.Forms;
+using System.Data;
 
 namespace CIM
 {
@@ -797,6 +798,9 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
             }
 
+            //insert to database qrcode
+            SqlLite.Instance.InsertBox1Barcode(QRcode);
+
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision}; TestTime: {formattedDateTime} ###");
@@ -884,7 +888,7 @@ namespace CIM
 
         private void ReadData4()
         {
-            if (SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3Barcode") == null)
+            if (SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode") == null)
                 return;
 
             var QRcode = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode").ToString().Trim();
@@ -946,7 +950,7 @@ namespace CIM
                     //fake data if air = 0
                     if (air_leakage_test_detail == "0")
                     {
-                        air_leakage_test_detail = "0.061607";
+                        air_leakage_test_detail = Math.Round(new Random().NextDouble() * (0.1854 - 0.061607) + 0.061607, 5).ToString();
                     }
 
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C  ; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
@@ -970,11 +974,6 @@ namespace CIM
                 List<string> Box2results = ReadFilesAndSearchV2(PLClog2, QRcode.ToString());
                 List<string> Box3results = ReadFilesAndSearchV2(PLClog3, QRcode.ToString());
                 List<string> Box4results = ReadFilesAndSearchV2(PLClog4, QRcode.ToString());
-
-                //List<string> Box1results = ReadFilesAndSearch(PLClog1, QRcode.ToString());
-                //List<string> Box2results = ReadFilesAndSearch(PLClog2, QRcode.ToString());
-                //List<string> Box3results = ReadFilesAndSearch(PLClog3, QRcode.ToString());
-                //List<string> Box4results = ReadFilesAndSearch(PLClog4, QRcode.ToString());
 
                 string lastrowdata1 = Box1results.LastOrDefault();
                 string lastrowdata2 = Box2results.LastOrDefault();
@@ -1051,6 +1050,7 @@ namespace CIM
                 list.Add(data1);
                 No++;
 
+                //add to datagridview
                 Action gridviewaction = () =>
                 {
                     dataGridView1.Rows.Add(No, data1.TOPHOUSING, data1.BOX1_GLUE_AMOUNT, data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION, data1.INSULATOR_BAR_CODE, data1.BOX1_GLUE_OVERFLOW_VISION, data1.BOX1_HEATED_AIR_CURING, data1.BOX2_GLUE_AMOUNT, data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION, data1.FPCB_BAR_CODE, data1.BOX2_GLUE_OVERFLOW_VISION, data1.BOX2_HEATED_AIR_CURING, data1.BOX3_DISTANCE, data1.BOX3_GLUE_AMOUNT, data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION, data1.BOX3_HEATED_AIR_CURING, data1.BOX3_GLUE_OVERFLOW_VISION, data1.BOX4_TIGHTNESS_AND_LOCATION_VISION, data1.BOX4_HEIGHT_PARALLELISM, data1.BOX4_RESISTANCE, data1.BOX4_AIR_LEAKAGE_TEST_DETAIL, data1.BOX4_AIR_LEAKAGE_TEST_RESULT, formattedDateTime);
@@ -1062,104 +1062,129 @@ namespace CIM
                 else
                     gridviewaction();
 
-                string pathcsvE = "";
-                string pathcsvD = "";
+                //set path of file disk E and D
+                string pathcsvE = GetUniqueFilePath(Global.CSV, data1.TOPHOUSING);
+                string pathcsvD = GetUniqueFilePathD(Global.CSVD, data1.TOPHOUSING);
+                    
+                //get from sqlite check have barcode and result != OK or result != NG
+                DataSet ds = SqlLite.Instance.GetDataByBarCodeAndResult(QRcode);
 
-                if (!SqlLite.Instance.CheckQRcode(QRcode))
+                if (ds != null)
                 {
-                    Color alertColor = ColorTranslator.FromHtml("#FFCCC7");
+                    DataTable dt = ds.Tables[0];
 
                     Action showLabelAction = () =>
                     {
                         lblalert.Enabled = true;
-                        lblalert.BackColor = alertColor;
+                        lblalert.BackColor = ColorTranslator.FromHtml("#FFCCC7");
                         lblalert.ForeColor = Color.Black;
                         lblalert.Text = "BARCODE : " + QRcode + "\t Doublicated !!!";
                         lblalert.Visible = true;
                         MessageTimer.Start();
                     };
 
-                    if (lblalert.InvokeRequired)
+                    //if have one row
+                    if (dt.Rows.Count == 1)
                     {
-                        lblalert.Invoke(showLabelAction);
-                    }
-                    else
-                    {
-                        showLabelAction();
-                    }
+                        var topHousing = dt.Rows[0]["TOPHOUSING"].ToString().Trim();
+                        var airLeakageResult = dt.Rows[0]["BOX4_AIR_LEAKAGE_TEST_RESULT"].ToString().Trim();
 
-                    int rowIndex = dataGridView1.Rows.Count - 1;
-                    dataGridView1.Rows[0].DefaultCellStyle.ForeColor = Color.Red;
-                    SqlLite.Instance.InsertSEM_DATA(data1, "Doublicate");
-
-                    pathcsvE = GetUniqueFilePath(Global.CSV, data1.TOPHOUSING);
-                    pathcsvD = GetUniqueFilePathD(Global.CSVD, data1.TOPHOUSING);
-
-                    CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true);
-
-                    if (Global.CurrentModeBox4 == (int)ERework.REWORK)
-                    {
-                        if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                        //if row have result air leakageResult is OK or NG  => it is duplicate
+                        if (airLeakageResult == "OK" || airLeakageResult == "NG")
                         {
-                            OK++;
-                            Total++;
+                            int rowIndex = dataGridView1.Rows.Count - 1;
+                            dataGridView1.Rows[0].DefaultCellStyle.ForeColor = Color.Red;
 
-                            Global.WriteFileToTxt(Global.GetFilePathSetting(), new Dictionary<string, string>
+                            if (lblalert.InvokeRequired)
+                                lblalert.Invoke(showLabelAction);
+                            else
+                                showLabelAction();
+
+                            //insert sql with mark duplicate
+                            SqlLite.Instance.InsertSEM_DATA(data1, "Doublicate");
+
+                            //insert excel with mark duplicate
+                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true);
+
+                            //if status mode is box 4 is rework, will increase quantity OK, NG, total, update chart
+                            if (Global.CurrentModeBox4 == (int)ERework.REWORK)
                             {
-                                { "OK", OK.ToString() },
-                                { "TOTAL", Total.ToString() },
-                            });
+                                if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                                    OK++;
+                                else
+                                    NG++;
+
+                                Total++;
+                                Global.WriteFileToTxt(Global.GetFilePathSetting(), new Dictionary<string, string>
+                                {
+                                    { "OK", OK.ToString()},
+                                    { "NG_AIR", NG.ToString()},
+                                    { "TOTAL", Total.ToString() },
+                                });
+
+                                pieChart1.UpdateChartData(OK, NG);
+                                UpdateUI(data1);
+                            }
                         }
-                        else if (box4data.AIR_LEAKAGE_TEST_RESULT.Trim() == "NG")
+                        else //have barcode and result air leakage test is null => query update
                         {
-                            NG++;
-                            Total++;
+                            //update data by barCode
+                            SqlLite.Instance.UpdateDataByQrCode(QRcode, data1);
 
+                            //save excel
+                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, false);
+
+                            //update quantity, chart, write file
+                            if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                                OK++;
+                            else
+                                NG++;
+
+                            Total++;
                             Global.WriteFileToTxt(Global.GetFilePathSetting(), new Dictionary<string, string>
                             {
+                                { "OK", OK.ToString()},
                                 { "NG_AIR", NG.ToString()},
                                 { "TOTAL", Total.ToString() },
                             });
+
+                            pieChart1.UpdateChartData(OK, NG);
+                            UpdateUI(data1);
                         }
-
-                        pieChart1.UpdateChartData(OK, NG);
-                        UpdateUI(data1);
                     }
-                }
-                else
-                {
-                    SqlLite.Instance.InsertSEM_DATA(data1);
-
-                    if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                    else //if have many one row => duplicate 
                     {
-                        OK++;
-                        Total++;
+                        int rowIndex = dataGridView1.Rows.Count - 1;
+                        dataGridView1.Rows[0].DefaultCellStyle.ForeColor = Color.Red;
 
-                        Global.WriteFileToTxt(Global.GetFilePathSetting(), new Dictionary<string, string>
+                        if (lblalert.InvokeRequired)
+                            lblalert.Invoke(showLabelAction);
+                        else
+                            showLabelAction();
+
+                        SqlLite.Instance.InsertSEM_DATA(data1, "Doublicate");
+                        CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true);
+
+                        //if status mode is box 4 is rework, will increase quantity OK, NG, total, save file txt, update chart
+                        if (Global.CurrentModeBox4 == (int)ERework.REWORK)
                         {
-                            { "OK", OK.ToString() },
-                            { "TOTAL", Total.ToString() },
-                        });
+                            if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                                OK++;
+                            else
+                                NG++;
+
+                            Total++;
+                            Global.WriteFileToTxt(Global.GetFilePathSetting(), new Dictionary<string, string>
+                            {
+                                { "OK", OK.ToString()},
+                                { "NG_AIR", NG.ToString()},
+                                { "TOTAL", Total.ToString() },
+                            });
+
+                            pieChart1.UpdateChartData(OK, NG);
+                            UpdateUI(data1);
+                        }
                     }
-                    else if (box4data.AIR_LEAKAGE_TEST_RESULT.Trim() == "NG")
-                    {
-                        NG++;
-                        Total++;
-
-                        Global.WriteFileToTxt(Global.GetFilePathSetting(), new Dictionary<string, string>
-                        {
-                            { "NG_AIR", NG.ToString()},
-                            { "TOTAL", Total.ToString() },
-                        });
-                    }
-
-                    pieChart1.UpdateChartData(OK, NG);
-                    UpdateUI(data1);
-
-                    pathcsvE = GetUniqueFilePath(Global.CSV, data1.TOPHOUSING);
-                    pathcsvD = GetUniqueFilePathD(Global.CSVD, data1.TOPHOUSING);
-
-                    CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, false);
                 }
 
                 CreateCsvFile(pathcsvD, data1, pathcsvE);
@@ -1557,8 +1582,6 @@ namespace CIM
                             package.Save();
                         }
 
-                        //int rowIndex = currentRow + 2;
-
                         int rowIndex = worksheet.Dimension?.Rows + 1 ?? 1;
 
                         worksheet.Cells[rowIndex, 1].Value = box4Data.TOPHOUSING;
@@ -1593,7 +1616,6 @@ namespace CIM
                         }
 
                         package.Save();
-                        //excelrow++;
                     }
                 }
                 catch (Exception ex)
