@@ -67,10 +67,12 @@ namespace CIM
 
             SqlLite.Instance.InitializeConnection();
 
-            Dictionary<string, string> currentData = Global.ReadValueFileTxt(Global.GetFilePathSetting(), new List<string> { "OK", "NG_AIR", "TOTAL" });
+            Dictionary<string, string> currentData = Global.ReadValueFileTxt(Global.GetFilePathSetting(), new List<string> { "OK", "NG_AIR", "TOTAL", "DiskNetwork", "DiskLocal" });
             OK = int.Parse(currentData["OK"]);
             NG = int.Parse(currentData["NG_AIR"]);
             Total = int.Parse(currentData["TOTAL"]);
+            Global.CSV = currentData["DiskNetwork"];
+            Global.CSVD = currentData["DiskLocal"];
 
             EXCELDATA data = new EXCELDATA();
             UpdateUI(data);
