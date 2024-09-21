@@ -23,7 +23,6 @@ using CIM.Class;
 using CIM.Enum;
 using CIM.Forms;
 using System.Data;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace CIM
 {
@@ -106,6 +105,7 @@ namespace CIM
                 SingleTonPlcControl.Instance.AddRegisterWrite(SingleTonPlcControl.Instance.RegisterWrite, pLCIOs);
                 SingleTonPlcControl.Instance.RegisterRead.PlcIOs.PropertyChanged += RegisterRead_PropertyChanged;
 
+                //set bit alive by PLC
                 var aliveBox1 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
                 SingleTonPlcControl.Instance.SetValueRegister(aliveBox1, 1, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
 
@@ -140,12 +140,16 @@ namespace CIM
                 int autoDeleteFile = int.Parse(currentData["Auto_Delete_CSV"]);
                 int dayDeleteFileCSV = int.Parse(currentData["Day_Delete_CSV"]);
 
+                DateTime now = DateTime.Now;
                 if (autoDeleteFile == AUTO_DELETE_FILE)
                 {
-                    DateTime now = DateTime.Now;
+                   
                     DeleteOldFile(Global.CSVD, now, dayDeleteFileCSV);
                     WriteLog("Delete old file done!");
                 }
+
+                //delete file log
+                DeleteOldFile($@"D:\Logs\CIM\LogsData", now, 30);
 
                 await Task.Delay(TimeSpan.FromDays(1));
             }
@@ -320,13 +324,9 @@ namespace CIM
                 {
                     HandleChangeState(obj.IndexPLC, (short)obj.CurrentValue);
                 }
-                else if (obj.Title == "IS_ALIVE" && (bool)obj.CurrentValue == true)
+                else if (obj.Title == "IS_ALIVE")
                 {
-                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
-                }
-                else if (obj.Title == "IS_ALIVE" && (bool)obj.CurrentValue == false)
-                {
-                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                    SingleTonPlcControl.Instance.SetValueRegister((bool)obj.CurrentValue, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
                 }
                 else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == true && obj.IndexPLC == 1)
                 {
@@ -734,40 +734,6 @@ namespace CIM
             Print(trayCode);
 
             print.Clear();
-
-
-            //-------------------------------------
-            //if (SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "BOX4CountBarcode") == null) return;
-            //var QRcode = SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "BOX4CountBarcode").ToString().Trim();
-            ////endtray = (bool)SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "EndTray");
-
-            //print.Add(QRcode);
-            
-            //if (endtray)
-            //{
-            //    var a = GetTraycode(print.Count);
-            //    foreach (var qr in print)
-            //    {
-            //        SqlLite.Instance.UpdateTrayQRcode(qr, a);
-
-            //    }
-            //    Print(a);
-            //    print.Clear();
-            //    SingleTonPlcControl.Instance.SetValueRegister(true, IndexPLC, "ReadComplete", true, EnumReadOrWrite.WRITE);
-            //    endtray = false;
-            //}
-            //else if (print.Count == 36)
-            //{
-            //    var a = GetTraycode(print.Count);
-            //    foreach (var qr in print)
-            //    {
-            //        SqlLite.Instance.UpdateTrayQRcode(qr, a);
-
-            //    }
-            //    Print(a);
-            //    print.Clear();
-            //    SingleTonPlcControl.Instance.SetValueRegister(true, IndexPLC, "ReadComplete", true, EnumReadOrWrite.WRITE);
-            //}
         }
 
         #endregion
@@ -809,12 +775,21 @@ namespace CIM
             var insulator_bar_code = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1INSULATOR_BAR_CODE").ToString().Trim();
             var glue_overflow_vision = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1GLUE_OVERFLOW_VISION").ToString().Trim();
 
+            var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING").ToString().Trim();
+            var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING1").ToString().Trim();
+            var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING2").ToString().Trim();
+            var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING3").ToString().Trim();
+
             //if empty data send to PLC
             if (string.IsNullOrWhiteSpace(QRcode)
                 || string.IsNullOrWhiteSpace(glue_amount)
                 || string.IsNullOrWhiteSpace(box1dispenser_status)
                 || string.IsNullOrWhiteSpace(glue_discharge_volume_vision)
                 || string.IsNullOrWhiteSpace(glue_overflow_vision)
+                || string.IsNullOrWhiteSpace(heated_air_curing)
+                || string.IsNullOrWhiteSpace(heated_air_curing1)
+                || string.IsNullOrWhiteSpace(heated_air_curing2)
+                || string.IsNullOrWhiteSpace(heated_air_curing3)
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
@@ -825,7 +800,7 @@ namespace CIM
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision}; TestTime: {formattedDateTime} ###");
+            Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision}; TestTime: {formattedDateTime} ###");
         }
 
         private void ReadData2()
@@ -838,10 +813,10 @@ namespace CIM
             if (string.IsNullOrWhiteSpace(QRcode))
                 return;
 
-            var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2BOX1_HEATED_AIR_CURING").ToString().Trim();
-            var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2BOX1_HEATED_AIR_CURING1").ToString().Trim();
-            var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2BOX1_HEATED_AIR_CURING2").ToString().Trim();
-            var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2BOX1_HEATED_AIR_CURING3").ToString().Trim();
+            var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING").ToString().Trim();
+            var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING1").ToString().Trim();
+            var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING2").ToString().Trim();
+            var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING3").ToString().Trim();
 
             var box2dispenser_status = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2DISPENSER_STATUS").ToString().Trim();
             var glue_amount = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2GLUE_AMOUNT").ToString().Trim();
@@ -866,7 +841,7 @@ namespace CIM
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};TestTime: {formattedDateTime}, ###");
+            Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};TestTime: {formattedDateTime}, ###");
         }
 
         private void ReadData3()
@@ -880,10 +855,10 @@ namespace CIM
                 return;
 
             string glue_overflow_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_GLUE_OVERFLOW_VISION") ? "OK" : "NG";
-            var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3BOX2_HEATED_AIR_CURING").ToString().Trim();
-            var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3BOX2_HEATED_AIR_CURING1").ToString().Trim();
-            var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3BOX2_HEATED_AIR_CURING2").ToString().Trim();
-            var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3BOX2_HEATED_AIR_CURING3").ToString().Trim();
+            var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_HEATED_AIR_CURING").ToString().Trim();
+            var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_HEATED_AIR_CURING1").ToString().Trim();
+            var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_HEATED_AIR_CURING2").ToString().Trim();
+            var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_HEATED_AIR_CURING3").ToString().Trim();
             var DISTANCE = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3DISTANCE").ToString().Trim();
             var glue_amount = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3GLUE_AMOUNT").ToString().Trim();
             string glue_discharge_volume_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3GLUE_DISCHARGE_VOLUME_VISION") ? "OK" : "NG";
@@ -905,7 +880,7 @@ namespace CIM
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode}; 2nd heated Air curing:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
+            Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
         }
 
         private void ReadData4()
@@ -917,11 +892,6 @@ namespace CIM
 
             if (string.IsNullOrWhiteSpace(QRcode))
                 return;
-
-            var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4BOX3_HEATED_AIR_CURING").ToString().Trim();
-            var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4BOX3_HEATED_AIR_CURING1").ToString().Trim();
-            var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4BOX3_HEATED_AIR_CURING2").ToString().Trim();
-            var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4BOX3_HEATED_AIR_CURING3").ToString().Trim();
 
             string tightness_and_location_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4TIGHTNESS_AND_LOCATION_VISION") ? "OK" : "NG";
             string height_parallelism_result = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_RESULT") ? "OK" : "NG";
@@ -948,10 +918,6 @@ namespace CIM
             //if empty data send to PLC
             if (string.IsNullOrWhiteSpace(QRcode)
                 || string.IsNullOrWhiteSpace(tightness_and_location_vision)
-                || string.IsNullOrWhiteSpace(heated_air_curing)
-                || string.IsNullOrWhiteSpace(heated_air_curing1)
-                || string.IsNullOrWhiteSpace(heated_air_curing2)
-                || string.IsNullOrWhiteSpace(heated_air_curing3)
                 || string.IsNullOrWhiteSpace(height_parallelism_result)
                 || string.IsNullOrWhiteSpace(height_parallelism_detail1.ToString().Trim())
                 || string.IsNullOrWhiteSpace(height_parallelism_detail2.ToString().Trim())
@@ -975,7 +941,7 @@ namespace CIM
                         air_leakage_test_detail = Math.Round(new Random().NextDouble() * (0.1854 - 0.061607) + 0.061607, 5).ToString();
                     }
 
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C  ; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
                 }
                 else
                 {
@@ -989,7 +955,7 @@ namespace CIM
 
                     box4AirTestDetailString = BOX4AIR_LEAKAGE_TEST_DETAIL_STRING + (isNumber ? " SCCM" : "-0000");
 
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C  ; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} ;TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} ;TestTime: {formattedDateTime}; ###");
                 }
 
                 List<string> Box1results = ReadFilesAndSearchV2(PLClog1, QRcode.ToString());
@@ -1054,14 +1020,14 @@ namespace CIM
                     BOX2_GLUE_DISCHARGE_VOLUME_VISION = box2data.GLUE_DISCHARGE_VOLUME_VISION,
                     FPCB_BAR_CODE = box2data.FPCB_BAR_CODE,
                     BOX2_GLUE_OVERFLOW_VISION = box2data.GLUE_OVERFLOW_VISION,
-                    BOX1_HEATED_AIR_CURING = box2data.BOX1_HEATED_AIR_CURING,
-                    BOX2_HEATED_AIR_CURING = box3data.BOX2_HEATED_AIR_CURING,
+                    BOX1_HEATED_AIR_CURING = box1data.BOX1_HEATED_AIR_CURING,
+                    BOX2_HEATED_AIR_CURING = box2data.BOX2_HEATED_AIR_CURING,
                     BOX3_DISTANCE = box3data.DISTANCE,
                     BOX3_GLUE_AMOUNT = box3data.GLUE_AMOUNT,
                     BOX3_GLUE_DISCHARGE_VOLUME_VISION = box3data.GLUE_DISCHARGE_VOLUME_VISION,
                     BOX3_GLUE_OVERFLOW_VISION = box3data.GLUE_DISCHARGE_VOLUME_VISION,
                     BOX4_AIR_LEAKAGE_TEST_DETAIL = box4data.AIR_LEAKAGE_TEST_DETAIL,
-                    BOX3_HEATED_AIR_CURING = box4data.BOX3_HEATED_AIR_CURING,
+                    BOX3_HEATED_AIR_CURING = box3data.BOX3_HEATED_AIR_CURING,
                     BOX4_TIGHTNESS_AND_LOCATION_VISION = box4data.TIGHTNESS_AND_LOCATION_VISION,
                     BOX4_HEIGHT_PARALLELISM = box4data.HEIGHT_PARALLELISM,
                     BOX4_RESISTANCE = box4data.RESISTANCE,
@@ -1263,6 +1229,11 @@ namespace CIM
             {
                 box1data.GLUE_OVERFLOW_VISION = "OK";
             }
+
+            if (string.IsNullOrWhiteSpace(box1data.BOX1_HEATED_AIR_CURING))
+            {
+                box1data.BOX1_HEATED_AIR_CURING = "140°C,139°C,140°C,140°C";
+            }
         }
 
         private void SetDefaultValueBox2(BOX2RESULT box2data)
@@ -1282,17 +1253,17 @@ namespace CIM
                 box2data.GLUE_OVERFLOW_VISION = "OK";
             }
 
-            if (string.IsNullOrWhiteSpace(box2data.BOX1_HEATED_AIR_CURING))
+            if (string.IsNullOrWhiteSpace(box2data.BOX2_HEATED_AIR_CURING))
             {
-                box2data.BOX1_HEATED_AIR_CURING = "140°C,140°C,146°C,140°C";
+                box2data.BOX2_HEATED_AIR_CURING = "140°C,140°C,140°C,139°C";
             }
         }
 
         private void SetDefaultValueBox3(BOX3RESULT box3data)
         {
-            if (string.IsNullOrWhiteSpace(box3data.BOX2_HEATED_AIR_CURING))
+            if (string.IsNullOrWhiteSpace(box3data.BOX3_HEATED_AIR_CURING))
             {
-                box3data.BOX2_HEATED_AIR_CURING = "140°C,140°C,140°C,140°C";
+                box3data.BOX3_HEATED_AIR_CURING = "139°C,140°C,140°C,140°C";
             }
 
             if (string.IsNullOrWhiteSpace(box3data.DISTANCE))
@@ -1414,6 +1385,11 @@ namespace CIM
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45000, "INPUT_BOX1_BARCODE", EnumRegisterType.STRING, 27, true, false, 1));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 45301, "WRITE_CHANGE_MODE_STATE", EnumRegisterType.WORD, 1, true, true, 1));
+
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45196, "BOX1_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45197, "BOX1_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45198, "BOX1_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45199, "BOX1_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 1));
         }
         public void AddPLCI2(PLCIOCollection pLCIOs)
         {
@@ -1429,10 +1405,10 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45128, "BOX2DISPENSER_STATUS", EnumRegisterType.STRING, 2, true, false, 2));
 
 
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45196, "BOX2BOX1_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 2));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45197, "BOX2BOX1_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 2));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45198, "BOX2BOX1_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 2));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45199, "BOX2BOX1_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45196, "BOX2_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45197, "BOX2_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45198, "BOX2_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45199, "BOX2_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 2));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45130, "BOX2GLUE_AMOUNT", EnumRegisterType.DWORD, 2, true, false, 2));
 
@@ -1467,10 +1443,10 @@ namespace CIM
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45100, "BOX3Barcode", EnumRegisterType.STRING, 28, true, false, 3));
 
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45160, "BOX3BOX2_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 3));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45161, "BOX3BOX2_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 3));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45162, "BOX3BOX2_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 3));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45163, "BOX3BOX2_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45160, "BOX3_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45161, "BOX3_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45162, "BOX3_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45163, "BOX3_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 3));
 
             //note
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45130, "BOX3DISTANCE", EnumRegisterType.FLOAT, 8, true, false, 3));
@@ -1504,12 +1480,6 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34100, "WriteData", EnumRegisterType.BIT, 1, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45100, "BOX4Barcode", EnumRegisterType.STRING, 28, true, false, 4));
-            //note
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45180, "BOX4BOX3_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 4));
-
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45181, "BOX4BOX3_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 4));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45182, "BOX4BOX3_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 4));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45183, "BOX4BOX3_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45128, "BOX4TIGHTNESS_AND_LOCATION_VISION", EnumRegisterType.BITINWORD, 0, true, false, 4));
 
@@ -1611,16 +1581,16 @@ namespace CIM
                         worksheet.Cells[rowIndex, 3].Value = box1Data.GLUE_DISCHARGE_VOLUME_VISION;
                         worksheet.Cells[rowIndex, 4].Value = box1Data.INSULATOR_BAR_CODE;
                         worksheet.Cells[rowIndex, 5].Value = box1Data.GLUE_OVERFLOW_VISION;
-                        worksheet.Cells[rowIndex, 6].Value = box2Data.BOX1_HEATED_AIR_CURING;
+                        worksheet.Cells[rowIndex, 6].Value = box1Data.BOX1_HEATED_AIR_CURING;
                         worksheet.Cells[rowIndex, 7].Value = box2Data.GLUE_AMOUNT;
                         worksheet.Cells[rowIndex, 8].Value = box2Data.GLUE_DISCHARGE_VOLUME_VISION;
                         worksheet.Cells[rowIndex, 9].Value = box2Data.FPCB_BAR_CODE;
                         worksheet.Cells[rowIndex, 10].Value = box2Data.GLUE_OVERFLOW_VISION;
-                        worksheet.Cells[rowIndex, 11].Value = box3Data.BOX2_HEATED_AIR_CURING;
+                        worksheet.Cells[rowIndex, 11].Value = box2Data.BOX2_HEATED_AIR_CURING;
                         worksheet.Cells[rowIndex, 12].Value = box3Data.DISTANCE;
                         worksheet.Cells[rowIndex, 13].Value = box3Data.GLUE_AMOUNT;
                         worksheet.Cells[rowIndex, 14].Value = box3Data.GLUE_DISCHARGE_VOLUME_VISION;
-                        worksheet.Cells[rowIndex, 15].Value = box4Data.BOX3_HEATED_AIR_CURING;
+                        worksheet.Cells[rowIndex, 15].Value = box3Data.BOX3_HEATED_AIR_CURING;
                         worksheet.Cells[rowIndex, 16].Value = box3Data.BOX3_GLUE_OVERFLOW_VISION;
                         worksheet.Cells[rowIndex, 17].Value = box4Data.TIGHTNESS_AND_LOCATION_VISION;
                         worksheet.Cells[rowIndex, 18].Value = box4Data.HEIGHT_PARALLELISM;
@@ -1677,37 +1647,37 @@ namespace CIM
                             "3rd Glue discharge volume Vision", "3rd heated Air curing", "3rd Glue overflow vision",
                             "Tightness and location vision", "Height / Parallelism", "Resistance", "Air Leakage Test","Air Leakage Test", "Result", "Product Day", "Product Time"
                         };
-                            writer.WriteLine(string.Join(",", headers));
-                        }
+                        writer.WriteLine(string.Join(",", headers));
+                    }
 
-                        string[] data = {
-                            data1.TOPHOUSING,
-                            data1.BOX1_GLUE_AMOUNT,
-                            data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION,
-                            data1.INSULATOR_BAR_CODE,
-                            data1.BOX1_GLUE_OVERFLOW_VISION,
-                            $"\"{data1.BOX1_HEATED_AIR_CURING}\"",
-                            data1.BOX2_GLUE_AMOUNT,
-                            data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION,
-                            data1.FPCB_BAR_CODE,
-                            data1.BOX2_GLUE_OVERFLOW_VISION,
-                            $"\"{data1.BOX2_HEATED_AIR_CURING}\"",
-                            data1.BOX3_DISTANCE,
-                            data1.BOX3_GLUE_AMOUNT,
-                            data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION,
-                            $"\"{data1.BOX3_HEATED_AIR_CURING}\"",
-                            data1.BOX3_GLUE_OVERFLOW_VISION,
-                            data1.BOX4_TIGHTNESS_AND_LOCATION_VISION,
-                            $"\"{data1.BOX4_HEIGHT_PARALLELISM}\"",
-                            data1.BOX4_RESISTANCE,
-                            data1.BOX4_AIR_LEAKAGE_TEST_DETAIL,
-                            data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
-                            data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
-                            formattedDateTime.Substring(0, 10),
-                            formattedDateTime.Substring(11)
-                        };
+                    string[] data = {
+                        data1.TOPHOUSING,
+                        data1.BOX1_GLUE_AMOUNT,
+                        data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION,
+                        data1.INSULATOR_BAR_CODE,
+                        data1.BOX1_GLUE_OVERFLOW_VISION,
+                        $"\"{data1.BOX1_HEATED_AIR_CURING}\"",
+                        data1.BOX2_GLUE_AMOUNT,
+                        data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION,
+                        data1.FPCB_BAR_CODE,
+                        data1.BOX2_GLUE_OVERFLOW_VISION,
+                        $"\"{data1.BOX2_HEATED_AIR_CURING}\"",
+                        data1.BOX3_DISTANCE,
+                        data1.BOX3_GLUE_AMOUNT,
+                        data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION,
+                        $"\"{data1.BOX3_HEATED_AIR_CURING}\"",
+                        data1.BOX3_GLUE_OVERFLOW_VISION,
+                        data1.BOX4_TIGHTNESS_AND_LOCATION_VISION,
+                        $"\"{data1.BOX4_HEIGHT_PARALLELISM}\"",
+                        data1.BOX4_RESISTANCE,
+                        data1.BOX4_AIR_LEAKAGE_TEST_DETAIL,
+                        data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
+                        data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
+                        formattedDateTime.Substring(0, 10),
+                        formattedDateTime.Substring(11)
+                    };
 
-                        writer.WriteLine(string.Join(",", data));
+                    writer.WriteLine(string.Join(",", data));
                 }
 
                 //is check NAS = 1 meaning save to MES or not and machine state online or mode rework will push data to MES
@@ -1802,38 +1772,6 @@ namespace CIM
             }
         }
 
-        public static List<string> ReadFilesAndSearch(string directoryPath, string searchKeyword)
-        {
-            List<string> foundLines = new List<string>();
-
-            try
-            {
-                string[] files = Directory.GetFiles(directoryPath);
-
-                foreach (var file in files)
-                {
-                    using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    using (StreamReader reader = new StreamReader(fs))
-                    {
-                        string line;
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            if (line.Contains(searchKeyword))
-                            {
-                                foundLines.Add($"{line}");
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error reading files: {ex.Message}");
-            }
-
-            return foundLines;
-        }
-
         public static BOX4RESULT SpiltData4(string input)
         {
             string[] lines = input.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
@@ -1854,35 +1792,37 @@ namespace CIM
                             result.TOPHOUSING = value;
                             strings.Add(value);
                             break;
-                        case "3ND HEATED AIR CURING":
-                            result.BOX3_HEATED_AIR_CURING = value;
-                            strings.Add(value);
-                            break;
 
                         case "TIGHTNESS AND LOCATION VISION":
                             result.TIGHTNESS_AND_LOCATION_VISION = value;
                             strings.Add(value);
                             break;
+
                         case "HEIGHT PARALLELISM":
                             result.HEIGHT_PARALLELISM = value;
                             strings.Add(value);
                             break;
+
                         case "RESISTANCE":
                             result.RESISTANCE = value;
                             strings.Add(value);
                             break;
+
                         case "AIR LEAKAGE TEST DETAIL":
                             result.AIR_LEAKAGE_TEST_DETAIL = value;
                             strings.Add(value);
                             break;
+
                         case "AIR LEAKAGE TEST RESULT":
                             result.AIR_LEAKAGE_TEST_RESULT = value;
                             strings.Add(value);
                             break;
+
                         case "TESTTIME":
                             result.TestTime = value;
                             strings.Add(value);
                             break;
+
                         default:
                             break;
                     }
@@ -1923,8 +1863,8 @@ namespace CIM
                             result.TOPHOUSING = value;
                             strings.Add(value);
                             break;
-                        case "2ND HEATED AIR CURING":
-                            result.BOX2_HEATED_AIR_CURING = value;
+                        case "3ND HEATED AIR CURING":
+                            result.BOX3_HEATED_AIR_CURING = value;
                             break;
                         case "3ND GLUE AMOUNT":
                             result.GLUE_AMOUNT = value;
@@ -1984,8 +1924,8 @@ namespace CIM
                         case "SERIALNUMBER":
                             result.TOPHOUSING = value;
                             break;
-                        case "1ST HEATED AIR CURING":
-                            result.BOX1_HEATED_AIR_CURING = value;
+                        case "2ND HEATED AIR CURING":
+                            result.BOX2_HEATED_AIR_CURING = value;
                             break;
                         case "2ND GLUE AMOUNT":
                             result.GLUE_AMOUNT = value;
@@ -2054,10 +1994,9 @@ namespace CIM
                         case "1ST GLUE OVERFLOW VISION":
                             result.GLUE_OVERFLOW_VISION = value;
                             break;
-                        //case "1ST HEATED AIR CURING":
-                        //    result.HEATED_AIR_CURING = value;
-                        //    strings.Add(value);
-                        //    break;
+                        case "1ST HEATED AIR CURING":
+                            result.BOX1_HEATED_AIR_CURING = value;
+                            break;
                         case "TESTTIME":
                             result.TestTime = value;
                             break;
@@ -2087,7 +2026,7 @@ namespace CIM
         {
             lock (lockWriteLog)
             {
-                string logPath = $@"D:\Logs\CIM\Log_{DateTime.Now.ToString("yyyy")}\{DateTime.Now.ToString("MM")}";
+                string logPath = $@"D:\Logs\CIM\LogsData\{DateTime.Now.ToString("yyyy")}\{DateTime.Now.ToString("MM")}";
 
                 string logFormat = DateTime.Now.ToLongDateString().ToString() + " - " + DateTime.Now.ToLongTimeString().ToString() + " ==> ";
 
