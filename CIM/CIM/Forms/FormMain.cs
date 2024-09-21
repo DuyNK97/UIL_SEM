@@ -129,8 +129,6 @@ namespace CIM
             threadAutoDeleteOldFile.Name = "THREAD_AUTO_DELETE_OLD_FILE";
             threadAutoDeleteOldFile.IsBackground = true;
             threadAutoDeleteOldFile.Start();
-
-
         }
 
         private async Task ThreadAutoDeleteOldFile()
