@@ -23,6 +23,7 @@ using CIM.Class;
 using CIM.Enum;
 using CIM.Forms;
 using System.Data;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace CIM
 {
@@ -104,6 +105,18 @@ namespace CIM
                 SingleTonPlcControl.Instance.AddRegisterRead(SingleTonPlcControl.Instance.RegisterRead, pLCIOs);
                 SingleTonPlcControl.Instance.AddRegisterWrite(SingleTonPlcControl.Instance.RegisterWrite, pLCIOs);
                 SingleTonPlcControl.Instance.RegisterRead.PlcIOs.PropertyChanged += RegisterRead_PropertyChanged;
+
+                var aliveBox1 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox1, 1, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+
+                var aliveBox2 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox2, 2, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+
+                var aliveBox3 = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox3, 3, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+
+                var aliveBox4 = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox4, 4, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
             }
             catch (Exception ex)
             {
@@ -116,6 +129,8 @@ namespace CIM
             threadAutoDeleteOldFile.Name = "THREAD_AUTO_DELETE_OLD_FILE";
             threadAutoDeleteOldFile.IsBackground = true;
             threadAutoDeleteOldFile.Start();
+
+
         }
 
         private async Task ThreadAutoDeleteOldFile()
@@ -307,9 +322,13 @@ namespace CIM
                 {
                     HandleChangeState(obj.IndexPLC, (short)obj.CurrentValue);
                 }
-                else if (obj.Title == "IS_ALIVE")
+                else if (obj.Title == "IS_ALIVE" && (bool)obj.CurrentValue == true)
                 {
-                    SingleTonPlcControl.Instance.SetValueRegister(obj.CurrentValue, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                }
+                else if (obj.Title == "IS_ALIVE" && (bool)obj.CurrentValue == false)
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
                 }
                 else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == true && obj.IndexPLC == 1)
                 {
@@ -328,6 +347,7 @@ namespace CIM
             //set ng -> 2 type: word
             if (SingleTonPlcControl.Instance.GetValueRegister(1, "INPUT_BOX1_BARCODE") == null)
             {
+                WriteLog($"INPUT_QR_CODE_DUPLICATE CAN NOT GET READ BARCODE FROM PLC");
                 short[] rs = new short[1] { 2 };
                 SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
                 return;
@@ -338,6 +358,7 @@ namespace CIM
             if (string.IsNullOrWhiteSpace(QRcode))
             {
                 //set ng -> 2 word
+                WriteLog($"INPUT_QR_CODE_DUPLICATE READ FROM PLC EMPTY");
                 short[] rs = new short[1] { 2 };
                 SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
                 return;
@@ -347,12 +368,15 @@ namespace CIM
             if (!SqlLite.Instance.CheckQRcode(QRcode))
             {
                 //set ng -> 2 word
+                WriteLog($"INPUT_QR_CODE {QRcode} DUPLICATE");
+                WriteBarcodeDuplicate(QRcode);
                 short[] rs = new short[1] { 2 };
                 SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
             }
             else
             {
                 //set ok => 1 word
+                WriteLog($"INPUT_QR_CODE {QRcode} NO_DUPLICATE");
                 short[] rs = new short[1] { 1 };
                 SingleTonPlcControl.Instance.WriteWord($"D45301", 1, 1, ref rs);
             }
@@ -2079,6 +2103,34 @@ namespace CIM
                     using (StreamWriter writer = File.AppendText(logPath + "\\" + DateTime.Now.ToString("dd") + ".txt"))
                     {
                         writer.WriteLine(logFormat + logMessage);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error can not write log, error: {ex.Message}");
+                }
+            }
+        }
+
+        private static readonly object lockWriteDuplicateBarcode = new object();
+        public static void WriteBarcodeDuplicate(string barcode)
+        {
+            lock (lockWriteDuplicateBarcode)
+            {
+                string pathDuplicateBarcode = $@"C:\Users\SEM_PROJECT_CIMPC\Desktop\duplicate_barcode.txt";
+
+                if (!File.Exists(pathDuplicateBarcode))
+                {
+                    using (File.Create(pathDuplicateBarcode)) { }
+                }
+
+                string logFormat = DateTime.Now.ToLongDateString().ToString() + " - " + DateTime.Now.ToLongTimeString().ToString() + " ==> ";
+
+                try
+                {
+                    using (StreamWriter writer = File.AppendText(pathDuplicateBarcode))
+                    {
+                        writer.WriteLine(logFormat + barcode);
                     }
                 }
                 catch (Exception ex)
