@@ -190,7 +190,7 @@ namespace CIM
 
             try
             {
-                string sql = "SELECT TOPHOUSING FROM SEM_DATA WHERE TOPHOUSING=@qrCode"; // Sửa thành TOPHOUSING=@qrCode
+                string sql = "SELECT TOPHOUSING FROM SEM_DATA WHERE TOPHOUSING = @qrCode AND BOX4_AIR_LEAKAGE_TEST_RESULT IS NULL"; // Sửa thành TOPHOUSING=@qrCode
                 using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
                 {
                     conn.Open();
@@ -309,7 +309,9 @@ namespace CIM
 
         public void InsertBox1Barcode(string barCode)
         {
-            string insertQuery = @"INSERT INTO SEM_DATA (TOPHOUSING) VALUES (@TOPHOUSING)";
+
+            //string insertQuery = @"INSERT INTO SEM_DATA (TOPHOUSING) VALUES (@TOPHOUSING)";
+            string insertQuery = @"INSERT INTO SEM_DATA (TOPHOUSING) SELECT @TOPHOUSING WHERE NOT EXISTS (SELECT 1 FROM SEM_DATA WHERE TOPHOUSING = @TOPHOUSING AND BOX4_AIR_LEAKAGE_TEST_RESULT IS NULL);";
 
             using (var command = new SQLiteCommand(insertQuery, _connection))
             {
