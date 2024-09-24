@@ -23,7 +23,6 @@ using CIM.Class;
 using CIM.Enum;
 using CIM.Forms;
 using System.Data;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace CIM
 {
@@ -42,7 +41,7 @@ namespace CIM
         public static string CSVD = ConfigurationManager.AppSettings["LogCSVD"];
         public static string model = ConfigurationManager.AppSettings["MODEL"].ToString();
 
-        public System.Data.DataTable dt = new System.Data.DataTable();
+        public DataTable dt = new DataTable();
 
         public static int OK = 0;
         public static int NG = 0;
@@ -78,59 +77,59 @@ namespace CIM
             UpdateUI(data);
             pieChart1.UpdateChartData(OK, NG);
 
-            //try
-            //{
-            //    if (SingleTonPlcControl.Instance.Connect1())
-            //    {
-            //        WriteLog("Connected to PLC1");
-            //        AddPLCI1(pLCIOs);
-            //    }
+            try
+            {
+                if (SingleTonPlcControl.Instance.Connect1())
+                {
+                    WriteLog("Connected to PLC1");
+                    AddPLCI1(pLCIOs);
+                }
 
-            //    if (SingleTonPlcControl.Instance.Connect2())
-            //    {
-            //        WriteLog("Connected to PLC2");
-            //        AddPLCI2(pLCIOs);
-            //    }
+                if (SingleTonPlcControl.Instance.Connect2())
+                {
+                    WriteLog("Connected to PLC2");
+                    AddPLCI2(pLCIOs);
+                }
 
-            //    if (SingleTonPlcControl.Instance.Connect3())
-            //    {
-            //        WriteLog("Connected to PLC3");
-            //        AddPLCI3(pLCIOs);
-            //    }
+                if (SingleTonPlcControl.Instance.Connect3())
+                {
+                    WriteLog("Connected to PLC3");
+                    AddPLCI3(pLCIOs);
+                }
 
-            //    if (SingleTonPlcControl.Instance.Connect4())
-            //    {
-            //        WriteLog("Connected to PLC4");
-            //        AddPLCI4(pLCIOs);
-            //    }
+                if (SingleTonPlcControl.Instance.Connect4())
+                {
+                    WriteLog("Connected to PLC4");
+                    AddPLCI4(pLCIOs);
+                }
 
-            //    SingleTonPlcControl.Instance.AddRegisterRead(SingleTonPlcControl.Instance.RegisterRead, pLCIOs);
-            //    SingleTonPlcControl.Instance.AddRegisterWrite(SingleTonPlcControl.Instance.RegisterWrite, pLCIOs);
-            //    SingleTonPlcControl.Instance.RegisterRead.PlcIOs.PropertyChanged += RegisterRead_PropertyChanged;
+                SingleTonPlcControl.Instance.AddRegisterRead(SingleTonPlcControl.Instance.RegisterRead, pLCIOs);
+                SingleTonPlcControl.Instance.AddRegisterWrite(SingleTonPlcControl.Instance.RegisterWrite, pLCIOs);
+                SingleTonPlcControl.Instance.RegisterRead.PlcIOs.PropertyChanged += RegisterRead_PropertyChanged;
 
-            //    var aliveBox1 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
-            //    SingleTonPlcControl.Instance.SetValueRegister(aliveBox1, 1, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                var aliveBox1 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox1, 1, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
 
-            //    var aliveBox2 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
-            //    SingleTonPlcControl.Instance.SetValueRegister(aliveBox2, 2, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                var aliveBox2 = (bool)SingleTonPlcControl.Instance.GetValueRegister(1, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox2, 2, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
 
-            //    var aliveBox3 = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "IS_ALIVE");
-            //    SingleTonPlcControl.Instance.SetValueRegister(aliveBox3, 3, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                var aliveBox3 = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox3, 3, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
 
-            //    var aliveBox4 = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "IS_ALIVE");
-            //    SingleTonPlcControl.Instance.SetValueRegister(aliveBox4, 4, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
-            //}
-            //catch (Exception ex)
-            //{
-            //    WriteLog($"Error can not connect with PLC, err: {ex.Message}");
-            //    MessageBox.Show($"Error can not connect with PLC, err: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+                var aliveBox4 = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "IS_ALIVE");
+                SingleTonPlcControl.Instance.SetValueRegister(aliveBox4, 4, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Error can not connect with PLC, err: {ex.Message}");
+                MessageBox.Show($"Error can not connect with PLC, err: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-            ////thread auto delete old file after 365 day
-            //Thread threadAutoDeleteOldFile = new Thread(async () => await ThreadAutoDeleteOldFile());
-            //threadAutoDeleteOldFile.Name = "THREAD_AUTO_DELETE_OLD_FILE";
-            //threadAutoDeleteOldFile.IsBackground = true;
-            //threadAutoDeleteOldFile.Start();
+            //thread auto delete old file after 365 day
+            Thread threadAutoDeleteOldFile = new Thread(async () => await ThreadAutoDeleteOldFile());
+            threadAutoDeleteOldFile.Name = "THREAD_AUTO_DELETE_OLD_FILE";
+            threadAutoDeleteOldFile.IsBackground = true;
+            threadAutoDeleteOldFile.Start();
         }
 
         private async Task ThreadAutoDeleteOldFile()
@@ -365,7 +364,7 @@ namespace CIM
             }
 
             //duplicate
-            if (!SqlLite.Instance.CheckQRcode(QRcode))
+            if (SqlLite.Instance.CheckQrInputIsExists(QRcode))
             {
                 //set ng -> 2 word
                 WriteLog($"INPUT_QR_CODE {QRcode} DUPLICATE");
@@ -734,42 +733,7 @@ namespace CIM
             }
 
             Print(trayCode);
-
             print.Clear();
-
-
-            //-------------------------------------
-            //if (SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "BOX4CountBarcode") == null) return;
-            //var QRcode = SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "BOX4CountBarcode").ToString().Trim();
-            ////endtray = (bool)SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "EndTray");
-
-            //print.Add(QRcode);
-            
-            //if (endtray)
-            //{
-            //    var a = GetTraycode(print.Count);
-            //    foreach (var qr in print)
-            //    {
-            //        SqlLite.Instance.UpdateTrayQRcode(qr, a);
-
-            //    }
-            //    Print(a);
-            //    print.Clear();
-            //    SingleTonPlcControl.Instance.SetValueRegister(true, IndexPLC, "ReadComplete", true, EnumReadOrWrite.WRITE);
-            //    endtray = false;
-            //}
-            //else if (print.Count == 36)
-            //{
-            //    var a = GetTraycode(print.Count);
-            //    foreach (var qr in print)
-            //    {
-            //        SqlLite.Instance.UpdateTrayQRcode(qr, a);
-
-            //    }
-            //    Print(a);
-            //    print.Clear();
-            //    SingleTonPlcControl.Instance.SetValueRegister(true, IndexPLC, "ReadComplete", true, EnumReadOrWrite.WRITE);
-            //}
         }
 
         #endregion
@@ -822,9 +786,8 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
             }
 
-            //insert or update
-            //insert to database qrcode
-            SqlLite.Instance.InsertBox1Barcode(QRcode);
+            //if exist qrcode and result is null => not insert
+            SqlLite.Instance.InsertBox1Barcode(QRcode.Trim());
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -2157,12 +2120,6 @@ namespace CIM
         {
             FormSetting fs = new FormSetting();
             fs.ShowDialog();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            SqlLite.Instance.InsertBox1Barcode("ok_la_1_2");
-            MessageBox.Show("ss");
         }
 
         private void btnFormSearch_Click(object sender, EventArgs e)

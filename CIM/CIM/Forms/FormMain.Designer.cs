@@ -102,7 +102,6 @@
             this.MessageTimer = new System.Windows.Forms.Timer(this.components);
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -125,7 +124,7 @@
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label9.Location = new System.Drawing.Point(16, -4);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(118, 25);
+            this.label9.Size = new System.Drawing.Size(97, 20);
             this.label9.TabIndex = 21;
             this.label9.Text = "Master Data";
             // 
@@ -179,7 +178,7 @@
             this.air_leakagetest_result,
             this.testtime});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 28);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 23);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -193,7 +192,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1879, 448);
+            this.dataGridView1.Size = new System.Drawing.Size(1879, 453);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1_CellFormatting);
             // 
@@ -387,7 +386,7 @@
             this.labelDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDate.Location = new System.Drawing.Point(28, 57);
             this.labelDate.Name = "labelDate";
-            this.labelDate.Size = new System.Drawing.Size(0, 24);
+            this.labelDate.Size = new System.Drawing.Size(0, 18);
             this.labelDate.TabIndex = 16;
             // 
             // timer1
@@ -412,7 +411,6 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.pictureBox1);
             this.panel3.Location = new System.Drawing.Point(-3, 35);
@@ -427,7 +425,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label1.Location = new System.Drawing.Point(222, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(375, 36);
+            this.label1.Size = new System.Drawing.Size(309, 29);
             this.label1.TabIndex = 14;
             this.label1.Text = "Master Data Management";
             // 
@@ -479,7 +477,7 @@
             this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(79)))), ((int)(((byte)(79)))));
             this.label13.Location = new System.Drawing.Point(115, 37);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(73, 25);
+            this.label13.Size = new System.Drawing.Size(59, 20);
             this.label13.TabIndex = 21;
             this.label13.Text = "vs total";
             // 
@@ -490,7 +488,7 @@
             this.lblperNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(35)))), ((int)(((byte)(24)))));
             this.lblperNG.Location = new System.Drawing.Point(25, 36);
             this.lblperNG.Name = "lblperNG";
-            this.lblperNG.Size = new System.Drawing.Size(41, 25);
+            this.lblperNG.Size = new System.Drawing.Size(32, 20);
             this.lblperNG.TabIndex = 20;
             this.lblperNG.Text = "0%";
             // 
@@ -502,7 +500,7 @@
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label14.Location = new System.Drawing.Point(103, 17);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(49, 29);
+            this.label14.Size = new System.Drawing.Size(38, 24);
             this.label14.TabIndex = 14;
             this.label14.Text = "NG";
             // 
@@ -513,7 +511,7 @@
             this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lblNG.Location = new System.Drawing.Point(100, 85);
             this.lblNG.Name = "lblNG";
-            this.lblNG.Size = new System.Drawing.Size(40, 42);
+            this.lblNG.Size = new System.Drawing.Size(33, 36);
             this.lblNG.TabIndex = 17;
             this.lblNG.Text = "0";
             // 
@@ -547,7 +545,7 @@
             this.label21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(79)))), ((int)(((byte)(79)))));
             this.label21.Location = new System.Drawing.Point(105, 45);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(73, 25);
+            this.label21.Size = new System.Drawing.Size(59, 20);
             this.label21.TabIndex = 18;
             this.label21.Text = "vs total";
             // 
@@ -558,7 +556,7 @@
             this.lblperOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(122)))), ((int)(((byte)(72)))));
             this.lblperOK.Location = new System.Drawing.Point(30, 43);
             this.lblperOK.Name = "lblperOK";
-            this.lblperOK.Size = new System.Drawing.Size(41, 25);
+            this.lblperOK.Size = new System.Drawing.Size(32, 20);
             this.lblperOK.TabIndex = 17;
             this.lblperOK.Text = "0%";
             // 
@@ -570,7 +568,7 @@
             this.label20.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label20.Location = new System.Drawing.Point(113, 17);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(48, 29);
+            this.label20.Size = new System.Drawing.Size(37, 24);
             this.label20.TabIndex = 15;
             this.label20.Text = "OK";
             // 
@@ -581,7 +579,7 @@
             this.lblOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lblOK.Location = new System.Drawing.Point(86, 80);
             this.lblOK.Name = "lblOK";
-            this.lblOK.Size = new System.Drawing.Size(40, 42);
+            this.lblOK.Size = new System.Drawing.Size(33, 36);
             this.lblOK.TabIndex = 14;
             this.lblOK.Text = "0";
             // 
@@ -694,7 +692,7 @@
             this.label11.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label11.Location = new System.Drawing.Point(11, -4);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(117, 29);
+            this.label11.Size = new System.Drawing.Size(94, 25);
             this.label11.TabIndex = 13;
             this.label11.Text = "IO Status";
             // 
@@ -705,7 +703,7 @@
             this.label19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label19.Location = new System.Drawing.Point(290, 164);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(72, 25);
+            this.label19.Size = new System.Drawing.Size(57, 20);
             this.label19.TabIndex = 22;
             this.label19.Text = "PLC 4";
             // 
@@ -716,7 +714,7 @@
             this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label16.Location = new System.Drawing.Point(26, 163);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(72, 25);
+            this.label16.Size = new System.Drawing.Size(57, 20);
             this.label16.TabIndex = 21;
             this.label16.Text = "PLC 3";
             // 
@@ -727,7 +725,7 @@
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label17.Location = new System.Drawing.Point(26, 85);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(72, 25);
+            this.label17.Size = new System.Drawing.Size(57, 20);
             this.label17.TabIndex = 19;
             this.label17.Text = "PLC 1";
             // 
@@ -738,7 +736,7 @@
             this.label18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label18.Location = new System.Drawing.Point(290, 87);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(72, 25);
+            this.label18.Size = new System.Drawing.Size(57, 20);
             this.label18.TabIndex = 20;
             this.label18.Text = "PLC 2";
             // 
@@ -749,7 +747,7 @@
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label5.Location = new System.Drawing.Point(12, -2);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 25);
+            this.label5.Size = new System.Drawing.Size(74, 20);
             this.label5.TabIndex = 20;
             this.label5.Text = "Statistics";
             // 
@@ -785,7 +783,7 @@
             // pieChart1
             // 
             this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
             this.pieChart1.Name = "pieChart1";
             this.pieChart1.Size = new System.Drawing.Size(370, 215);
             this.pieChart1.TabIndex = 12;
@@ -798,7 +796,7 @@
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label3.Location = new System.Drawing.Point(52, 15);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 29);
+            this.label3.Size = new System.Drawing.Size(51, 24);
             this.label3.TabIndex = 10;
             this.label3.Text = "Total";
             // 
@@ -809,7 +807,7 @@
             this.lbltotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lbltotal.Location = new System.Drawing.Point(21, 83);
             this.lbltotal.Name = "lbltotal";
-            this.lbltotal.Size = new System.Drawing.Size(103, 42);
+            this.lbltotal.Size = new System.Drawing.Size(85, 36);
             this.lbltotal.TabIndex = 11;
             this.lbltotal.Text = "0 EA";
             // 
@@ -840,7 +838,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(1790, 4);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 25);
+            this.label4.Size = new System.Drawing.Size(79, 21);
             this.label4.TabIndex = 16;
             this.label4.Text = "Design by";
             // 
@@ -886,16 +884,6 @@
             this.btnClearData.Text = "Clear Data";
             this.btnClearData.UseVisualStyleBackColor = false;
             this.btnClearData.Click += new System.EventHandler(this.btnClearData_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(693, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 43);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FormMain
             // 
@@ -1018,7 +1006,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn air_leakagetest_detail;
         private System.Windows.Forms.DataGridViewTextBoxColumn air_leakagetest_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn testtime;
-        private System.Windows.Forms.Button button1;
     }
 }
 
