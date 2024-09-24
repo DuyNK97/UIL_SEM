@@ -23,7 +23,6 @@ using CIM.Class;
 using CIM.Enum;
 using CIM.Forms;
 using System.Data;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace CIM
 {
@@ -42,7 +41,7 @@ namespace CIM
         public static string CSVD = ConfigurationManager.AppSettings["LogCSVD"];
         public static string model = ConfigurationManager.AppSettings["MODEL"].ToString();
 
-        public System.Data.DataTable dt = new System.Data.DataTable();
+        public DataTable dt = new DataTable();
 
         public static int OK = 0;
         public static int NG = 0;
@@ -365,7 +364,7 @@ namespace CIM
             }
 
             //duplicate
-            if (!SqlLite.Instance.CheckQRcode(QRcode))
+            if (SqlLite.Instance.CheckQrInputIsExists(QRcode))
             {
                 //set ng -> 2 word
                 WriteLog($"INPUT_QR_CODE {QRcode} DUPLICATE");
@@ -734,42 +733,7 @@ namespace CIM
             }
 
             Print(trayCode);
-
             print.Clear();
-
-
-            //-------------------------------------
-            //if (SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "BOX4CountBarcode") == null) return;
-            //var QRcode = SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "BOX4CountBarcode").ToString().Trim();
-            ////endtray = (bool)SingleTonPlcControl.Instance.GetValueRegister(IndexPLC, "EndTray");
-
-            //print.Add(QRcode);
-            
-            //if (endtray)
-            //{
-            //    var a = GetTraycode(print.Count);
-            //    foreach (var qr in print)
-            //    {
-            //        SqlLite.Instance.UpdateTrayQRcode(qr, a);
-
-            //    }
-            //    Print(a);
-            //    print.Clear();
-            //    SingleTonPlcControl.Instance.SetValueRegister(true, IndexPLC, "ReadComplete", true, EnumReadOrWrite.WRITE);
-            //    endtray = false;
-            //}
-            //else if (print.Count == 36)
-            //{
-            //    var a = GetTraycode(print.Count);
-            //    foreach (var qr in print)
-            //    {
-            //        SqlLite.Instance.UpdateTrayQRcode(qr, a);
-
-            //    }
-            //    Print(a);
-            //    print.Clear();
-            //    SingleTonPlcControl.Instance.SetValueRegister(true, IndexPLC, "ReadComplete", true, EnumReadOrWrite.WRITE);
-            //}
         }
 
         #endregion
@@ -822,8 +786,8 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
             }
 
-            //insert to database qrcode
-            SqlLite.Instance.InsertBox1Barcode(QRcode);
+            //if exist qrcode and result is null => not insert
+            SqlLite.Instance.InsertBox1Barcode(QRcode.Trim());
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 

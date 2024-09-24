@@ -201,6 +201,7 @@
             this.index.HeaderText = "No.";
             this.index.MinimumWidth = 6;
             this.index.Name = "index";
+            this.index.Width = 125;
             // 
             // QR
             // 
@@ -888,7 +889,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1920, 1030);
+            this.ClientSize = new System.Drawing.Size(1920, 1020);
             this.Controls.Add(this.btnClearData);
             this.Controls.Add(this.lblalert);
             this.Controls.Add(this.panel4);
