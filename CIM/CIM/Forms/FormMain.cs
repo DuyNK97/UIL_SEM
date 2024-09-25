@@ -41,7 +41,7 @@ namespace CIM
         public static string CSVD = ConfigurationManager.AppSettings["LogCSVD"];
         public static string model = ConfigurationManager.AppSettings["MODEL"].ToString();
 
-        public System.Data.DataTable dt = new System.Data.DataTable();
+        public DataTable dt = new DataTable();
 
         public static int OK = 0;
         public static int NG = 0;
@@ -66,10 +66,12 @@ namespace CIM
 
             SqlLite.Instance.InitializeConnection();
 
-            Dictionary<string, string> currentData = Global.ReadValueFileTxt(Global.GetFilePathSetting(), new List<string> { "OK", "NG_AIR", "TOTAL" });
+            Dictionary<string, string> currentData = Global.ReadValueFileTxt(Global.GetFilePathSetting(), new List<string> { "OK", "NG_AIR", "TOTAL", "DiskNetwork", "DiskLocal" });
             OK = int.Parse(currentData["OK"]);
             NG = int.Parse(currentData["NG_AIR"]);
             Total = int.Parse(currentData["TOTAL"]);
+            Global.CSV = currentData["DiskNetwork"];
+            Global.CSVD = currentData["DiskLocal"];
 
             EXCELDATA data = new EXCELDATA();
             UpdateUI(data);
@@ -363,7 +365,7 @@ namespace CIM
             }
 
             //duplicate
-            if (!SqlLite.Instance.CheckQRcode(QRcode))
+            if (SqlLite.Instance.CheckQrInputIsExists(QRcode))
             {
                 //set ng -> 2 word
                 WriteLog($"INPUT_QR_CODE {QRcode} DUPLICATE");
@@ -732,7 +734,6 @@ namespace CIM
             }
 
             Print(trayCode);
-
             print.Clear();
         }
 
@@ -795,8 +796,8 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
             }
 
-            //insert to database qrcode
-            SqlLite.Instance.InsertBox1Barcode(QRcode);
+            //if exist qrcode and result is null => not insert
+            SqlLite.Instance.InsertBox1Barcode(QRcode.Trim());
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 

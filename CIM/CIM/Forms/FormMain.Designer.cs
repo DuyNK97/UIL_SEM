@@ -201,6 +201,7 @@
             this.index.HeaderText = "No.";
             this.index.MinimumWidth = 6;
             this.index.Name = "index";
+            this.index.Width = 125;
             // 
             // QR
             // 
@@ -888,7 +889,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1920, 1030);
+            this.ClientSize = new System.Drawing.Size(1920, 1020);
             this.Controls.Add(this.btnClearData);
             this.Controls.Add(this.lblalert);
             this.Controls.Add(this.panel4);
@@ -904,6 +905,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
             this.Text = "CIM UI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ZoomScaleRect = new System.Drawing.Rectangle(19, 19, 1920, 1055);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);

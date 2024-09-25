@@ -1,9 +1,8 @@
-﻿using QRCoder;
+﻿using DocumentFormat.OpenXml.Office.Word;
+using QRCoder;
 using System;
 using System.Data;
 using System.Data.SQLite;
-using System.Configuration;
-using CIM.Class;
 using System.IO;
 
 namespace CIM
@@ -13,9 +12,7 @@ namespace CIM
         private static SqlLite _instance;
         private static readonly object _lock = new object();
         private SQLiteConnection _connection;
-        // string ConnectionString = "Data Source=C:\\Users\\SEM_PROJECT_CIMPC\\Desktop\\Program\\UILPJ_usingSEMIDB\\CIM\\CIM\\Database\\SEMPJ.db";
         string ConnectionString = "Data Source=C:\\APP\\CIMDB\\SEM.db";
-        //private const string ConnectionString = ConfigurationManager.AppSettings["Connection"].ToString();
 
         private SqlLite()
         {
@@ -184,38 +181,34 @@ namespace CIM
             }
         }
 
-        public bool CheckQRcode(string QRcode)
+        public bool CheckQrInputIsExists(string qrCode)
         {
-            DataSet ds = new DataSet();
-
             try
             {
-                string sql = "SELECT TOPHOUSING FROM SEM_DATA WHERE TOPHOUSING=@qrCode"; // Sửa thành TOPHOUSING=@qrCode
-                using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+                string sql = "SELECT TOPHOUSING FROM SEM_DATA WHERE TOPHOUSING = @qrCode AND (BOX4_AIR_LEAKAGE_TEST_RESULT = 'OK' OR BOX4_AIR_LEAKAGE_TEST_RESULT = 'NG')"; // Sửa thành TOPHOUSING=@qrCode
+
+                using (var command = new SQLiteCommand(sql, _connection))
                 {
-                    conn.Open();
+                    command.Parameters.AddWithValue("@qrCode", qrCode);
 
-                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                    using (var reader = command.ExecuteReader())
                     {
-                        cmd.Parameters.AddWithValue("@qrCode", QRcode);
-
-                        using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd))
+                        if (reader.HasRows)
                         {
-                            adapter.Fill(ds);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
                         }
                     }
                 }
-                
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
-            }
-            if (chkDS(ds))
-            {
                 return false;
             }
-            return true;
         }
 
         public DataSet SearchData(string QRcode )
@@ -309,8 +302,7 @@ namespace CIM
 
         public void InsertBox1Barcode(string barCode)
         {
-            string insertQuery = @"INSERT INTO SEM_DATA (TOPHOUSING) VALUES (@TOPHOUSING)";
-
+            string insertQuery = @"INSERT INTO SEM_DATA (TOPHOUSING) SELECT @TOPHOUSING WHERE NOT EXISTS (SELECT 1 FROM SEM_DATA WHERE TOPHOUSING = @TOPHOUSING AND (BOX4_AIR_LEAKAGE_TEST_RESULT = '' or BOX4_AIR_LEAKAGE_TEST_RESULT is null));";
             using (var command = new SQLiteCommand(insertQuery, _connection))
             {
                 command.Parameters.AddWithValue("@TOPHOUSING", barCode);

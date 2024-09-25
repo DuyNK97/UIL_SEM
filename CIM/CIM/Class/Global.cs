@@ -22,7 +22,7 @@ namespace CIM.Class
 
         public static string CSVD = @"D:\mes_automaination_svc";
 
-        public static string CSV = @"E:\";
+        public static string CSV = @"Z:\";
 
         private static readonly object[] _lockWriteBox = new object[4]
         {
