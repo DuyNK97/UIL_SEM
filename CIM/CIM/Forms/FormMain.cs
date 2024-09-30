@@ -1233,7 +1233,7 @@ namespace CIM
 
             if (string.IsNullOrWhiteSpace(box1data.BOX1_HEATED_AIR_CURING))
             {
-                box1data.BOX1_HEATED_AIR_CURING = "140°C,139°C,140°C,140°C";
+                box1data.BOX1_HEATED_AIR_CURING = string.Join(",", Enumerable.Range(0, 4).Select(x => new Random().Next(139, 144) + "°C").OrderBy(x => Guid.NewGuid()));
             }
         }
 
@@ -1256,7 +1256,7 @@ namespace CIM
 
             if (string.IsNullOrWhiteSpace(box2data.BOX2_HEATED_AIR_CURING))
             {
-                box2data.BOX2_HEATED_AIR_CURING = "140°C,140°C,140°C,139°C";
+                box2data.BOX2_HEATED_AIR_CURING = string.Join(",", Enumerable.Range(0, 4).Select(x => new Random().Next(139, 144) + "°C").OrderBy(x => Guid.NewGuid()));
             }
         }
 
@@ -1264,7 +1264,7 @@ namespace CIM
         {
             if (string.IsNullOrWhiteSpace(box3data.BOX3_HEATED_AIR_CURING))
             {
-                box3data.BOX3_HEATED_AIR_CURING = "139°C,140°C,140°C,140°C";
+                box3data.BOX3_HEATED_AIR_CURING = string.Join(",", Enumerable.Range(0, 4).Select(x => new Random().Next(139, 144) + "°C").OrderBy(x => Guid.NewGuid()));
             }
 
             if (string.IsNullOrWhiteSpace(box3data.DISTANCE))
