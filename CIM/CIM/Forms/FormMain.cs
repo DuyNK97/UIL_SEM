@@ -942,10 +942,12 @@ namespace CIM
                         air_leakage_test_detail = Math.Round(new Random().NextDouble() * (0.1854 - 0.061607) + 0.061607, 5).ToString();
                     }
 
-                    if (air_leakage_test_detail.Contains("E"))
-                    {
-                        air_leakage_test_detail = "0.000";
-                    }
+                    air_leakage_test_detail =
+                        Decimal.TryParse(air_leakage_test_detail, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out decimal parsedValue)
+                    
+                    ? (Math.Floor(parsedValue * 1000) / 1000).ToString("0.000", System.Globalization.CultureInfo.InvariantCulture)
+                    
+                    : air_leakage_test_detail;
 
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
                 }
