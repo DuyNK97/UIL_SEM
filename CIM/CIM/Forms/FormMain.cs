@@ -902,6 +902,10 @@ namespace CIM
             var height_parallelism_detail3 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL3");
             var height_parallelism_detail4 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL4");
 
+            //fpcb
+            var fpcb4Left = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_LEFT");
+            var fpcb4Right = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_RIGHT");
+            var warping = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_WARPING"); //độ vênh
             var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString().Trim();
 
             resistance = resistance == "1" ? "NG" : (resistance + "Ω");
@@ -945,7 +949,7 @@ namespace CIM
                     //parse value air leakage test and 3 value after dot, ex: plc return air leakage test: 4.7E-05 => parse to 0.0000047 => get 3 value after dot: 0.000
                     air_leakage_test_detail = ParseValueAirLeakageTest(air_leakage_test_detail);
 
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
                 }
                 else
                 {
@@ -960,7 +964,7 @@ namespace CIM
 
                     box4AirTestDetailString = isNumber ? (ParseValueAirLeakageTest(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING) + " SCCM") : (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING + "-0000");
 
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} ;TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} ;TestTime: {formattedDateTime}; ###");
                 }
 
                 List<string> Box1results = ReadFilesAndSearchV2(PLClog1, QRcode.ToString());
@@ -1058,7 +1062,7 @@ namespace CIM
                 //set path of file disk E and D
                 string pathcsvE = GetUniqueFilePath(Global.CSV, data1.TOPHOUSING);
                 string pathcsvD = GetUniqueFilePathD(Global.CSVD, data1.TOPHOUSING);
-                    
+
                 //get from sqlite check have barcode and result != OK or result != NG
                 DataSet ds = SqlLite.Instance.GetDataByBarCodeAndResult(QRcode);
 
@@ -1500,6 +1504,11 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45144, "BOX4HEIGHT_PARALLELISM_DETAIL2", EnumRegisterType.FLOAT, 2, true, false, 4));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45146, "BOX4HEIGHT_PARALLELISM_DETAIL3", EnumRegisterType.FLOAT, 2, true, false, 4));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45148, "BOX4HEIGHT_PARALLELISM_DETAIL4", EnumRegisterType.FLOAT, 2, true, false, 4));
+
+            //fpcb
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45132, "BOX4_FPCB_LEFT", EnumRegisterType.FLOAT, 2, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45134, "BOX4_FPCB_RIGHT", EnumRegisterType.FLOAT, 2, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45136, "BOX4_WARPING", EnumRegisterType.FLOAT, 2, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45152, "BOX4resistance", EnumRegisterType.FLOAT, 8, true, false, 4));
 
