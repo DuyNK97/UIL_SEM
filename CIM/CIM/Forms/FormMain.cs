@@ -403,11 +403,13 @@ namespace CIM
             if (indexPLC == (int)EPLC.PLC_3)
             {
                 Global.CurrentStateBox3 = currentValue == 1 ? (int)EMode.ONLINE : (int)EMode.OFFLINE;
+                WriteLog(currentValue == 1 ? "Current State Box 3 Online" : "Current State Box 3 Offline");
             }
 
             if (indexPLC == (int)EPLC.PLC_4)
             {
                 Global.CurrentStateBox4 = currentValue == 1 ? (int)EMode.ONLINE : (int)EMode.OFFLINE;
+                WriteLog(currentValue == 1 ? "Current State Box 4 Online" : "Current State Box 4 Offline");
             }
 
             short[] rs = new short[1] { currentValue };
@@ -916,7 +918,10 @@ namespace CIM
 
             string air_leakage_test_result = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_RESULT") ? "OK" : "NG";
 
-            //if empty data send to PLC
+            //final result return true or false
+            bool finalResult = tightness_and_location_vision == "OK" && height_parallelism_result == "OK" && air_leakage_test_result == "OK";
+
+            //if empty data send to PLC miss data
             if (string.IsNullOrWhiteSpace(QRcode)
                 || string.IsNullOrWhiteSpace(tightness_and_location_vision)
                 || string.IsNullOrWhiteSpace(height_parallelism_result)
@@ -1038,13 +1043,13 @@ namespace CIM
                     BOX4_TestTime = DateTime.Now
                 };
 
-                list.Add(data1);
+                //list.Add(data1);
                 No++;
 
                 //add to datagridview
                 Action gridviewaction = () =>
                 {
-                    dataGridView1.Rows.Add(No, data1.TOPHOUSING, data1.BOX1_GLUE_AMOUNT, data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION, data1.INSULATOR_BAR_CODE, data1.BOX1_GLUE_OVERFLOW_VISION, data1.BOX1_HEATED_AIR_CURING, data1.BOX2_GLUE_AMOUNT, data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION, data1.FPCB_BAR_CODE, data1.BOX2_GLUE_OVERFLOW_VISION, data1.BOX2_HEATED_AIR_CURING, data1.BOX3_DISTANCE, data1.BOX3_GLUE_AMOUNT, data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION, data1.BOX3_HEATED_AIR_CURING, data1.BOX3_GLUE_OVERFLOW_VISION, data1.BOX4_TIGHTNESS_AND_LOCATION_VISION, data1.BOX4_HEIGHT_PARALLELISM, data1.BOX4_RESISTANCE, data1.BOX4_AIR_LEAKAGE_TEST_DETAIL, data1.BOX4_AIR_LEAKAGE_TEST_RESULT, formattedDateTime);
+                    dataGridView1.Rows.Add(No, data1.TOPHOUSING, data1.BOX1_GLUE_AMOUNT, data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION, data1.INSULATOR_BAR_CODE, data1.BOX1_GLUE_OVERFLOW_VISION, data1.BOX1_HEATED_AIR_CURING, data1.BOX2_GLUE_AMOUNT, data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION, data1.FPCB_BAR_CODE, data1.BOX2_GLUE_OVERFLOW_VISION, data1.BOX2_HEATED_AIR_CURING, data1.BOX3_DISTANCE, data1.BOX3_GLUE_AMOUNT, data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION, data1.BOX3_HEATED_AIR_CURING, data1.BOX3_GLUE_OVERFLOW_VISION, data1.BOX4_TIGHTNESS_AND_LOCATION_VISION, data1.BOX4_HEIGHT_PARALLELISM, data1.BOX4_RESISTANCE, data1.BOX4_AIR_LEAKAGE_TEST_DETAIL, data1.BOX4_AIR_LEAKAGE_TEST_RESULT, finalResult ? "OK" : "NG", formattedDateTime);
                     dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
                 };
 
@@ -1095,12 +1100,12 @@ namespace CIM
                             SqlLite.Instance.InsertSEM_DATA(data1, "Doublicate");
 
                             //insert excel with mark duplicate
-                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true);
+                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true, finalResult);
 
                             //if status mode is box 4 is rework, will increase quantity OK, NG, total, update chart
                             if (Global.CurrentModeBox4 == (int)ERework.REWORK)
                             {
-                                if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                                if (finalResult)
                                     OK++;
                                 else
                                     NG++;
@@ -1123,10 +1128,10 @@ namespace CIM
                             SqlLite.Instance.UpdateDataByQrCode(QRcode, data1);
 
                             //save excel
-                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, false);
+                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, false, finalResult);
 
                             //update quantity, chart, write file
-                            if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                            if (finalResult)
                                 OK++;
                             else
                                 NG++;
@@ -1154,12 +1159,12 @@ namespace CIM
                             showLabelAction();
 
                         SqlLite.Instance.InsertSEM_DATA(data1, "Doublicate");
-                        CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true);
+                        CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true, finalResult);
 
                         //if status mode is box 4 is rework, will increase quantity OK, NG, total, save file txt, update chart
                         if (Global.CurrentModeBox4 == (int)ERework.REWORK)
                         {
-                            if (box4data.AIR_LEAKAGE_TEST_RESULT?.Trim() == "OK")
+                            if (finalResult)
                                 OK++;
                             else
                                 NG++;
@@ -1178,7 +1183,7 @@ namespace CIM
                     }
                 }
 
-                CreateCsvFile(pathcsvD, data1, pathcsvE);
+                CreateCsvFile(pathcsvD, data1, pathcsvE, finalResult);
             }
         }
 
@@ -1325,7 +1330,7 @@ namespace CIM
 
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if ((e.ColumnIndex == 3 || e.ColumnIndex == 5 || e.ColumnIndex == 8 || e.ColumnIndex == 10 || e.ColumnIndex == 14 || e.ColumnIndex == 16 || e.ColumnIndex == 17 || e.ColumnIndex == 21) && e.Value != null)
+            if ((e.ColumnIndex == 3 || e.ColumnIndex == 5 || e.ColumnIndex == 8 || e.ColumnIndex == 10 || e.ColumnIndex == 14 || e.ColumnIndex == 16 || e.ColumnIndex == 17 || e.ColumnIndex == 21 || e.ColumnIndex == 22) && e.Value != null)
             {
                 string cellValue = e.Value.ToString().Trim();
 
@@ -1531,7 +1536,7 @@ namespace CIM
         #endregion
 
         private static readonly object lockExcel = new object();
-        public void CreateExcelFile(string path, BOX1RESULT box1Data, BOX2RESULT box2Data, BOX3RESULT box3Data, BOX4RESULT box4Data, int currentRow, bool doublicate)
+        public void CreateExcelFile(string path, BOX1RESULT box1Data, BOX2RESULT box2Data, BOX3RESULT box3Data, BOX4RESULT box4Data, int currentRow, bool doublicate, bool finalResult)
         {
             lock (lockExcel)
             {
@@ -1600,7 +1605,7 @@ namespace CIM
                         worksheet.Cells[rowIndex, 19].Value = box4Data.RESISTANCE;
                         worksheet.Cells[rowIndex, 20].Value = box4Data.AIR_LEAKAGE_TEST_DETAIL;
                         worksheet.Cells[rowIndex, 21].Value = box4Data.AIR_LEAKAGE_TEST_RESULT;
-                        worksheet.Cells[rowIndex, 22].Value = box4Data.AIR_LEAKAGE_TEST_RESULT;
+                        worksheet.Cells[rowIndex, 22].Value = finalResult ? "OK" : "NG";
                         worksheet.Cells[rowIndex, 23].Value = formattedDateTime.Substring(0, 10);
                         worksheet.Cells[rowIndex, 24].Value = formattedDateTime.Substring(11);
 
@@ -1623,7 +1628,7 @@ namespace CIM
 
         private static readonly object lockWriteCSV = new object();
 
-        public void CreateCsvFile(string path, EXCELDATA data1, string pathNAS)
+        public void CreateCsvFile(string path, EXCELDATA data1, string pathNAS, bool finalResult)
         {
             lock (lockWriteCSV)
             {
@@ -1675,7 +1680,7 @@ namespace CIM
                         data1.BOX4_RESISTANCE,
                         data1.BOX4_AIR_LEAKAGE_TEST_DETAIL,
                         data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
-                        data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
+                        finalResult ? "OK" : "NG",
                         formattedDateTime.Substring(0, 10),
                         formattedDateTime.Substring(11)
                     };
