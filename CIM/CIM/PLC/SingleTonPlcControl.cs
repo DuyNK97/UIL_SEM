@@ -31,6 +31,7 @@ namespace UILAlignProject.PLC
         int MxPort2 = 21;
         int MxPort3 = 36;
         int MxPort4 = 56;
+       // int MxPort4 = 1;
         int plcindex = 2;
         private ActUtlType64Class PlcWrite1 { get; set; }
         private ActUtlType64Class PlcRead1 { get; set; }

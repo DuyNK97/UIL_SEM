@@ -41,6 +41,10 @@ namespace CIM
         public static string CSVD = ConfigurationManager.AppSettings["LogCSVD"];
         public static string model = ConfigurationManager.AppSettings["MODEL"].ToString();
 
+        public static string rowdisplay = ConfigurationManager.AppSettings["rowdisplay"];
+
+        int rowsdisplay = 100;
+
         public DataTable dt = new DataTable();
 
         public static int OK = 0;
@@ -54,6 +58,7 @@ namespace CIM
         public static string logFilePath4 = "";
         public static string logFilePathALL = "";
 
+
         public const int AUTO_DELETE_FILE = 1;
 
         private ZebraZT411Printer _printerManager = new ZebraZT411Printer();
@@ -63,6 +68,8 @@ namespace CIM
             InitializeComponent();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ResultAirMachine air = new ResultAirMachine();
+
+            rowsdisplay = int.Parse(rowdisplay);
 
             SqlLite.Instance.InitializeConnection();
 
@@ -145,7 +152,7 @@ namespace CIM
                 DateTime now = DateTime.Now;
                 if (autoDeleteFile == AUTO_DELETE_FILE)
                 {
-                   
+
                     DeleteOldFile(Global.CSVD, now, dayDeleteFileCSV);
                     WriteLog("Delete old file done!");
                 }
@@ -712,7 +719,7 @@ namespace CIM
         {
             //print by command
             if (_printerManager.Connect(printerIpAddress))
-            { 
+            {
                 string labelFormat = $"^XA^PW1800 ^LL1200^FO150,80^BQN,2,10^FDQA, {Traycode}^FS^XZ"; //ko chỉnh sua.
 
                 _printerManager.PrintLabel(labelFormat);
@@ -886,6 +893,7 @@ namespace CIM
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
         }
 
+   
         private void ReadData4()
         {
             if (SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode") == null)
@@ -914,6 +922,9 @@ namespace CIM
 
             var air_leakage_test_detail = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL").ToString().Trim();
             var BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING").ToString().Trim();
+
+            var LeakName = SingleTonPlcControl.Instance.GetValueRegister(4, "Leak_Name").ToString().Trim();
+            
 
             if (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING == null)
             {
@@ -954,7 +965,7 @@ namespace CIM
                     //parse value air leakage test and 3 value after dot, ex: plc return air leakage test: 4.7E-05 => parse to 0.0000047 => get 3 value after dot: 0.000
                     air_leakage_test_detail = ParseValueAirLeakageTest(air_leakage_test_detail);
 
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM;TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};TestTime: {formattedDateTime}; ###");
                 }
                 else
                 {
@@ -969,7 +980,7 @@ namespace CIM
 
                     box4AirTestDetailString = isNumber ? (ParseValueAirLeakageTest(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING) + " SCCM") : (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING + "-0000");
 
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} ;TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};TestTime: {formattedDateTime}; ###");
                 }
 
                 List<string> Box1results = ReadFilesAndSearchV2(PLClog1, QRcode.ToString());
@@ -1046,6 +1057,7 @@ namespace CIM
                     BOX4_HEIGHT_PARALLELISM = box4data.HEIGHT_PARALLELISM,
                     BOX4_RESISTANCE = box4data.RESISTANCE,
                     BOX4_AIR_LEAKAGE_TEST_RESULT = box4data.AIR_LEAKAGE_TEST_RESULT,
+                    BOX4_LEAK_NAME= box4data.Leak_Name,
                     BOX4_TestTime = DateTime.Now
                 };
 
@@ -1055,8 +1067,47 @@ namespace CIM
                 //add to datagridview
                 Action gridviewaction = () =>
                 {
-                    dataGridView1.Rows.Add(No, data1.TOPHOUSING, data1.BOX1_GLUE_AMOUNT, data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION, data1.INSULATOR_BAR_CODE, data1.BOX1_GLUE_OVERFLOW_VISION, data1.BOX1_HEATED_AIR_CURING, data1.BOX2_GLUE_AMOUNT, data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION, data1.FPCB_BAR_CODE, data1.BOX2_GLUE_OVERFLOW_VISION, data1.BOX2_HEATED_AIR_CURING, data1.BOX3_DISTANCE, data1.BOX3_GLUE_AMOUNT, data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION, data1.BOX3_HEATED_AIR_CURING, data1.BOX3_GLUE_OVERFLOW_VISION, data1.BOX4_TIGHTNESS_AND_LOCATION_VISION, data1.BOX4_HEIGHT_PARALLELISM, data1.BOX4_RESISTANCE, data1.BOX4_AIR_LEAKAGE_TEST_DETAIL, data1.BOX4_AIR_LEAKAGE_TEST_RESULT, finalResult ? "OK" : "NG", formattedDateTime);
-                    dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
+
+                    // Lấy số lượng dòng hiện tại trong DataGridView
+                    int currentRowCount = dataGridView1.Rows.Count;
+
+                    // Thêm dòng mới vào DataGridView
+                    dataGridView1.Rows.Insert(0, new object[]
+                    {
+                        No.ToString(),
+                        data1.TOPHOUSING,
+                        data1.BOX1_GLUE_AMOUNT,
+                        data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION,
+                        data1.INSULATOR_BAR_CODE,
+                        data1.BOX1_GLUE_OVERFLOW_VISION,
+                        data1.BOX1_HEATED_AIR_CURING,
+                        data1.BOX2_GLUE_AMOUNT,
+                        data1.BOX2_GLUE_DISCHARGE_VOLUME_VISION,
+                        data1.FPCB_BAR_CODE,
+                        data1.BOX2_GLUE_OVERFLOW_VISION,
+                        data1.BOX2_HEATED_AIR_CURING,
+                        data1.BOX3_DISTANCE,
+                        data1.BOX3_GLUE_AMOUNT,
+                        data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION,
+                        data1.BOX3_HEATED_AIR_CURING,
+                        data1.BOX3_GLUE_OVERFLOW_VISION,
+                        data1.BOX4_TIGHTNESS_AND_LOCATION_VISION,
+                        data1.BOX4_HEIGHT_PARALLELISM,
+                        data1.BOX4_RESISTANCE,
+                        data1.BOX4_AIR_LEAKAGE_TEST_DETAIL,
+                        data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
+                        data1.BOX4_LEAK_NAME,
+                        finalResult ? "OK" : "NG",
+                        DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:ff")
+                    });                 
+
+                   
+                    // Kích hoạt lại layout của DataGridView
+                    while (dataGridView1.Rows.Count > rowsdisplay)
+                    {
+                        dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
+                        dataGridView1.Rows.RemoveAt(dataGridView1.Rows.Count - 1); // Xóa dòng cuối cùng
+                    }
                 };
 
                 if (this.InvokeRequired)
@@ -1520,6 +1571,10 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45160, "BOX4AIR_LEAKAGE_TEST_RESULT", EnumRegisterType.BITINWORD, 0, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45162, "BOX4AIR_LEAKAGE_TEST_DETAIL", EnumRegisterType.FLOAT, 2, true, false, 4));
+
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45166, "Leak_Name", EnumRegisterType.STRING, 4, true, true, 4)); //Register read model
+
+
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45170, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING", EnumRegisterType.STRING, 10, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 34010, "CHANGE_MODE_REWORK", EnumRegisterType.BIT, 1, true, true, 4)); //change mode rework
@@ -1549,6 +1604,8 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34104, "WRITE_END_TRAY", EnumRegisterType.BIT, 1, true, true, 4));// end tray khi so luong chua du 36 hoac da in tem xong
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45202, "READ_MODEL", EnumRegisterType.WORD, 1, true, true, 4)); //Register read model
+            
+
         }
 
         #endregion
@@ -1589,7 +1646,7 @@ namespace CIM
                                 "1st Glue overflow vision", "1st heated Air curing", "2nd Glue Amount", "2nd  Glue discharge volume Vision",
                                 "FPCB bar code", "2nd Glue overflow vision", "2nd heated Air curing", "Distance", "3rd Glue Amount",
                                 "3rd Glue discharge volume Vision", "3rd heated Air curing", "3rd Glue overflow vision",
-                                "Tightness and location vision", "Height / Parallelism", "Resistance", "Air Leakage Test", "Air Leakage Test Result", "Result", "Product Day", "Product Time"
+                                "Tightness and location vision", "Height / Parallelism", "Resistance", "Air Leakage Test", "Air Leakage Test Result","Air Leak Name", "Result", "Product Day", "Product Time"
                             };
 
                             for (int i = 0; i < headers.Length; i++)
@@ -1623,10 +1680,10 @@ namespace CIM
                         worksheet.Cells[rowIndex, 19].Value = box4Data.RESISTANCE;
                         worksheet.Cells[rowIndex, 20].Value = box4Data.AIR_LEAKAGE_TEST_DETAIL;
                         worksheet.Cells[rowIndex, 21].Value = box4Data.AIR_LEAKAGE_TEST_RESULT;
-                        worksheet.Cells[rowIndex, 22].Value = finalResult ? "OK" : "NG";
-                        worksheet.Cells[rowIndex, 23].Value = formattedDateTime.Substring(0, 10);
-                        worksheet.Cells[rowIndex, 24].Value = formattedDateTime.Substring(11);
-
+                        worksheet.Cells[rowIndex, 22].Value = box4Data.Leak_Name;
+                        worksheet.Cells[rowIndex, 23].Value = finalResult ? "OK" : "NG";                        
+                        worksheet.Cells[rowIndex, 24].Value = formattedDateTime.Substring(0, 10);
+                        worksheet.Cells[rowIndex, 25].Value = formattedDateTime.Substring(11);
                         if (doublicate)
                         {
                             worksheet.Row(rowIndex).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
@@ -1642,8 +1699,6 @@ namespace CIM
                 }
             }
         }
-
-
         private static readonly object lockWriteCSV = new object();
 
         public void CreateCsvFile(string path, EXCELDATA data1, string pathNAS, bool finalResult)
@@ -1671,7 +1726,7 @@ namespace CIM
                             "1st Glue overflow vision", "1st heated Air curing", "2nd Glue Amount", "2nd Glue discharge volume Vision",
                             "FPCB bar code", "2nd Glue overflow vision", "2nd heated Air curing", "Distance", "3rd Glue Amount",
                             "3rd Glue discharge volume Vision", "3rd heated Air curing", "3rd Glue overflow vision",
-                            "Tightness and location vision", "Height / Parallelism", "Resistance", "Air Leakage Test","Air Leakage Test", "Result", "Product Day", "Product Time"
+                            "Tightness and location vision", "Height / Parallelism", "Resistance", "Air Leakage Test","Air Leakage Test","Air Leak Name" ,"Result", "Product Day", "Product Time"
                         };
                         writer.WriteLine(string.Join(",", headers));
                     }
@@ -1697,7 +1752,8 @@ namespace CIM
                         $"\"{data1.BOX4_HEIGHT_PARALLELISM}\"",
                         data1.BOX4_RESISTANCE,
                         data1.BOX4_AIR_LEAKAGE_TEST_DETAIL,
-                        data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
+                        data1.BOX4_AIR_LEAKAGE_TEST_RESULT,                        
+                        data1.BOX4_LEAK_NAME,
                         finalResult ? "OK" : "NG",
                         formattedDateTime.Substring(0, 10),
                         formattedDateTime.Substring(11)
@@ -1848,7 +1904,10 @@ namespace CIM
                             result.TestTime = value;
                             strings.Add(value);
                             break;
-
+                        case "PORT":
+                            result.Leak_Name = value;
+                            strings.Add(value);
+                            break;
                         default:
                             break;
                     }

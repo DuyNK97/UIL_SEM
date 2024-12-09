@@ -53,7 +53,7 @@
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.6.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLL\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\UIL PJ\UILPJ_usingSEMIDB\CIM\CIM\DLL\ComponentFactory.Krypton.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Csv, Version=2.0.93.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Csv.2.0.93\lib\net40\Csv.dll</HintPath>
@@ -117,7 +117,7 @@
     <Reference Include="Interop.ActUtlType64Lib, Version=5.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>DLL\Interop.ActUtlType64Lib.dll</HintPath>
+      <HintPath>..\..\..\..\..\UIL PJ\UILPJ_usingSEMIDB\CIM\CIM\DLL\Interop.ActUtlType64Lib.dll</HintPath>
     </Reference>
     <Reference Include="Interop.ActUtlTypeLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>

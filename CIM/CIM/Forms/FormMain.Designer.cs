@@ -36,7 +36,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
-            this.lblTime = new System.Windows.Forms.Label();
             this.labelDate = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnFormSearch = new System.Windows.Forms.Button();
@@ -79,6 +78,7 @@
             this.MessageTimer = new System.Windows.Forms.Timer(this.components);
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
+            this.lblTime = new System.Windows.Forms.Label();
             this.index = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glue_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -101,6 +101,7 @@
             this.resistance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.air_leakagetest_detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.air_leakagetest_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Port = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.testtime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2.SuspendLayout();
@@ -125,7 +126,7 @@
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label9.Location = new System.Drawing.Point(16, -4);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(118, 25);
+            this.label9.Size = new System.Drawing.Size(97, 20);
             this.label9.TabIndex = 21;
             this.label9.Text = "Master Data";
             // 
@@ -177,12 +178,14 @@
             this.resistance,
             this.air_leakagetest_detail,
             this.air_leakagetest_result,
+            this.Port,
             this.Result,
             this.testtime});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 28);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 23);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -194,7 +197,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1879, 448);
+            this.dataGridView1.Size = new System.Drawing.Size(1879, 453);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1_CellFormatting);
             // 
@@ -212,22 +215,13 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // lblTime
-            // 
-            this.lblTime.Font = new System.Drawing.Font("Microsoft Tai Le", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.Location = new System.Drawing.Point(18, 135);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(604, 34);
-            this.lblTime.TabIndex = 24;
-            this.lblTime.Text = "time";
-            // 
             // labelDate
             // 
             this.labelDate.AutoSize = true;
             this.labelDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDate.Location = new System.Drawing.Point(28, 57);
             this.labelDate.Name = "labelDate";
-            this.labelDate.Size = new System.Drawing.Size(0, 24);
+            this.labelDate.Size = new System.Drawing.Size(0, 18);
             this.labelDate.TabIndex = 16;
             // 
             // timer1
@@ -266,7 +260,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label1.Location = new System.Drawing.Point(222, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(375, 36);
+            this.label1.Size = new System.Drawing.Size(309, 29);
             this.label1.TabIndex = 14;
             this.label1.Text = "Master Data Management";
             // 
@@ -318,7 +312,7 @@
             this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(79)))), ((int)(((byte)(79)))));
             this.label13.Location = new System.Drawing.Point(115, 37);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(73, 25);
+            this.label13.Size = new System.Drawing.Size(59, 20);
             this.label13.TabIndex = 21;
             this.label13.Text = "vs total";
             // 
@@ -329,7 +323,7 @@
             this.lblperNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(35)))), ((int)(((byte)(24)))));
             this.lblperNG.Location = new System.Drawing.Point(25, 36);
             this.lblperNG.Name = "lblperNG";
-            this.lblperNG.Size = new System.Drawing.Size(41, 25);
+            this.lblperNG.Size = new System.Drawing.Size(32, 20);
             this.lblperNG.TabIndex = 20;
             this.lblperNG.Text = "0%";
             // 
@@ -341,7 +335,7 @@
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label14.Location = new System.Drawing.Point(103, 17);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(49, 29);
+            this.label14.Size = new System.Drawing.Size(38, 24);
             this.label14.TabIndex = 14;
             this.label14.Text = "NG";
             // 
@@ -352,7 +346,7 @@
             this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lblNG.Location = new System.Drawing.Point(100, 85);
             this.lblNG.Name = "lblNG";
-            this.lblNG.Size = new System.Drawing.Size(40, 42);
+            this.lblNG.Size = new System.Drawing.Size(33, 36);
             this.lblNG.TabIndex = 17;
             this.lblNG.Text = "0";
             // 
@@ -386,7 +380,7 @@
             this.label21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(79)))), ((int)(((byte)(79)))));
             this.label21.Location = new System.Drawing.Point(105, 45);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(73, 25);
+            this.label21.Size = new System.Drawing.Size(59, 20);
             this.label21.TabIndex = 18;
             this.label21.Text = "vs total";
             // 
@@ -397,7 +391,7 @@
             this.lblperOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(122)))), ((int)(((byte)(72)))));
             this.lblperOK.Location = new System.Drawing.Point(30, 43);
             this.lblperOK.Name = "lblperOK";
-            this.lblperOK.Size = new System.Drawing.Size(41, 25);
+            this.lblperOK.Size = new System.Drawing.Size(32, 20);
             this.lblperOK.TabIndex = 17;
             this.lblperOK.Text = "0%";
             // 
@@ -409,7 +403,7 @@
             this.label20.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label20.Location = new System.Drawing.Point(113, 17);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(48, 29);
+            this.label20.Size = new System.Drawing.Size(37, 24);
             this.label20.TabIndex = 15;
             this.label20.Text = "OK";
             // 
@@ -420,7 +414,7 @@
             this.lblOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lblOK.Location = new System.Drawing.Point(86, 80);
             this.lblOK.Name = "lblOK";
-            this.lblOK.Size = new System.Drawing.Size(40, 42);
+            this.lblOK.Size = new System.Drawing.Size(33, 36);
             this.lblOK.TabIndex = 14;
             this.lblOK.Text = "0";
             // 
@@ -533,7 +527,7 @@
             this.label11.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label11.Location = new System.Drawing.Point(11, -4);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(117, 29);
+            this.label11.Size = new System.Drawing.Size(94, 25);
             this.label11.TabIndex = 13;
             this.label11.Text = "IO Status";
             // 
@@ -544,7 +538,7 @@
             this.label19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label19.Location = new System.Drawing.Point(290, 164);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(72, 25);
+            this.label19.Size = new System.Drawing.Size(57, 20);
             this.label19.TabIndex = 22;
             this.label19.Text = "PLC 4";
             // 
@@ -555,7 +549,7 @@
             this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label16.Location = new System.Drawing.Point(26, 163);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(72, 25);
+            this.label16.Size = new System.Drawing.Size(57, 20);
             this.label16.TabIndex = 21;
             this.label16.Text = "PLC 3";
             // 
@@ -566,7 +560,7 @@
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label17.Location = new System.Drawing.Point(26, 85);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(72, 25);
+            this.label17.Size = new System.Drawing.Size(57, 20);
             this.label17.TabIndex = 19;
             this.label17.Text = "PLC 1";
             // 
@@ -577,7 +571,7 @@
             this.label18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label18.Location = new System.Drawing.Point(290, 87);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(72, 25);
+            this.label18.Size = new System.Drawing.Size(57, 20);
             this.label18.TabIndex = 20;
             this.label18.Text = "PLC 2";
             // 
@@ -588,7 +582,7 @@
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label5.Location = new System.Drawing.Point(12, -2);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 25);
+            this.label5.Size = new System.Drawing.Size(74, 20);
             this.label5.TabIndex = 20;
             this.label5.Text = "Statistics";
             // 
@@ -624,7 +618,7 @@
             // pieChart1
             // 
             this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
             this.pieChart1.Name = "pieChart1";
             this.pieChart1.Size = new System.Drawing.Size(370, 215);
             this.pieChart1.TabIndex = 12;
@@ -637,7 +631,7 @@
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label3.Location = new System.Drawing.Point(52, 15);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 29);
+            this.label3.Size = new System.Drawing.Size(51, 24);
             this.label3.TabIndex = 10;
             this.label3.Text = "Total";
             // 
@@ -648,7 +642,7 @@
             this.lbltotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lbltotal.Location = new System.Drawing.Point(21, 83);
             this.lbltotal.Name = "lbltotal";
-            this.lbltotal.Size = new System.Drawing.Size(103, 42);
+            this.lbltotal.Size = new System.Drawing.Size(85, 36);
             this.lbltotal.TabIndex = 11;
             this.lbltotal.Text = "0 EA";
             // 
@@ -679,7 +673,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(1790, 4);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 25);
+            this.label4.Size = new System.Drawing.Size(79, 21);
             this.label4.TabIndex = 16;
             this.label4.Text = "Design by";
             // 
@@ -726,11 +720,21 @@
             this.btnClearData.UseVisualStyleBackColor = false;
             this.btnClearData.Click += new System.EventHandler(this.btnClearData_Click);
             // 
+            // lblTime
+            // 
+            this.lblTime.Font = new System.Drawing.Font("Microsoft Tai Le", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTime.Location = new System.Drawing.Point(18, 135);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(604, 34);
+            this.lblTime.TabIndex = 24;
+            this.lblTime.Text = "time";
+            // 
             // index
             // 
             this.index.HeaderText = "No.";
             this.index.MinimumWidth = 6;
             this.index.Name = "index";
+            this.index.ReadOnly = true;
             this.index.Width = 125;
             // 
             // QR
@@ -738,6 +742,7 @@
             this.QR.HeaderText = "Top Housing\nQR";
             this.QR.MinimumWidth = 6;
             this.QR.Name = "QR";
+            this.QR.ReadOnly = true;
             this.QR.Width = 300;
             // 
             // box1_glue_amount
@@ -745,6 +750,7 @@
             this.box1_glue_amount.HeaderText = "1st Glue Amount";
             this.box1_glue_amount.MinimumWidth = 6;
             this.box1_glue_amount.Name = "box1_glue_amount";
+            this.box1_glue_amount.ReadOnly = true;
             this.box1_glue_amount.Width = 125;
             // 
             // box1_glue_dischargevolume_vision
@@ -752,6 +758,7 @@
             this.box1_glue_dischargevolume_vision.HeaderText = "1st  Glue discharge\nvolume Vision";
             this.box1_glue_dischargevolume_vision.MinimumWidth = 6;
             this.box1_glue_dischargevolume_vision.Name = "box1_glue_dischargevolume_vision";
+            this.box1_glue_dischargevolume_vision.ReadOnly = true;
             this.box1_glue_dischargevolume_vision.Width = 125;
             // 
             // insulator_bar_code
@@ -759,6 +766,7 @@
             this.insulator_bar_code.HeaderText = "Insulator\nbar code";
             this.insulator_bar_code.MinimumWidth = 6;
             this.insulator_bar_code.Name = "insulator_bar_code";
+            this.insulator_bar_code.ReadOnly = true;
             this.insulator_bar_code.Width = 125;
             // 
             // box1_glueoverflow_vison
@@ -766,6 +774,7 @@
             this.box1_glueoverflow_vison.HeaderText = "1st Glue\noverflow vision";
             this.box1_glueoverflow_vison.MinimumWidth = 6;
             this.box1_glueoverflow_vison.Name = "box1_glueoverflow_vison";
+            this.box1_glueoverflow_vison.ReadOnly = true;
             this.box1_glueoverflow_vison.Width = 125;
             // 
             // box1_heated_air_curing
@@ -773,6 +782,7 @@
             this.box1_heated_air_curing.HeaderText = "1st heated Air curing";
             this.box1_heated_air_curing.MinimumWidth = 6;
             this.box1_heated_air_curing.Name = "box1_heated_air_curing";
+            this.box1_heated_air_curing.ReadOnly = true;
             this.box1_heated_air_curing.Width = 200;
             // 
             // box2_glue_amount
@@ -780,6 +790,7 @@
             this.box2_glue_amount.HeaderText = "2nd Glue Amount";
             this.box2_glue_amount.MinimumWidth = 6;
             this.box2_glue_amount.Name = "box2_glue_amount";
+            this.box2_glue_amount.ReadOnly = true;
             this.box2_glue_amount.Width = 125;
             // 
             // box2_glue_dischargevolume_vision
@@ -787,6 +798,7 @@
             this.box2_glue_dischargevolume_vision.HeaderText = "2nd Glue discharge\nvolume Vision";
             this.box2_glue_dischargevolume_vision.MinimumWidth = 6;
             this.box2_glue_dischargevolume_vision.Name = "box2_glue_dischargevolume_vision";
+            this.box2_glue_dischargevolume_vision.ReadOnly = true;
             this.box2_glue_dischargevolume_vision.Width = 125;
             // 
             // FPCBbar_code
@@ -794,6 +806,7 @@
             this.FPCBbar_code.HeaderText = "FPCB\nbar code";
             this.FPCBbar_code.MinimumWidth = 6;
             this.FPCBbar_code.Name = "FPCBbar_code";
+            this.FPCBbar_code.ReadOnly = true;
             this.FPCBbar_code.Width = 125;
             // 
             // box2_glueoverflow_vision
@@ -801,6 +814,7 @@
             this.box2_glueoverflow_vision.HeaderText = "2nd Glue\noverflow vision";
             this.box2_glueoverflow_vision.MinimumWidth = 6;
             this.box2_glueoverflow_vision.Name = "box2_glueoverflow_vision";
+            this.box2_glueoverflow_vision.ReadOnly = true;
             this.box2_glueoverflow_vision.Width = 125;
             // 
             // box2_heated_air_curing
@@ -808,6 +822,7 @@
             this.box2_heated_air_curing.HeaderText = "2nd heated Air curing";
             this.box2_heated_air_curing.MinimumWidth = 6;
             this.box2_heated_air_curing.Name = "box2_heated_air_curing";
+            this.box2_heated_air_curing.ReadOnly = true;
             this.box2_heated_air_curing.Width = 200;
             // 
             // box2_heigh
@@ -815,6 +830,7 @@
             this.box2_heigh.HeaderText = "Box 2 heigh";
             this.box2_heigh.MinimumWidth = 6;
             this.box2_heigh.Name = "box2_heigh";
+            this.box2_heigh.ReadOnly = true;
             this.box2_heigh.Width = 125;
             // 
             // box3_glue_amount
@@ -822,6 +838,7 @@
             this.box3_glue_amount.HeaderText = "3rd Glue Amount";
             this.box3_glue_amount.MinimumWidth = 6;
             this.box3_glue_amount.Name = "box3_glue_amount";
+            this.box3_glue_amount.ReadOnly = true;
             this.box3_glue_amount.Width = 125;
             // 
             // box3_glue_dischargevolume_vision
@@ -829,6 +846,7 @@
             this.box3_glue_dischargevolume_vision.HeaderText = "3rd Glue discharge\nvolume Vision";
             this.box3_glue_dischargevolume_vision.MinimumWidth = 6;
             this.box3_glue_dischargevolume_vision.Name = "box3_glue_dischargevolume_vision";
+            this.box3_glue_dischargevolume_vision.ReadOnly = true;
             this.box3_glue_dischargevolume_vision.Width = 125;
             // 
             // box3_heated_air_curing
@@ -836,6 +854,7 @@
             this.box3_heated_air_curing.HeaderText = "3rd heated Air curing";
             this.box3_heated_air_curing.MinimumWidth = 6;
             this.box3_heated_air_curing.Name = "box3_heated_air_curing";
+            this.box3_heated_air_curing.ReadOnly = true;
             this.box3_heated_air_curing.Width = 200;
             // 
             // box3_glueoverflow_vision
@@ -843,6 +862,7 @@
             this.box3_glueoverflow_vision.HeaderText = "3rd Glue\noverflow vision";
             this.box3_glueoverflow_vision.MinimumWidth = 6;
             this.box3_glueoverflow_vision.Name = "box3_glueoverflow_vision";
+            this.box3_glueoverflow_vision.ReadOnly = true;
             this.box3_glueoverflow_vision.Width = 125;
             // 
             // tighness_and_location_vision
@@ -850,6 +870,7 @@
             this.tighness_and_location_vision.HeaderText = "Tightness and location vision";
             this.tighness_and_location_vision.MinimumWidth = 6;
             this.tighness_and_location_vision.Name = "tighness_and_location_vision";
+            this.tighness_and_location_vision.ReadOnly = true;
             this.tighness_and_location_vision.Width = 125;
             // 
             // height_parallelism
@@ -857,6 +878,7 @@
             this.height_parallelism.HeaderText = "Height /\n Parallelism";
             this.height_parallelism.MinimumWidth = 6;
             this.height_parallelism.Name = "height_parallelism";
+            this.height_parallelism.ReadOnly = true;
             this.height_parallelism.Width = 125;
             // 
             // resistance
@@ -864,6 +886,7 @@
             this.resistance.HeaderText = "Resistance";
             this.resistance.MinimumWidth = 6;
             this.resistance.Name = "resistance";
+            this.resistance.ReadOnly = true;
             this.resistance.Width = 125;
             // 
             // air_leakagetest_detail
@@ -871,6 +894,7 @@
             this.air_leakagetest_detail.HeaderText = "Air Leakage\nTest Detail";
             this.air_leakagetest_detail.MinimumWidth = 6;
             this.air_leakagetest_detail.Name = "air_leakagetest_detail";
+            this.air_leakagetest_detail.ReadOnly = true;
             this.air_leakagetest_detail.Width = 125;
             // 
             // air_leakagetest_result
@@ -878,7 +902,14 @@
             this.air_leakagetest_result.HeaderText = "Air Leakage\nTest Result";
             this.air_leakagetest_result.MinimumWidth = 6;
             this.air_leakagetest_result.Name = "air_leakagetest_result";
+            this.air_leakagetest_result.ReadOnly = true;
             this.air_leakagetest_result.Width = 125;
+            // 
+            // Port
+            // 
+            this.Port.HeaderText = "Port";
+            this.Port.Name = "Port";
+            this.Port.ReadOnly = true;
             // 
             // Result
             // 
@@ -893,6 +924,7 @@
             this.testtime.HeaderText = "Test time";
             this.testtime.MinimumWidth = 6;
             this.testtime.Name = "testtime";
+            this.testtime.ReadOnly = true;
             this.testtime.Width = 250;
             // 
             // FormMain
@@ -951,7 +983,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Label labelDate;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnFormSearch;
@@ -994,6 +1025,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbltotal;
         private System.Windows.Forms.Button btnClearData;
+        private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn index;
         private System.Windows.Forms.DataGridViewTextBoxColumn QR;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glue_amount;
@@ -1016,6 +1048,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn resistance;
         private System.Windows.Forms.DataGridViewTextBoxColumn air_leakagetest_detail;
         private System.Windows.Forms.DataGridViewTextBoxColumn air_leakagetest_result;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Port;
         private System.Windows.Forms.DataGridViewTextBoxColumn Result;
         private System.Windows.Forms.DataGridViewTextBoxColumn testtime;
     }
