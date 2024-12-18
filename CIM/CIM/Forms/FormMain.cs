@@ -814,6 +814,7 @@ namespace CIM
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
+                Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC1"));
             }
 
             //if exist qrcode and result is null => not insert
@@ -872,10 +873,11 @@ namespace CIM
                 || string.IsNullOrWhiteSpace(heated_air_curing3)
                 || string.IsNullOrWhiteSpace(box2dispenser_status)
                 || string.IsNullOrWhiteSpace(glue_amount)
-                || string.IsNullOrWhiteSpace(glue_discharge_volume_vision)
+                || string.IsNullOrWhiteSpace(glue_discharge_volume_vision)|| string.IsNullOrWhiteSpace(fpcb_bar_code)
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_2, "MISS_DATA", true, EnumReadOrWrite.WRITE);
+                Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC2"));
             }
 
 
@@ -929,6 +931,7 @@ namespace CIM
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_3, "MISS_DATA", true, EnumReadOrWrite.WRITE);
+               Task.Run(()=> WriteLog("On bit MISS_DATA - " + "PLC3"));
             }
 
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
@@ -1069,6 +1072,7 @@ namespace CIM
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
+                Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC4"));
             }
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
