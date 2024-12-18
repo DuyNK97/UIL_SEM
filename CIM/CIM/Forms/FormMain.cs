@@ -959,7 +959,51 @@ namespace CIM
             var fpcb4Left = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_LEFT");
             var fpcb4Right = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_RIGHT");
             var warping = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_WARPING"); //độ vênh
-            var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString().Trim();
+
+            //var maxRetries = 2;
+            //var attempts = 0;
+            //double resistanceValue = 0;
+            //bool isValid = false;
+
+            //while (attempts < maxRetries)
+            //{
+            //    var resistanceRaw = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
+
+            //    if (double.TryParse(resistanceRaw, out resistanceValue))
+            //    {
+            //        resistanceValue = Math.Round(resistanceValue, 2);
+            //        if (resistanceValue >= 54 && resistanceValue <= 66)
+            //        {
+            //            isValid = true;
+            //            break;
+            //        }
+            //    }
+
+            //    attempts++; 
+            //}
+
+            //string resistance = isValid? resistanceValue.ToString("0.##"): "0.00";       
+
+            //resistance = resistance == "1" ? "NG" : (resistance + "Ω");
+
+            //var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
+            //var resistance1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance1").ToString();
+
+            //if (double.TryParse(resistance, out double resistanceValue))
+            //{
+            //    resistanceValue = Math.Round(resistanceValue, 2);
+            //    resistance = resistanceValue.ToString("0.##");  // Định dạng lại chuỗi, bỏ ".00" nếu không cần
+            //}
+            //else
+            //{
+            //    resistance = "0.00";
+            //}
+            //resistance = resistance == "1" ? "NG" : (resistance + "Ω");
+
+
+            var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
+            var resistance1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance1").ToString();
+
             if (double.TryParse(resistance, out double resistanceValue))
             {
                 resistanceValue = Math.Round(resistanceValue, 2);
@@ -969,7 +1013,33 @@ namespace CIM
             {
                 resistance = "0.00";
             }
-            resistance = resistance == "1" ? "NG" : (resistance + "Ω");            
+
+            if (double.TryParse(resistance1, out double resistance1Value))
+            {
+                resistance1Value = Math.Round(resistance1Value, 2);
+                resistance1 = resistance1Value.ToString("0.##");
+            }
+            else
+            {
+                resistance1 = "0.00";
+            }
+
+            if (double.TryParse(resistance, out double resistanceParsed))
+            {
+                if (resistanceParsed > 54 && resistanceParsed < 66)
+                {
+                    resistance = resistance == "1" ? "NG" : (resistance + "Ω");
+                }
+                else
+                {
+                    resistance = resistance1 == "1" ? "NG" : (resistance1 + "Ω");
+                }
+            }
+            else
+            {
+                resistance = resistance == "1" ? "NG" : (resistance + "Ω");
+            }
+
 
             var air_leakage_test_detail = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL").ToString().Trim();
             var BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING").ToString().Trim();
@@ -1638,6 +1708,7 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45136, "BOX4_WARPING", EnumRegisterType.FLOAT, 2, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45152, "BOX4resistance", EnumRegisterType.FLOAT, 2, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45154, "BOX4resistance1", EnumRegisterType.FLOAT, 2, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45160, "BOX4AIR_LEAKAGE_TEST_RESULT", EnumRegisterType.BITINWORD, 0, true, false, 4));
 
