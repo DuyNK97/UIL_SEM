@@ -208,7 +208,7 @@ namespace CIM
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string logPath1 = PLClog1;
+             string logPath1 = PLClog1;
             string logFileName1 = DateTime.Now.ToString("yyyyMMdd") + ".csv";
             logFilePath1 = Path.Combine(logPath1, logFileName1);
 
@@ -771,11 +771,10 @@ namespace CIM
 
         private void ReadData1()
         {
+            string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             if (SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1Barcode") == null)
                 return;
-
             var QRcode = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1Barcode").ToString().Trim();
-
             if (string.IsNullOrWhiteSpace(QRcode))
                 return;
 
@@ -789,6 +788,18 @@ namespace CIM
             var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING1").ToString().Trim();
             var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING2").ToString().Trim();
             var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING3").ToString().Trim();
+            ////updateBond
+            //var Bond = SingleTonPlcControl.Instance.GetValueRegister(1, "BondCode").ToString().Trim();
+            //var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(1, "Thawingtime").ToString().Trim();           
+            //DateTime thawingTimeDate;
+            //DateTime nowDate;
+            //double inputTimeHours=0.0;
+            //if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
+            //{
+            //    var Inputtime = nowDate - thawingTimeDate;
+            //     inputTimeHours = Inputtime.TotalHours;
+            //}
+           
 
             //if empty data send to PLC
             if (string.IsNullOrWhiteSpace(QRcode)
@@ -808,13 +819,17 @@ namespace CIM
             //if exist qrcode and result is null => not insert
             SqlLite.Instance.InsertBox1Barcode(QRcode.Trim());
 
-            string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
 
             Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision}; TestTime: {formattedDateTime} ###");
+
+            //updateBond
+            //Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ;OutPut:{Thawingtime} ;E-Input: {inputTimeHours} ; TestTime: {formattedDateTime} ###");
         }
 
         private void ReadData2()
         {
+            string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             if (SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2Barcode") == null)
                 return;
 
@@ -834,6 +849,20 @@ namespace CIM
             var fpcb_bar_code = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2FPCB_BAR_CODE").ToString().Trim();
             var glue_overflow_vision = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2GLUE_OVERFLOW_VISION").ToString().Trim();
 
+
+            ////updateBond
+            //var Bond = SingleTonPlcControl.Instance.GetValueRegister(2, "BondCode").ToString().Trim();
+            //var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Thawingtime").ToString().Trim();
+            //DateTime thawingTimeDate;
+            //DateTime nowDate;
+            //double inputTimeHours = 0.0;
+            //if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
+            //{
+            //    var Inputtime = nowDate - thawingTimeDate;
+            //    inputTimeHours = Inputtime.TotalHours;
+            //}
+
+
             //if empty data send to PLC
             if (string.IsNullOrWhiteSpace(QRcode)
                 || string.IsNullOrWhiteSpace(glue_overflow_vision)
@@ -849,9 +878,10 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_2, "MISS_DATA", true, EnumReadOrWrite.WRITE);
             }
 
-            string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};TestTime: {formattedDateTime}, ###");
+
+            //Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ;OutPut:{Thawingtime} ;E-Input: {inputTimeHours};TestTime: {formattedDateTime}, ###");
         }
 
         private void ReadData3()
@@ -863,6 +893,7 @@ namespace CIM
 
             if (string.IsNullOrWhiteSpace(QRcode))
                 return;
+            string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             string glue_overflow_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_GLUE_OVERFLOW_VISION") ? "OK" : "NG";
             var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_HEATED_AIR_CURING").ToString().Trim();
@@ -872,6 +903,18 @@ namespace CIM
             var DISTANCE = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3DISTANCE").ToString().Trim();
             var glue_amount = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3GLUE_AMOUNT").ToString().Trim();
             string glue_discharge_volume_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3GLUE_DISCHARGE_VOLUME_VISION") ? "OK" : "NG";
+            //updateBond
+            //var Bond = SingleTonPlcControl.Instance.GetValueRegister(2, "BondCode").ToString().Trim();
+            //var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Thawingtime").ToString().Trim();
+            //DateTime thawingTimeDate;
+            //DateTime nowDate;
+            //double inputTimeHours = 0.0;
+            //if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
+            //{
+            //    var Inputtime = nowDate - thawingTimeDate;
+            //    inputTimeHours = Inputtime.TotalHours;
+            //}
+
 
             //if empty data send to PLC
             if (string.IsNullOrWhiteSpace(QRcode)
@@ -888,9 +931,9 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_3, "MISS_DATA", true, EnumReadOrWrite.WRITE);
             }
 
-            string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
+
+            //Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ;OutPut:{Thawingtime} ;E-Input: {inputTimeHours};TestTime: {formattedDateTime}, ###");
         }
 
    
@@ -917,8 +960,16 @@ namespace CIM
             var fpcb4Right = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_RIGHT");
             var warping = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_WARPING"); //độ vênh
             var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString().Trim();
-
-            resistance = resistance == "1" ? "NG" : (resistance + "Ω");
+            if (double.TryParse(resistance, out double resistanceValue))
+            {
+                resistanceValue = Math.Round(resistanceValue, 2);
+                resistance = resistanceValue.ToString("0.##");  // Định dạng lại chuỗi, bỏ ".00" nếu không cần
+            }
+            else
+            {
+                resistance = "0.00";
+            }
+            resistance = resistance == "1" ? "NG" : (resistance + "Ω");            
 
             var air_leakage_test_detail = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL").ToString().Trim();
             var BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING").ToString().Trim();
@@ -979,6 +1030,8 @@ namespace CIM
                     string box4AirTestDetailString = string.Empty;
 
                     box4AirTestDetailString = isNumber ? (ParseValueAirLeakageTest(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING) + " SCCM") : (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING + "-0000");
+
+
 
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};TestTime: {formattedDateTime}; ###");
                 }
@@ -1070,6 +1123,12 @@ namespace CIM
 
                     // Lấy số lượng dòng hiện tại trong DataGridView
                     int currentRowCount = dataGridView1.Rows.Count;
+                    // Kích hoạt lại layout của DataGridView
+                    while (dataGridView1.Rows.Count > rowsdisplay)
+                    {
+                       // dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
+                        dataGridView1.Rows.RemoveAt(dataGridView1.Rows.Count - 1); // Xóa dòng cuối cùng
+                    }
 
                     // Thêm dòng mới vào DataGridView
                     dataGridView1.Rows.Insert(0, new object[]
@@ -1102,12 +1161,7 @@ namespace CIM
                     });                 
 
                    
-                    // Kích hoạt lại layout của DataGridView
-                    while (dataGridView1.Rows.Count > rowsdisplay)
-                    {
-                        dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
-                        dataGridView1.Rows.RemoveAt(dataGridView1.Rows.Count - 1); // Xóa dòng cuối cùng
-                    }
+                 
                 };
 
                 if (this.InvokeRequired)
@@ -1440,7 +1494,12 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45200, "CHANGE_MODE_STATE", EnumRegisterType.WORD, 1, true, true, 1)); //change state online - offline
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 34011, "IS_ALIVE", EnumRegisterType.BIT, 1, true, true, 1)); //alive
-
+                                                                                                                   
+            ////Update Bond 
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondCode", EnumRegisterType.STRING, 10, true, false, 1));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondTime", EnumRegisterType.STRING, 10, true, false, 1));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 1));
+            
             //Write
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34100, "WriteData", EnumRegisterType.BIT, 1, true, true, 1)); // On bit doc du lieu PLC  off khi plc off
 
@@ -1476,6 +1535,10 @@ namespace CIM
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45128, "BOX2DISPENSER_STATUS", EnumRegisterType.STRING, 2, true, false, 2));
 
+            ////Update Bond
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondCode", EnumRegisterType.STRING, 10, true, false, 2));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondTime", EnumRegisterType.STRING, 10, true, false, 2));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 2));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45196, "BOX2_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 2));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45197, "BOX2_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 2));
@@ -1520,6 +1583,11 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45162, "BOX3_HEATED_AIR_CURING2", EnumRegisterType.WORD, 1, true, false, 3));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45163, "BOX3_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 3));
 
+            ////Update Bond
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondCode", EnumRegisterType.STRING, 10, true, false, 3));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondTime", EnumRegisterType.STRING, 10, true, false, 3));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 3));
+
             //note
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45130, "BOX3DISTANCE", EnumRegisterType.FLOAT, 8, true, false, 3));
 
@@ -1527,7 +1595,7 @@ namespace CIM
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45128, "BOX3GLUE_DISCHARGE_VOLUME_VISION", EnumRegisterType.BITINWORD, 0, true, false, 3));
 
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45146, "BOX3_GLUE_OVERFLOW_VISION", EnumRegisterType.BITINWORD, 0, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45146, "BOX3_GLUE_OVERFLOW_VISION", EnumRegisterType.BITINWORD, 1, true, false, 3));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 34010, "CHANGE_MODE_REWORK", EnumRegisterType.BIT, 1, true, true, 3)); //change mode rework
 
@@ -1561,12 +1629,15 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45146, "BOX4HEIGHT_PARALLELISM_DETAIL3", EnumRegisterType.FLOAT, 2, true, false, 4));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45148, "BOX4HEIGHT_PARALLELISM_DETAIL4", EnumRegisterType.FLOAT, 2, true, false, 4));
 
+
+
+
             //fpcb
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45132, "BOX4_FPCB_LEFT", EnumRegisterType.FLOAT, 2, true, false, 4));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45134, "BOX4_FPCB_RIGHT", EnumRegisterType.FLOAT, 2, true, false, 4));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45136, "BOX4_WARPING", EnumRegisterType.FLOAT, 2, true, false, 4));
 
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45152, "BOX4resistance", EnumRegisterType.FLOAT, 8, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45152, "BOX4resistance", EnumRegisterType.FLOAT, 2, true, false, 4));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45160, "BOX4AIR_LEAKAGE_TEST_RESULT", EnumRegisterType.BITINWORD, 0, true, false, 4));
 
@@ -2085,6 +2156,15 @@ namespace CIM
                         case "TESTTIME":
                             result.TestTime = value;
                             break;
+                        //case "BOND CODE":
+                        //    result.TestTime = value;
+                        //    break;
+                        //case "OutPut":
+                        //    result.TestTime = value;
+                        //    break;
+                        //case "BOND CODE":
+                        //    result.TestTime = value;
+                        //    break;
                         default:
                             break;
                     }
