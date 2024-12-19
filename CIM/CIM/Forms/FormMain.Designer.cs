@@ -40,6 +40,10 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnFormSearch = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -81,8 +85,12 @@
             this.lblTime = new System.Windows.Forms.Label();
             this.index = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fbondcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.foutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glue_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glue_dischargevolume_vision = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sbondocde = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.soutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.insulator_bar_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glueoverflow_vison = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_heated_air_curing = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -91,6 +99,8 @@
             this.FPCBbar_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box2_glueoverflow_vision = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box2_heated_air_curing = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbondcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box2_heigh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box3_glue_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box3_glue_dischargevolume_vision = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -158,8 +168,12 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.index,
             this.QR,
+            this.fbondcode,
+            this.foutput,
             this.box1_glue_amount,
             this.box1_glue_dischargevolume_vision,
+            this.sbondocde,
+            this.soutput,
             this.insulator_bar_code,
             this.box1_glueoverflow_vison,
             this.box1_heated_air_curing,
@@ -168,6 +182,8 @@
             this.FPCBbar_code,
             this.box2_glueoverflow_vision,
             this.box2_heated_air_curing,
+            this.tbondcode,
+            this.toutput,
             this.box2_heigh,
             this.box3_glue_amount,
             this.box3_glue_dischargevolume_vision,
@@ -246,12 +262,56 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.button5);
+            this.panel3.Controls.Add(this.button4);
+            this.panel3.Controls.Add(this.button3);
+            this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.pictureBox1);
             this.panel3.Location = new System.Drawing.Point(-3, 35);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1930, 79);
             this.panel3.TabIndex = 24;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(893, 31);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 18;
+            this.button5.Text = "button4";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(802, 31);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 17;
+            this.button4.Text = "button3";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(707, 31);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 16;
+            this.button3.Text = "button2";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(601, 31);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -745,6 +805,18 @@
             this.QR.ReadOnly = true;
             this.QR.Width = 300;
             // 
+            // fbondcode
+            // 
+            this.fbondcode.HeaderText = "1st Bone Code";
+            this.fbondcode.Name = "fbondcode";
+            this.fbondcode.ReadOnly = true;
+            // 
+            // foutput
+            // 
+            this.foutput.HeaderText = "1st F-Ouput/ E-Input";
+            this.foutput.Name = "foutput";
+            this.foutput.ReadOnly = true;
+            // 
             // box1_glue_amount
             // 
             this.box1_glue_amount.HeaderText = "1st Glue Amount";
@@ -760,6 +832,18 @@
             this.box1_glue_dischargevolume_vision.Name = "box1_glue_dischargevolume_vision";
             this.box1_glue_dischargevolume_vision.ReadOnly = true;
             this.box1_glue_dischargevolume_vision.Width = 125;
+            // 
+            // sbondocde
+            // 
+            this.sbondocde.HeaderText = "2nd Bone Code";
+            this.sbondocde.Name = "sbondocde";
+            this.sbondocde.ReadOnly = true;
+            // 
+            // soutput
+            // 
+            this.soutput.HeaderText = "2nd F-Ouput/ E-Input";
+            this.soutput.Name = "soutput";
+            this.soutput.ReadOnly = true;
             // 
             // insulator_bar_code
             // 
@@ -824,6 +908,18 @@
             this.box2_heated_air_curing.Name = "box2_heated_air_curing";
             this.box2_heated_air_curing.ReadOnly = true;
             this.box2_heated_air_curing.Width = 200;
+            // 
+            // tbondcode
+            // 
+            this.tbondcode.HeaderText = "3rd Bone Code";
+            this.tbondcode.Name = "tbondcode";
+            this.tbondcode.ReadOnly = true;
+            // 
+            // toutput
+            // 
+            this.toutput.HeaderText = "3rd F-Ouput/ E-Input";
+            this.toutput.Name = "toutput";
+            this.toutput.ReadOnly = true;
             // 
             // box2_heigh
             // 
@@ -1026,10 +1122,18 @@
         private System.Windows.Forms.Label lbltotal;
         private System.Windows.Forms.Button btnClearData;
         private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridViewTextBoxColumn index;
         private System.Windows.Forms.DataGridViewTextBoxColumn QR;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fbondcode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn foutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glue_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glue_dischargevolume_vision;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sbondocde;
+        private System.Windows.Forms.DataGridViewTextBoxColumn soutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn insulator_bar_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glueoverflow_vison;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_heated_air_curing;
@@ -1038,6 +1142,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FPCBbar_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_glueoverflow_vision;
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_heated_air_curing;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tbondcode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn toutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_heigh;
         private System.Windows.Forms.DataGridViewTextBoxColumn box3_glue_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn box3_glue_dischargevolume_vision;

@@ -9,7 +9,6 @@
         public string RESISTANCE { get; set; }
         public string AIR_LEAKAGE_TEST_RESULT { get; set; }
         public string Leak_Name { get; set; }
-
         public string DATE { get; set; }
         public string TIME { get; set; }
         public string TestTime { get; set; }

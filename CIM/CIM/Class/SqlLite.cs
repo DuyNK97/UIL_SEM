@@ -316,6 +316,12 @@ namespace CIM
             {
                 string sql = "UPDATE SEM_DATA SET" +
                     " BOX1_GLUE_AMOUNT = @BOX1_GLUE_AMOUNT," +
+                    " Box1_BondCode = @Box1_BondCode," +
+                    " BOX1_OutPut = @BOX1_OutPut," +
+                    " Box2_BondCode = @Box2_BondCode," +
+                    " BOX2_OutPut = @BOX2_OutPut," +
+                    " Box3_BondCode = @Box3_BondCode," +
+                    " BOX3_OutPut = @BOX3_OutPut," +
                     " BOX1_GLUE_DISCHARGE_VOLUME_VISION = @BOX1_GLUE_DISCHARGE_VOLUME_VISION," +
                     " INSULATOR_BAR_CODE = @INSULATOR_BAR_CODE," +
                     " BOX1_GLUE_OVERFLOW_VISION = @BOX1_GLUE_OVERFLOW_VISION," +
@@ -347,6 +353,12 @@ namespace CIM
                         cmd.Parameters.AddWithValue("@qrCode", qrCode);
 
                         cmd.Parameters.AddWithValue("@BOX1_GLUE_AMOUNT", data.BOX1_GLUE_AMOUNT);
+                        cmd.Parameters.AddWithValue("@Box1_BondCode", data.BOX1_BOND);
+                        cmd.Parameters.AddWithValue("@BOX1_OutPut", data.BOX1_OUPUTTIME);
+                        cmd.Parameters.AddWithValue("@Box2_BondCode", data.BOX2_BOND);
+                        cmd.Parameters.AddWithValue("@BOX2_OutPut", data.BOX2_OUPUTTIME);
+                        cmd.Parameters.AddWithValue("@Box3_BondCode", data.BOX3_BOND);
+                        cmd.Parameters.AddWithValue("@BOX3_OutPut", data.BOX3_OUPUTTIME);
                         cmd.Parameters.AddWithValue("@BOX1_GLUE_DISCHARGE_VOLUME_VISION", data.BOX1_GLUE_DISCHARGE_VOLUME_VISION);
                         cmd.Parameters.AddWithValue("@INSULATOR_BAR_CODE", data.INSULATOR_BAR_CODE);
                         cmd.Parameters.AddWithValue("@BOX1_GLUE_OVERFLOW_VISION", data.BOX1_GLUE_OVERFLOW_VISION);
@@ -471,7 +483,7 @@ namespace CIM
         {
             string insertQuery = @"
                 INSERT INTO SEM_DATA (
-                    TOPHOUSING, 
+                    TOPHOUSING, Box1_BondCode,BOX1_OutPut,Box2_BondCode,Box2_OutPut,Box3_BondCode,Box3_OutPut,
                     BOX1_GLUE_AMOUNT, 
                     BOX1_GLUE_DISCHARGE_VOLUME_VISION, 
                     INSULATOR_BAR_CODE, 
@@ -495,7 +507,7 @@ namespace CIM
                     BOX4_TestTime,Remark
                 )
                 VALUES (
-                    @TOPHOUSING, 
+                    @TOPHOUSING, @Box1_BondCode,@BOX1_OutPut,@Box2_BondCode,@Box2_OutPut,@Box3_BondCode,@Box3_OutPut,
                     @BOX1_GLUE_AMOUNT, 
                     @BOX1_GLUE_DISCHARGE_VOLUME_VISION, 
                     @INSULATOR_BAR_CODE, 
@@ -525,6 +537,12 @@ namespace CIM
             {
                 command.Parameters.AddWithValue("@TOPHOUSING", data.TOPHOUSING);
                 command.Parameters.AddWithValue("@BOX1_GLUE_AMOUNT", data.BOX1_GLUE_AMOUNT);
+                command.Parameters.AddWithValue("@Box1_BondCode", data.BOX1_BOND);
+                command.Parameters.AddWithValue("@BOX1_OutPut", data.BOX1_OUPUTTIME);
+                command.Parameters.AddWithValue("@Box2_BondCode", data.BOX2_BOND);
+                command.Parameters.AddWithValue("@Box2_OutPut", data.BOX2_OUPUTTIME);
+                command.Parameters.AddWithValue("@Box3_BondCode", data.BOX3_BOND);
+                command.Parameters.AddWithValue("@Box3_OutPut", data.BOX3_OUPUTTIME);
                 command.Parameters.AddWithValue("@BOX1_GLUE_DISCHARGE_VOLUME_VISION", data.BOX1_GLUE_DISCHARGE_VOLUME_VISION);
                 command.Parameters.AddWithValue("@INSULATOR_BAR_CODE", data.INSULATOR_BAR_CODE);
                 command.Parameters.AddWithValue("@BOX1_GLUE_OVERFLOW_VISION", data.BOX1_GLUE_OVERFLOW_VISION);
