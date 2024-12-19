@@ -271,7 +271,7 @@ namespace CIM
                             WriteLog("On bit WriteData in PLC 1");
                             break;
                         case 2:
-                            ReadData2();
+                            ReadData2(obj.IndexPLC);
                             SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
                             WriteLog("On bit WriteData in PLC 2");
                             break;
@@ -828,7 +828,7 @@ namespace CIM
             //Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ;OutPut:{Thawingtime} ;E-Input: {inputTimeHours} ; TestTime: {formattedDateTime} ###");
         }
 
-        private void ReadData2()
+        private void ReadData2(int index)
         {
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             if (SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2Barcode") == null)
@@ -850,7 +850,7 @@ namespace CIM
             var fpcb_bar_code = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2FPCB_BAR_CODE").ToString().Trim();
             var glue_overflow_vision = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2GLUE_OVERFLOW_VISION").ToString().Trim();
 
-
+            Task.Run(() => WriteLog("fpcb_bar_code: - " + index));
             ////updateBond
             //var Bond = SingleTonPlcControl.Instance.GetValueRegister(2, "BondCode").ToString().Trim();
             //var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Thawingtime").ToString().Trim();
