@@ -256,97 +256,97 @@ namespace CIM
 
         private void RegisterRead_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //PLCIO obj = sender as PLCIO;
+            PLCIO obj = sender as PLCIO;
 
-            //if (obj != null)
-            //{
-            //    if (obj.Title.Contains("ReadData") && (bool)obj.CurrentValue == true)
-            //    {
-            //        int indexPLC = obj.IndexPLC;
-            //        switch (indexPLC)
-            //        {
-            //            case 1:
-            //                ReadData1();
-            //                SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-            //                WriteLog("On bit WriteData in PLC 1");
-            //                break;
-            //            case 2:
-            //                ReadData2();
-            //                SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-            //                WriteLog("On bit WriteData in PLC 2");
-            //                break;
-            //            case 3:
-            //                ReadData3();
-            //                SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-            //                WriteLog("On bit WriteData in PLC 3");
-            //                break;
-            //            case 4:
-            //                ReadData4();
-            //                SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-            //                WriteLog("On bit WriteData in PLC 4");
-            //                break;
-            //        }
-            //    }
-            //    else if (obj.Title.Contains("ReadData") && (bool)obj.CurrentValue == false)
-            //    {
-            //        SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-            //        WriteLog("OFF bit WriteData in PLC 4");
-            //    }
-            //    else if (obj.Title == "Alive" /*&& (bool)obj.CurrentValue==true */)
-            //    {
-            //        UpdateStatus(obj.IndexPLC, obj.CurrentValue);
-            //    }
-            //    else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
-            //    {
-            //        var qrCode = SingleTonPlcControl.Instance.GetValueRegister(obj.IndexPLC, "BOX4CountBarcode");
+            if (obj != null)
+            {
+                if (obj.Title.Contains("ReadData") && (bool)obj.CurrentValue == true)
+                {
+                    int indexPLC = obj.IndexPLC;
+                    switch (indexPLC)
+                    {
+                        case 1:
+                            ReadData1();
+                            SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
+                            WriteLog("On bit WriteData in PLC 1");
+                            break;
+                        case 2:
+                            ReadData2();
+                            SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
+                            WriteLog("On bit WriteData in PLC 2");
+                            break;
+                        case 3:
+                            ReadData3();
+                            SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
+                            WriteLog("On bit WriteData in PLC 3");
+                            break;
+                        case 4:
+                            ReadData4();
+                            SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
+                            WriteLog("On bit WriteData in PLC 4");
+                            break;
+                    }
+                }
+                else if (obj.Title.Contains("ReadData") && (bool)obj.CurrentValue == false)
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
+                    WriteLog("OFF bit WriteData in PLC 4");
+                }
+                else if (obj.Title == "Alive" /*&& (bool)obj.CurrentValue==true */)
+                {
+                    UpdateStatus(obj.IndexPLC, obj.CurrentValue);
+                }
+                else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
+                {
+                    var qrCode = SingleTonPlcControl.Instance.GetValueRegister(obj.IndexPLC, "BOX4CountBarcode");
 
-            //        if (qrCode != null)
-            //        {
-            //            if (!string.IsNullOrWhiteSpace(qrCode.ToString().Trim()))
-            //            {
-            //                print.Add(qrCode.ToString().Trim());
-            //            }
-            //        }
+                    if (qrCode != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(qrCode.ToString().Trim()))
+                        {
+                            print.Add(qrCode.ToString().Trim());
+                        }
+                    }
 
-            //        SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
-            //        WriteLog("On bit WritePrint in PLC 4");
-            //    }
-            //    else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
-            //    {
-            //        SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
-            //        WriteLog("OFF bit WritePrint in PLC 4");
-            //    }
-            //    else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
-            //    {
-            //        CountPrint(obj.IndexPLC);
-            //        SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
-            //    }
-            //    else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
-            //    {
-            //        SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
-            //    }
-            //    else if (obj.Title == "CHANGE_MODE_REWORK")
-            //    {
-            //        HandleChangeRework(obj.IndexPLC, (bool)obj.CurrentValue);
-            //    }
-            //    else if (obj.Title == "CHANGE_MODE_STATE")
-            //    {
-            //        HandleChangeState(obj.IndexPLC, (short)obj.CurrentValue);
-            //    }
-            //    else if (obj.Title == "IS_ALIVE")
-            //    {
-            //        SingleTonPlcControl.Instance.SetValueRegister((bool)obj.CurrentValue, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
-            //    }
-            //    else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == true && obj.IndexPLC == 1)
-            //    {
-            //        CheckIsDuplicate();
-            //        SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_INPUT_BARCODE", true, EnumReadOrWrite.WRITE);
-            //    }
-            //    else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == false && obj.IndexPLC == 1)
-            //    {
-            //        SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_INPUT_BARCODE", true, EnumReadOrWrite.WRITE);
-            //    }
-            //}
+                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
+                    WriteLog("On bit WritePrint in PLC 4");
+                }
+                else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
+                    WriteLog("OFF bit WritePrint in PLC 4");
+                }
+                else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
+                {
+                    CountPrint(obj.IndexPLC);
+                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
+                }
+                else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
+                }
+                else if (obj.Title == "CHANGE_MODE_REWORK")
+                {
+                    HandleChangeRework(obj.IndexPLC, (bool)obj.CurrentValue);
+                }
+                else if (obj.Title == "CHANGE_MODE_STATE")
+                {
+                    HandleChangeState(obj.IndexPLC, (short)obj.CurrentValue);
+                }
+                else if (obj.Title == "IS_ALIVE")
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister((bool)obj.CurrentValue, obj.IndexPLC, "WRITE_IS_ALIVE", true, EnumReadOrWrite.WRITE);
+                }
+                else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == true && obj.IndexPLC == 1)
+                {
+                    CheckIsDuplicate();
+                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_INPUT_BARCODE", true, EnumReadOrWrite.WRITE);
+                }
+                else if (obj.Title == "READ_INPUT_BARCODE" && (bool)obj.CurrentValue == false && obj.IndexPLC == 1)
+                {
+                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_INPUT_BARCODE", true, EnumReadOrWrite.WRITE);
+                }
+            }
         }
 
         private void CheckIsDuplicate()
@@ -769,7 +769,7 @@ namespace CIM
         //Read data 
         #region
 
-#if DEBUG
+#if !DEBUG
         private void ReadData1(string QRcode, string glue_amount, string box1dispenser_status, string glue_discharge_volume_vision, string insulator_bar_code, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string Bond, string Thawingtime)
         {
 #else
@@ -837,7 +837,7 @@ namespace CIM
             Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {inputTimeHours} ; TestTime: {formattedDateTime} ###");
         }
 
-#if DEBUG
+#if !DEBUG
         private void ReadData2(string QRcode, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string box2dispenser_status, string glue_amount, string glue_discharge_volume_vision, string fpcb_bar_code, string glue_overflow_vision, string Bond, string Thawingtime)
         {
 #else
@@ -905,7 +905,7 @@ namespace CIM
 
             Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {inputTimeHours};TestTime: {formattedDateTime}, ###");
         }
-#if DEBUG
+#if !DEBUG
         private void ReadData3(string QRcode, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string DISTANCE, string glue_amount, string glue_discharge_volume_vision, string Bond, string Thawingtime)
         {
 
@@ -966,7 +966,7 @@ namespace CIM
 
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {inputTimeHours};TestTime: {formattedDateTime}, ###");
         }
-#if DEBUG
+#if !DEBUG
         private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName)
         {
 
@@ -1618,10 +1618,10 @@ namespace CIM
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 34011, "IS_ALIVE", EnumRegisterType.BIT, 1, true, true, 1)); //alive
 
-            ////Update Bond 
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondCode", EnumRegisterType.STRING, 10, true, false, 1));
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondTime", EnumRegisterType.STRING, 10, true, false, 1));
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 1));
+            //Update Bond 
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "BondCode", EnumRegisterType.STRING, 40, true, false, 1));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "BondTime", EnumRegisterType.STRING, 10, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 1));
 
             //Write
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34100, "WriteData", EnumRegisterType.BIT, 1, true, true, 1)); // On bit doc du lieu PLC  off khi plc off
@@ -1659,9 +1659,9 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45128, "BOX2DISPENSER_STATUS", EnumRegisterType.STRING, 2, true, false, 2));
 
             ////Update Bond
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondCode", EnumRegisterType.STRING, 10, true, false, 2));
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondTime", EnumRegisterType.STRING, 10, true, false, 2));
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "BondCode", EnumRegisterType.STRING, 40, true, false, 2));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "BondTime", EnumRegisterType.STRING, 10, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 2));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45196, "BOX2_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 2));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45197, "BOX2_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 2));
@@ -1707,9 +1707,9 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45163, "BOX3_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 3));
 
             ////Update Bond
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondCode", EnumRegisterType.STRING, 10, true, false, 3));
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "BondTime", EnumRegisterType.STRING, 10, true, false, 3));
-            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 48128, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "BondCode", EnumRegisterType.STRING, 40, true, false, 3));
+            //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "BondTime", EnumRegisterType.STRING, 10, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46050, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 3));
 
             //note
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45130, "BOX3DISTANCE", EnumRegisterType.FLOAT, 8, true, false, 3));
@@ -2427,27 +2427,27 @@ namespace CIM
         private void button1_Click(object sender, EventArgs e)
         {
            
-            ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25");
+            //ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25");
             a++;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25");
+            //ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25");
             a1++;
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25");
+            //ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25");
             a2++;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            ReadData4($"QRcode{a3}", "OK", "OK", "130", "140", "25", "OK", "20.25","25.25","138","60","58","0.001","OK", "OK", "Leak name1" );
-            a3++;
+            //ReadData4($"QRcode{a3}", "OK", "OK", "130", "140", "25", "OK", "20.25","25.25","138","60","58","0.001","OK", "OK", "Leak name1" );
+            //a3++;
         }
 
         private void btnFormSearch_Click(object sender, EventArgs e)
