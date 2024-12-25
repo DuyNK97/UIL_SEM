@@ -46,18 +46,26 @@ namespace CIM
                 foreach (DataRow row in dt.Rows)
                 {
                     int rowIndex = dataGridView1.Rows.Add(
-                         row["TOPHOUSING"],
+                       row["TOPHOUSING"],
                          row["BOX1_GLUE_AMOUNT"],
-                         row["BOX1_GLUE_DISCHARGE_VOLUME_VISION"],
+                         row["Box1_BondCode"],
+                         row["BOX1_OutPut"],
+                         row["BOX1_GLUE_DISCHARGE_VOLUME_VISION"],                         
                          row["INSULATOR_BAR_CODE"],
+                         row["Box2_BondCode"],
+                         row["BOX2_OutPut"],
                          row["BOX1_GLUE_OVERFLOW_VISION"],
                          row["BOX1_HEATED_AIR_CURING"],
                          row["BOX2_GLUE_AMOUNT"],
                          row["BOX2_GLUE_DISCHARGE_VOLUME_VISION"],
                          row["FPCB_BAR_CODE"],
                          row["BOX2_GLUE_OVERFLOW_VISION"],
-                         row["BOX2_HEATED_AIR_CURING"],
+                          row["BOX2_HEATED_AIR_CURING"],
+
                          row["BOX3_DISTANCE"],
+                        
+                          row["Box3_BondCode"],
+                         row["BOX3_OutPut"],
                          row["BOX3_GLUE_AMOUNT"],
                          row["BOX3_GLUE_DISCHARGE_VOLUME_VISION"],
                          row["BOX3_GLUE_OVERFLOW_VISION"],

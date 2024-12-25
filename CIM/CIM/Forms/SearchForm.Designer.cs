@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtQR = new System.Windows.Forms.TextBox();
@@ -37,8 +37,12 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.QR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glue_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fbondcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.foutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glue_dischargevolume_vision = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.insulator_bar_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sbondcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.souput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_glueoverflow_vison = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box1_heated_air_curing = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box2_glue_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,6 +51,8 @@
             this.box2_glueoverflow_vision = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box2_heated_air_curing = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box2_heigh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbondcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toutput = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box3_glue_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box3_glue_dischargevolume_vision = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.box3_heated_air_curing = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -108,20 +114,24 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.QR,
             this.box1_glue_amount,
+            this.fbondcode,
+            this.foutput,
             this.box1_glue_dischargevolume_vision,
             this.insulator_bar_code,
+            this.sbondcode,
+            this.souput,
             this.box1_glueoverflow_vison,
             this.box1_heated_air_curing,
             this.box2_glue_amount,
@@ -130,6 +140,8 @@
             this.box2_glueoverflow_vision,
             this.box2_heated_air_curing,
             this.box2_heigh,
+            this.tbondcode,
+            this.toutput,
             this.box3_glue_amount,
             this.box3_glue_dischargevolume_vision,
             this.box3_heated_air_curing,
@@ -145,14 +157,14 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
@@ -174,6 +186,18 @@
             this.box1_glue_amount.Name = "box1_glue_amount";
             this.box1_glue_amount.Width = 125;
             // 
+            // fbondcode
+            // 
+            this.fbondcode.HeaderText = "1st Bond Code";
+            this.fbondcode.Name = "fbondcode";
+            this.fbondcode.ReadOnly = true;
+            // 
+            // foutput
+            // 
+            this.foutput.HeaderText = "1 st output";
+            this.foutput.Name = "foutput";
+            this.foutput.ReadOnly = true;
+            // 
             // box1_glue_dischargevolume_vision
             // 
             this.box1_glue_dischargevolume_vision.HeaderText = "1st  Glue discharge\nvolume Vision";
@@ -187,6 +211,18 @@
             this.insulator_bar_code.MinimumWidth = 6;
             this.insulator_bar_code.Name = "insulator_bar_code";
             this.insulator_bar_code.Width = 125;
+            // 
+            // sbondcode
+            // 
+            this.sbondcode.HeaderText = "2nd Bond Code";
+            this.sbondcode.Name = "sbondcode";
+            this.sbondcode.ReadOnly = true;
+            // 
+            // souput
+            // 
+            this.souput.HeaderText = "2nd OutPut";
+            this.souput.Name = "souput";
+            this.souput.ReadOnly = true;
             // 
             // box1_glueoverflow_vison
             // 
@@ -243,6 +279,18 @@
             this.box2_heigh.MinimumWidth = 6;
             this.box2_heigh.Name = "box2_heigh";
             this.box2_heigh.Width = 125;
+            // 
+            // tbondcode
+            // 
+            this.tbondcode.HeaderText = "3rd Bondcode";
+            this.tbondcode.Name = "tbondcode";
+            this.tbondcode.ReadOnly = true;
+            // 
+            // toutput
+            // 
+            this.toutput.HeaderText = "3rd Out Put";
+            this.toutput.Name = "toutput";
+            this.toutput.ReadOnly = true;
             // 
             // box3_glue_amount
             // 
@@ -349,8 +397,12 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn QR;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glue_amount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fbondcode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn foutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glue_dischargevolume_vision;
         private System.Windows.Forms.DataGridViewTextBoxColumn insulator_bar_code;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sbondcode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn souput;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_glueoverflow_vison;
         private System.Windows.Forms.DataGridViewTextBoxColumn box1_heated_air_curing;
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_glue_amount;
@@ -359,6 +411,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_glueoverflow_vision;
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_heated_air_curing;
         private System.Windows.Forms.DataGridViewTextBoxColumn box2_heigh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tbondcode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn toutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn box3_glue_amount;
         private System.Windows.Forms.DataGridViewTextBoxColumn box3_glue_dischargevolume_vision;
         private System.Windows.Forms.DataGridViewTextBoxColumn box3_heated_air_curing;

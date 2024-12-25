@@ -25,13 +25,13 @@ namespace UILAlignProject.PLC
     public class SingleTonPlcControl : Bindable//, IPlcControl, IRobotJogControl
     {
         public event EventHandler HaveNewSampleEvent;
-        int interval = 70;
+        int interval = 50;
         bool isTest = false;
         int MxPort1 = 5;
         int MxPort2 = 21;
         int MxPort3 = 36;
         int MxPort4 = 56;
-       // int MxPort4 = 1;
+        // int MxPort4 = 1;
         int plcindex = 2;
         private ActUtlType64Class PlcWrite1 { get; set; }
         private ActUtlType64Class PlcRead1 { get; set; }
@@ -386,7 +386,7 @@ namespace UILAlignProject.PLC
             Task.Delay(5000).Wait();
             while (true)
             {
-                await Task.Delay(interval);
+                await Task.Delay(30);
                 try
                 {
                     ReadAlway(PlcRead1, RegisterRead.RegisterBit1, RegisterRead.RegisterWord1, RegisterRead.RegisterDWord1, RegisterRead.RegisterString1, RegisterRead.RegisterBitInWord1, RegisterRead.RegisterFloat1);
@@ -470,6 +470,11 @@ namespace UILAlignProject.PLC
         {
             foreach (PLCIOCollection item in rbit)
             {
+                //var indexPLC = ((PLCIOCollection)rbit[0])[0].IndexPLC;
+                //if (indexPLC == 1)
+                //{
+                //             ((PLCIOCollection)rbit[0])[0].CurrentValue =false;
+                //}
                 int index = item.First().RegisterPLC;
                 if (item.Count == 1)
                 {
@@ -651,13 +656,15 @@ namespace UILAlignProject.PLC
                 short[] res = new short[count];
                 plc.ReadDeviceBlock2($"D{index}", count, out res[0]);
                 var bitArr = PLCExtension.ConvertShortToBitArray(res[0]);
-                foreach (var i in item)
+
+                Task.Run(() =>
                 {
-                    Task.Run(() =>
+                    foreach (var i in item)
                     {
                         i.CurrentValue = (bool)bitArr[i.Size];
-                    });
-                }
+                    }
+                });
+
 
             }
         }
@@ -868,7 +875,7 @@ namespace UILAlignProject.PLC
                     plc = PlcWrite1;
                     break;
             }
-            
+
             short[] shorts = new short[leng * 2];
             for (int i = 0; i < leng; i++)
             {
@@ -902,10 +909,10 @@ namespace UILAlignProject.PLC
 
         }
 
-        public bool WriteString(string currvalue,int indexPLC,string regrister)
+        public bool WriteString(string currvalue, int indexPLC, string regrister)
         {
             short[] res4 = PLCExtension.ConvertStringToShortArr(((string)currvalue));
-            return  WriteWord($"ZR{regrister}", res4.Length , indexPLC, ref res4);
+            return WriteWord($"ZR{regrister}", res4.Length, indexPLC, ref res4);
         }
         public bool WriteWord(string register, int leng, int indexPlc, ref short[] data)
         {
@@ -936,7 +943,7 @@ namespace UILAlignProject.PLC
             return false;
         }
 
-        public bool ReadFloat(int index,string register, int leng, out float[] data)
+        public bool ReadFloat(int index, string register, int leng, out float[] data)
         {
             data = new float[leng];
             var res = new short[leng * 2];
@@ -971,16 +978,16 @@ namespace UILAlignProject.PLC
             return false;
         }
 
-        public bool ReadWord(int index , string register, int leng, out short[] data)
+        public bool ReadWord(int index, string register, int leng, out short[] data)
         {
             data = new short[leng];
             ActUtlType64Class plc = PlcRead1;
-            switch (index) 
-            { 
-                
+            switch (index)
+            {
+
                 case 2:
                     plc = PlcRead2;
-                   
+
                     break;
                 case 3:
                     plc = PlcRead3;
@@ -989,8 +996,8 @@ namespace UILAlignProject.PLC
                     plc = PlcRead4;
                     break;
                 default:
-                   
-                    break ;
+
+                    break;
             }
             if (plc?.ReadDeviceBlock2(register, leng, out data[0]) == 0)
             {
@@ -1015,7 +1022,7 @@ namespace UILAlignProject.PLC
             return true;
         }
 
-        public void AddRegisterRead( RegisterPlc2PC plc, PLCIOCollection pLCIOs)
+        public void AddRegisterRead(RegisterPlc2PC plc, PLCIOCollection pLCIOs)
         {
             plc?.PlcIOs?.AddRange(pLCIOs.ToArray());
             plc?.ClassifyRegister();
@@ -1028,7 +1035,7 @@ namespace UILAlignProject.PLC
         }
 
         #region Utility
-        public void SetValueRegister(object value,int index, string title, bool isSendPLC = true, EnumReadOrWrite enumReadOrWrite = EnumReadOrWrite.WRITE)
+        public void SetValueRegister(object value, int index, string title, bool isSendPLC = true, EnumReadOrWrite enumReadOrWrite = EnumReadOrWrite.WRITE)
         {
             PLCIOCollection PLCIOs = null;
             switch (enumReadOrWrite)
@@ -1064,26 +1071,26 @@ namespace UILAlignProject.PLC
         public object GetValueRegister(int index, string title, bool isReadPLC = true, EnumReadOrWrite enumReadOrWrite = EnumReadOrWrite.READ)
         {
             PLCIOCollection PLCIOs = null;
-   
-            
-                    switch (enumReadOrWrite)
-                    {
-                        case EnumReadOrWrite.READ:
-                            PLCIOs = RegisterRead.PlcIOs;
-                            break;
-                        case EnumReadOrWrite.WRITE:
-                            PLCIOs = RegisterWrite.PlcIOs;
-                            break;
-                        default:
-                            break;
-                    }
-            
-            
-            var r = PLCIOs.Where(p => p.Title == title && p.ReadOrWrite == EnumReadOrWrite.READ && p.IndexPLC ==index);
+
+
+            switch (enumReadOrWrite)
+            {
+                case EnumReadOrWrite.READ:
+                    PLCIOs = RegisterRead.PlcIOs;
+                    break;
+                case EnumReadOrWrite.WRITE:
+                    PLCIOs = RegisterWrite.PlcIOs;
+                    break;
+                default:
+                    break;
+            }
+
+
+            var r = PLCIOs.Where(p => p.Title == title && p.ReadOrWrite == EnumReadOrWrite.READ && p.IndexPLC == index);
             if (r == null || r.Count() == 0)
             {
                 return null;
-            }           
+            }
 
             var alive = r?.First();
             if (alive != null)
@@ -1120,9 +1127,9 @@ namespace UILAlignProject.PLC
                     WriteOneBit($"M{pLCIO.RegisterPLC}", (bool)pLCIO.CurrentValue, pLCIO.IndexPLC);
                     break;
                 case EnumRegisterType.STRING:
-                    if (pLCIO.CurrentValue.ToString().Trim().Length %2 == 1)
+                    if (pLCIO.CurrentValue.ToString().Trim().Length % 2 == 1)
                     {
-                        pLCIO.CurrentValue = pLCIO.CurrentValue.ToString()+ "\0";
+                        pLCIO.CurrentValue = pLCIO.CurrentValue.ToString() + "\0";
                     }
                     short[] res4 = PLCExtension.ConvertStringToShortArr(((string)pLCIO.CurrentValue));
                     WriteWord($"D{pLCIO.RegisterPLC}", pLCIO.Size, pLCIO.IndexPLC, ref res4);

@@ -266,31 +266,39 @@ namespace CIM
                     switch (indexPLC)
                     {
                         case 1:
+                            Console.WriteLine($"{DateTime.Now.ToString("HH-mm-ss_fff")}:Vao readdata1");
                             ReadData1();
+                            Console.WriteLine($"{DateTime.Now.ToString("HH-mm-ss_fff")}:Vao readdata1");
                             SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-                            WriteLog("On bit WriteData in PLC 1");
+                            Console.WriteLine($"{DateTime.Now.ToString("HH-mm-ss_fff")}:On bit WriteData in PLC 1");
                             break;
                         case 2:
                             ReadData2();
                             SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-                            WriteLog("On bit WriteData in PLC 2");
+                            //WriteLog("On bit WriteData in PLC 2");
                             break;
                         case 3:
                             ReadData3();
                             SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-                            WriteLog("On bit WriteData in PLC 3");
+                            // WriteLog("On bit WriteData in PLC 3");
                             break;
                         case 4:
                             ReadData4();
                             SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-                            WriteLog("On bit WriteData in PLC 4");
+                            // WriteLog("On bit WriteData in PLC 4");
                             break;
                     }
                 }
                 else if (obj.Title.Contains("ReadData") && (bool)obj.CurrentValue == false)
                 {
+
+                    int indexPLC = obj.IndexPLC;
+
                     SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-                    WriteLog("OFF bit WriteData in PLC 4");
+                    //if (indexPLC == 1)
+                    //{
+                    //    Console.WriteLine($"{DateTime.Now.ToString("HH-mm-ss_fff")}: OFF bit ReadData index{indexPLC}");
+                    //}
                 }
                 else if (obj.Title == "Alive" /*&& (bool)obj.CurrentValue==true */)
                 {
@@ -774,9 +782,9 @@ namespace CIM
         {
 #else
 
-            private void ReadData1()
+        private void ReadData1()
         {
-          
+
             if (SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1Barcode") == null)
                 return;
             var QRcode = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1Barcode").ToString().Trim();
@@ -794,8 +802,8 @@ namespace CIM
             var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING2").ToString().Trim();
             var heated_air_curing3 = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1_HEATED_AIR_CURING3").ToString().Trim();
             //updateBond
-            var Bond = SingleTonPlcControl.Instance.GetValueRegister(1, "BondCode").ToString().Trim();
-            var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(1, "Thawingtime").ToString().Trim();
+            var Bond = SingleTonPlcControl.Instance.GetValueRegister(1, "Box1BondCode").ToString().Trim();
+            var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(1, "Box1Thawingtime").ToString().Trim();
 
 #endif
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -841,9 +849,9 @@ namespace CIM
         private void ReadData2(string QRcode, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string box2dispenser_status, string glue_amount, string glue_discharge_volume_vision, string fpcb_bar_code, string glue_overflow_vision, string Bond, string Thawingtime)
         {
 #else
- private void ReadData2()
+        private void ReadData2()
         {
-            
+
             if (SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2Barcode") == null)
                 return;
 
@@ -865,8 +873,8 @@ namespace CIM
 
 
             //updateBond
-            var Bond = SingleTonPlcControl.Instance.GetValueRegister(2, "BondCode").ToString().Trim();
-            var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Thawingtime").ToString().Trim();
+            var Bond = SingleTonPlcControl.Instance.GetValueRegister(2, "Box2BondCode").ToString().Trim();
+            var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Box2Thawingtime").ToString().Trim();
 
 #endif
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -891,13 +899,13 @@ namespace CIM
                 || string.IsNullOrWhiteSpace(glue_amount)
                 || string.IsNullOrWhiteSpace(glue_discharge_volume_vision)
                 || string.IsNullOrWhiteSpace(fpcb_bar_code)
-                || string.IsNullOrWhiteSpace(Bond)
-                || string.IsNullOrWhiteSpace(Thawingtime)
+            //|| string.IsNullOrWhiteSpace(Bond)
+            //|| string.IsNullOrWhiteSpace(Thawingtime)
 
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_2, "MISS_DATA", true, EnumReadOrWrite.WRITE);
-                Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC2"));
+                Console.WriteLine("On bit MISS_DATA -" + "PLC2");
             }
 
 
@@ -919,7 +927,7 @@ namespace CIM
 
             if (string.IsNullOrWhiteSpace(QRcode))
                 return;
-            
+
 
             string glue_overflow_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_GLUE_OVERFLOW_VISION") ? "OK" : "NG";
             var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3_HEATED_AIR_CURING").ToString().Trim();
@@ -930,8 +938,8 @@ namespace CIM
             var glue_amount = SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3GLUE_AMOUNT").ToString().Trim();
             string glue_discharge_volume_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(3, "BOX3GLUE_DISCHARGE_VOLUME_VISION") ? "OK" : "NG";
             //updateBond
-            var Bond = SingleTonPlcControl.Instance.GetValueRegister(2, "BondCode").ToString().Trim();
-            var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Thawingtime").ToString().Trim();
+            var Bond = SingleTonPlcControl.Instance.GetValueRegister(3, "Box3BondCode").ToString().Trim();
+            var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(3, "Box3Thawingtime").ToString().Trim();
 #endif
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             DateTime thawingTimeDate;
@@ -959,7 +967,7 @@ namespace CIM
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_3, "MISS_DATA", true, EnumReadOrWrite.WRITE);
-                Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC3"));
+                Console.WriteLine("On bit MISS_DATA -" + "PLC3");
             }
 
             //Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
@@ -993,7 +1001,7 @@ namespace CIM
             var fpcb4Left = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_LEFT");
             var fpcb4Right = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_RIGHT");
             var warping = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_WARPING"); //độ vênh
-             var air_leakage_test_detail = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL").ToString().Trim();
+            var air_leakage_test_detail = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL").ToString().Trim();
             var BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING").ToString().Trim();
 
             var LeakName = SingleTonPlcControl.Instance.GetValueRegister(4, "Leak_Name").ToString().Trim();
@@ -1038,8 +1046,8 @@ namespace CIM
             //}
             //resistance = resistance == "1" ? "NG" : (resistance + "Ω");
 
-             
-            
+
+
 
             if (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING == null)
             {
@@ -1050,8 +1058,8 @@ namespace CIM
 
 
             var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
-             var resistance1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance1").ToString();
-            
+            var resistance1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance1").ToString();
+
 #endif
 
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -1092,7 +1100,7 @@ namespace CIM
             }
 
 
-          
+
 
             //final result return true or false
             bool finalResult = tightness_and_location_vision == "OK" && height_parallelism_result == "OK" && air_leakage_test_result == "OK";
@@ -1202,7 +1210,7 @@ namespace CIM
                     NO = No,
                     TOPHOUSING = box4data.TOPHOUSING,
                     BOX1_BOND = box1data.BondCode,
-                    BOX1_OUPUTTIME = box1data.Output,
+                    BOX1_OUPUTTIME = box1data.Output + "/" + box1data.Input,
                     BOX1_GLUE_AMOUNT = box1data.GLUE_AMOUNT,
                     BOX1_GLUE_DISCHARGE_VOLUME_VISION = box1data.GLUE_DISCHARGE_VOLUME_VISION,
                     INSULATOR_BAR_CODE = box1data.INSULATOR_BAR_CODE,
@@ -1213,14 +1221,14 @@ namespace CIM
                     BOX2_GLUE_OVERFLOW_VISION = box2data.GLUE_OVERFLOW_VISION,
                     BOX1_HEATED_AIR_CURING = box1data.BOX1_HEATED_AIR_CURING,
                     BOX2_BOND = box2data.BondCode,
-                    BOX2_OUPUTTIME = box2data.Output,
+                    BOX2_OUPUTTIME = box2data.Output + "/" + box2data.Input,
                     BOX2_HEATED_AIR_CURING = box2data.BOX2_HEATED_AIR_CURING,
                     BOX3_DISTANCE = box3data.DISTANCE,
                     BOX3_GLUE_AMOUNT = box3data.GLUE_AMOUNT,
                     BOX3_GLUE_DISCHARGE_VOLUME_VISION = box3data.GLUE_DISCHARGE_VOLUME_VISION,
                     BOX3_GLUE_OVERFLOW_VISION = box3data.GLUE_DISCHARGE_VOLUME_VISION,
                     BOX3_BOND = box3data.BondCode,
-                    BOX3_OUPUTTIME = box3data.Output,
+                    BOX3_OUPUTTIME = box3data.Output + "/" + box3data.Input,
                     BOX4_AIR_LEAKAGE_TEST_DETAIL = box4data.AIR_LEAKAGE_TEST_DETAIL,
                     BOX3_HEATED_AIR_CURING = box3data.BOX3_HEATED_AIR_CURING,
                     BOX4_TIGHTNESS_AND_LOCATION_VISION = box4data.TIGHTNESS_AND_LOCATION_VISION,
@@ -1253,11 +1261,11 @@ namespace CIM
                         No.ToString(),
                         data1.TOPHOUSING,
                         data1.BOX1_BOND,
-                        data1.BOX1_OUPUTTIME+"/"+box1data.Input,
+                        data1.BOX1_OUPUTTIME,
                         data1.BOX1_GLUE_AMOUNT,
                         data1.BOX1_GLUE_DISCHARGE_VOLUME_VISION,
                         data1.BOX2_BOND,
-                        data1.BOX2_OUPUTTIME+"/"+box2data.Input,
+                        data1.BOX2_OUPUTTIME,
                         data1.INSULATOR_BAR_CODE,
                         data1.BOX1_GLUE_OVERFLOW_VISION,
                         data1.BOX1_HEATED_AIR_CURING,
@@ -1267,7 +1275,7 @@ namespace CIM
                         data1.BOX2_GLUE_OVERFLOW_VISION,
                         data1.BOX2_HEATED_AIR_CURING,
                         data1.BOX3_BOND,
-                        data1.BOX3_OUPUTTIME+"/"+box3data.Input,
+                        data1.BOX3_OUPUTTIME,
                         data1.BOX3_DISTANCE,
                         data1.BOX3_GLUE_AMOUNT,
                         data1.BOX3_GLUE_DISCHARGE_VOLUME_VISION,
@@ -1536,7 +1544,7 @@ namespace CIM
             }
         }
 
-#endregion
+        #endregion
 
         public void UpdateUI(EXCELDATA data1)
         {
@@ -1619,9 +1627,9 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 34011, "IS_ALIVE", EnumRegisterType.BIT, 1, true, true, 1)); //alive
 
             //Update Bond 
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "BondCode", EnumRegisterType.STRING, 40, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "Box1BondCode", EnumRegisterType.STRING, 40, true, false, 1));
             //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "BondTime", EnumRegisterType.STRING, 10, true, false, 1));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 1));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "Box1Thawingtime", EnumRegisterType.STRING, 10, true, false, 1));
 
             //Write
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 34100, "WriteData", EnumRegisterType.BIT, 1, true, true, 1)); // On bit doc du lieu PLC  off khi plc off
@@ -1659,9 +1667,9 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45128, "BOX2DISPENSER_STATUS", EnumRegisterType.STRING, 2, true, false, 2));
 
             ////Update Bond
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "BondCode", EnumRegisterType.STRING, 40, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "Box2BondCode", EnumRegisterType.STRING, 40, true, false, 2));
             //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "BondTime", EnumRegisterType.STRING, 10, true, false, 2));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 2));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "Box2Thawingtime", EnumRegisterType.STRING, 10, true, false, 2));
 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45196, "BOX2_HEATED_AIR_CURING", EnumRegisterType.WORD, 1, true, false, 2));
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45197, "BOX2_HEATED_AIR_CURING1", EnumRegisterType.WORD, 1, true, false, 2));
@@ -1707,9 +1715,9 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45163, "BOX3_HEATED_AIR_CURING3", EnumRegisterType.WORD, 1, true, false, 3));
 
             ////Update Bond
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "BondCode", EnumRegisterType.STRING, 40, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46000, "Box3BondCode", EnumRegisterType.STRING, 40, true, false, 3));
             //pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46040, "BondTime", EnumRegisterType.STRING, 10, true, false, 1));
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46050, "Thawingtime", EnumRegisterType.STRING, 10, true, false, 3));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 46050, "Box3Thawingtime", EnumRegisterType.STRING, 10, true, false, 3));
 
             //note
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45130, "BOX3DISTANCE", EnumRegisterType.FLOAT, 8, true, false, 3));
@@ -1856,7 +1864,7 @@ namespace CIM
 
                         worksheet.Cells[rowIndex, 1].Value = box4Data.TOPHOUSING;
                         worksheet.Cells[rowIndex, 2].Value = box1Data.BondCode;
-                        worksheet.Cells[rowIndex, 3].Value = box1Data.Output +"/"+ box1Data.Input;
+                        worksheet.Cells[rowIndex, 3].Value = box1Data.Output + "/" + box1Data.Input;
                         worksheet.Cells[rowIndex, 4].Value = box1Data.GLUE_AMOUNT;
                         worksheet.Cells[rowIndex, 5].Value = box1Data.GLUE_DISCHARGE_VOLUME_VISION;
                         worksheet.Cells[rowIndex, 6].Value = box1Data.INSULATOR_BAR_CODE;
@@ -2128,7 +2136,7 @@ namespace CIM
 
                     if (key == "TestTime")
                         result.TestTime = value;
-                  
+
                 }
             }
 
@@ -2422,11 +2430,11 @@ namespace CIM
         }
         public static int a = 1;
         public static int a1 = 1;
-        public static int a2= 1;
+        public static int a2 = 1;
         public static int a3 = 1;
         private void button1_Click(object sender, EventArgs e)
         {
-           
+
             //ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25");
             a++;
         }
