@@ -23,6 +23,9 @@ using CIM.Class;
 using CIM.Enum;
 using CIM.Forms;
 using System.Data;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DataTable = System.Data.DataTable;
 
 namespace CIM
 {
@@ -810,10 +813,22 @@ namespace CIM
             DateTime thawingTimeDate;
             DateTime nowDate;
             double inputTimeHours = 0.0;
+            int hours = 0;
+            int minutes = 0;
+            int seconds = 0;
+
             if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
             {
                 var Inputtime = nowDate - thawingTimeDate;
                 inputTimeHours = Math.Round(Inputtime.TotalHours, 2);
+
+                hours = (int)inputTimeHours;
+
+                double fractionalHours = inputTimeHours - hours;
+                minutes = (int)(fractionalHours * 60);
+
+                double fractionalMinutes = fractionalHours * 60 - minutes;
+                seconds = (int)(fractionalMinutes * 60);
             }
 
 
@@ -842,7 +857,7 @@ namespace CIM
             //Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision}; TestTime: {formattedDateTime} ###");
 
             //updateBond
-            Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {inputTimeHours} ; TestTime: {formattedDateTime} ###");
+            Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s ; TestTime: {formattedDateTime} ###");
         }
 
 #if !DEBUG
@@ -881,10 +896,21 @@ namespace CIM
             DateTime thawingTimeDate;
             DateTime nowDate;
             double inputTimeHours = 0.0;
+            int hours = 0;
+            int minutes = 0;
+            int seconds = 0;
+
             if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
             {
                 var Inputtime = nowDate - thawingTimeDate;
                 inputTimeHours = Math.Round(Inputtime.TotalHours, 2);
+                hours = (int)inputTimeHours;
+
+                double fractionalHours = inputTimeHours - hours;
+                minutes = (int)(fractionalHours * 60);
+
+                double fractionalMinutes = fractionalHours * 60 - minutes;
+                seconds = (int)(fractionalMinutes * 60);
             }
 
 
@@ -911,7 +937,7 @@ namespace CIM
 
             //Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};TestTime: {formattedDateTime}, ###");
 
-            Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {inputTimeHours};TestTime: {formattedDateTime}, ###");
+            Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;TestTime: {formattedDateTime}, ###");
         }
 #if !DEBUG
         private void ReadData3(string QRcode, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string DISTANCE, string glue_amount, string glue_discharge_volume_vision, string Bond, string Thawingtime)
@@ -945,10 +971,21 @@ namespace CIM
             DateTime thawingTimeDate;
             DateTime nowDate;
             double inputTimeHours = 0.0;
+            int hours = 0;
+            int minutes = 0;
+            int seconds = 0;
+
             if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
             {
                 var Inputtime = nowDate - thawingTimeDate;
                 inputTimeHours = Math.Round(Inputtime.TotalHours, 2);
+                 hours = (int)inputTimeHours;
+
+                double fractionalHours = inputTimeHours - hours;
+                 minutes = (int)(fractionalHours * 60);
+
+                double fractionalMinutes = fractionalHours * 60 - minutes;
+                 seconds = (int)(fractionalMinutes * 60);
             }
 
 
@@ -972,7 +1009,7 @@ namespace CIM
 
             //Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
 
-            Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {inputTimeHours};TestTime: {formattedDateTime}, ###");
+            Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;TestTime: {formattedDateTime}, ###");
         }
 #if !DEBUG
         private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName)

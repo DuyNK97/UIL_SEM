@@ -430,7 +430,7 @@ namespace UILAlignProject.PLC
             {
 
 
-                await Task.Delay(interval);
+                await Task.Delay(70);
                 try
                 {
                     //*
