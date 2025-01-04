@@ -13,5 +13,6 @@
         public string Input { get; set; }
         public string Output { get; set; }
         public string TestTime {  get; set; }
+        public string B1rework {  get; set; }
     }
 }

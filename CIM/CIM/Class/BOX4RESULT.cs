@@ -12,5 +12,6 @@
         public string DATE { get; set; }
         public string TIME { get; set; }
         public string TestTime { get; set; }
+        public string B4rework { get; set; }
     }
 }

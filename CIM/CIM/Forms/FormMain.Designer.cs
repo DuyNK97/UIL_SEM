@@ -72,7 +72,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.pieChart1 = new CIM.PieChart();
             this.label3 = new System.Windows.Forms.Label();
             this.lbltotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -113,7 +112,10 @@
             this.air_leakagetest_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Port = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.testtime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button6 = new System.Windows.Forms.Button();
+            this.pieChart1 = new CIM.PieChart();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -196,6 +198,7 @@
             this.air_leakagetest_result,
             this.Port,
             this.Result,
+            this.Remark,
             this.testtime});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 23);
@@ -262,6 +265,7 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.button6);
             this.panel3.Controls.Add(this.button5);
             this.panel3.Controls.Add(this.button4);
             this.panel3.Controls.Add(this.button3);
@@ -281,7 +285,6 @@
             this.button5.TabIndex = 18;
             this.button5.Text = "button4";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
@@ -292,7 +295,6 @@
             this.button4.TabIndex = 17;
             this.button4.Text = "button3";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
@@ -303,7 +305,6 @@
             this.button3.TabIndex = 16;
             this.button3.Text = "button2";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button1
@@ -314,7 +315,6 @@
             this.button1.TabIndex = 15;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
@@ -679,14 +679,6 @@
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
-            // pieChart1
-            // 
-            this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(370, 215);
-            this.pieChart1.TabIndex = 12;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -1033,6 +1025,12 @@
             this.Result.ReadOnly = true;
             this.Result.Width = 125;
             // 
+            // Remark
+            // 
+            this.Remark.HeaderText = "Remark";
+            this.Remark.Name = "Remark";
+            this.Remark.ReadOnly = true;
+            // 
             // testtime
             // 
             this.testtime.HeaderText = "Test time";
@@ -1040,6 +1038,24 @@
             this.testtime.Name = "testtime";
             this.testtime.ReadOnly = true;
             this.testtime.Width = 250;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1000, 31);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 19;
+            this.button6.Text = "changerework";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(255, 15);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(370, 215);
+            this.pieChart1.TabIndex = 12;
             // 
             // FormMain
             // 
@@ -1174,7 +1190,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn air_leakagetest_result;
         private System.Windows.Forms.DataGridViewTextBoxColumn Port;
         private System.Windows.Forms.DataGridViewTextBoxColumn Result;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Remark;
         private System.Windows.Forms.DataGridViewTextBoxColumn testtime;
+        private System.Windows.Forms.Button button6;
     }
 }
 

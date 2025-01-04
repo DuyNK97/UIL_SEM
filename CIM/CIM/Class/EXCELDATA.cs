@@ -35,5 +35,6 @@ namespace CIM
         public string BOX4_AIR_LEAKAGE_TEST_RESULT { get; set; }
         public string BOX4_LEAK_NAME { get; set; }
         public DateTime BOX4_TestTime { get; set; }
+        public string Remark { get; set; }
     }
 }

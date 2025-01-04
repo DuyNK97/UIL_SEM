@@ -13,6 +13,10 @@ namespace CIM
         private static readonly object _lock = new object();
         private SQLiteConnection _connection;
         string ConnectionString = "Data Source=C:\\APP\\CIMDB\\SEM.db";
+        //string ConnectionString = "Data Source=C:\\Users\\Admin\\Desktop\\SEMbackup20122024.db";
+        //ALTER TABLE SEM_DATA ADD Note TEXT; --them cot note (remark -> note ) remark add rework
+        //update SEM_DATA set Note =Remark 
+
 
         private SqlLite()
         {
@@ -341,7 +345,8 @@ namespace CIM
                     " BOX4_HEIGHT_PARALLELISM = @BOX4_HEIGHT_PARALLELISM," +
                     " BOX4_RESISTANCE = @BOX4_RESISTANCE," +
                     " BOX4_AIR_LEAKAGE_TEST_RESULT = @BOX4_AIR_LEAKAGE_TEST_RESULT," +
-                    " BOX4_TestTime = @BOX4_TestTime" +
+                    " Remark = @Remark," +
+                    " BOX4_TestTime = @BOX4_TestTime" +                    
                     " WHERE TOPHOUSING = @qrCode";
 
                 using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
@@ -378,6 +383,7 @@ namespace CIM
                         cmd.Parameters.AddWithValue("@BOX4_HEIGHT_PARALLELISM", data.BOX4_HEIGHT_PARALLELISM);
                         cmd.Parameters.AddWithValue("@BOX4_RESISTANCE", data.BOX4_RESISTANCE);
                         cmd.Parameters.AddWithValue("@BOX4_AIR_LEAKAGE_TEST_RESULT", data.BOX4_AIR_LEAKAGE_TEST_RESULT);
+                        cmd.Parameters.AddWithValue("@Remark", data.Remark);
                         cmd.Parameters.AddWithValue("@BOX4_TestTime", DateTime.Now);
 
                         int rowsUpdated = cmd.ExecuteNonQuery();
@@ -479,7 +485,7 @@ namespace CIM
                 command.ExecuteNonQuery();
             }
         }
-        public void InsertSEM_DATA(EXCELDATA data,string  remark)
+        public void InsertSEM_DATA(EXCELDATA data,string  note)
         {
             string insertQuery = @"
                 INSERT INTO SEM_DATA (
@@ -504,7 +510,8 @@ namespace CIM
                     BOX4_HEIGHT_PARALLELISM, 
                     BOX4_RESISTANCE, 
                     BOX4_AIR_LEAKAGE_TEST_RESULT, 
-                    BOX4_TestTime,Remark
+                    Remark,
+                    BOX4_TestTime,Note
                 )
                 VALUES (
                     @TOPHOUSING, @Box1_BondCode,@BOX1_OutPut,@Box2_BondCode,@Box2_OutPut,@Box3_BondCode,@Box3_OutPut,
@@ -528,9 +535,9 @@ namespace CIM
                     @BOX4_HEIGHT_PARALLELISM, 
                     @BOX4_RESISTANCE, 
                     @BOX4_AIR_LEAKAGE_TEST_RESULT, 
+                    @Remark,
                     @BOX4_TestTime,
-                    @Remark
-
+                    @Note
                 )";
 
             using (var command = new SQLiteCommand(insertQuery, _connection))
@@ -563,7 +570,8 @@ namespace CIM
                 command.Parameters.AddWithValue("@BOX4_RESISTANCE", data.BOX4_RESISTANCE);
                 command.Parameters.AddWithValue("@BOX4_AIR_LEAKAGE_TEST_RESULT", data.BOX4_AIR_LEAKAGE_TEST_RESULT);
                 command.Parameters.AddWithValue("@BOX4_TestTime", DateTime.Now);
-                command.Parameters.AddWithValue("@Remark", remark);
+                command.Parameters.AddWithValue("@Remark", data.Remark);
+                command.Parameters.AddWithValue("@Note", note);
                 command.ExecuteNonQuery();
             }
         }

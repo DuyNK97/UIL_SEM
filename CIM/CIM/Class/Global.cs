@@ -14,6 +14,11 @@ namespace CIM.Class
         public static int CurrentModeBox4 = 0; //0: normal, 1 rework
         public static int CurrentStateBox4 = 0; // 0-offline, 1 online
 
+        public static int CurrModeB1 = 0;
+        public static int CurrModeB2 = 0;
+        public static int CurrModeB3 = 0;
+        public static int CurrModeB4 = 0;
+
         public static int IsCheckNAS = 1;
 
         public static int AutoDeleteCSV = 0;
