@@ -72,6 +72,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnFormSearch = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -116,7 +117,6 @@
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -534,6 +534,17 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1930, 79);
             this.panel3.TabIndex = 24;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(1093, 32);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 20;
+            this.button7.Text = "changerework";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Visible = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
             // 
@@ -1065,16 +1076,6 @@
             this.lblTime.Size = new System.Drawing.Size(604, 34);
             this.lblTime.TabIndex = 24;
             this.lblTime.Text = "time";
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(1093, 32);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 20;
-            this.button7.Text = "changerework";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // FormMain
             // 

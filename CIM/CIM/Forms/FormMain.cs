@@ -342,6 +342,7 @@ namespace CIM
                 else if (obj.Title == "CHANGE_MODE_REWORK")
                 {
                     HandleChangeRework(obj.IndexPLC, (bool)obj.CurrentValue);
+                   
                 }
                 else if (obj.Title == "CHANGE_MODE_STATE")
                 {
@@ -369,6 +370,7 @@ namespace CIM
 
         private void HandleChangeRework(int indexPLC, bool currentValue)
         {
+            string reworkinfo = SingleTonPlcControl.Instance.GetValueRegister((int)EPLC.PLC_1, "REWORK_INFO").ToString().Trim();
             switch (indexPLC)
             {
                 case (int)EPLC.PLC_1:
@@ -392,6 +394,10 @@ namespace CIM
                     break;
             }
 
+            if (currentValue)
+            {
+                SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, indexPLC, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
+            }
 
             SingleTonPlcControl.Instance.SetValueRegister(currentValue, indexPLC, "WRITE_CHANGE_MODE_REWORK", true, EnumReadOrWrite.WRITE);
             WriteLog($"Set BIT Change rework PLC-{indexPLC}");
@@ -902,7 +908,7 @@ namespace CIM
                     SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_1, "MISS_DATA", true, EnumReadOrWrite.WRITE);
                     Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC1"));
                 }
-                SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_1, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
+                //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_1, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
             }
             Global.WriteLogBox(PLClog1, 0, $"Serialnumber:{QRcode};1ST HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;1st Glue Amount: {glue_amount}mg ; 1st Glue discharge volume Vision: {glue_discharge_volume_vision} ;Insulator bar code:{insulator_bar_code}; 1st Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s ;Rework:{reworkinfo} ; TestTime: {formattedDateTime} ###");
 
@@ -993,7 +999,7 @@ namespace CIM
                     SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_2, "MISS_DATA", true, EnumReadOrWrite.WRITE);
                     Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC2"));
                 }
-                SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_2, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
+                //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_2, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
                
             }
 
@@ -1078,7 +1084,7 @@ namespace CIM
                     SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_3, "MISS_DATA", true, EnumReadOrWrite.WRITE);
                     Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC3"));
                 }
-                SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_3, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
+                //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_3, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
                 
             }
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
@@ -1255,7 +1261,7 @@ namespace CIM
                             Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
                         }
 
-                        SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
+                        //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
 
                     }
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
@@ -1285,7 +1291,7 @@ namespace CIM
                             SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
                             Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
                         }
-                        SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
+                        //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
 
 
                     }

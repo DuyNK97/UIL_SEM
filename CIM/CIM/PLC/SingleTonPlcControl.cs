@@ -27,8 +27,8 @@ namespace UILAlignProject.PLC
         public event EventHandler HaveNewSampleEvent;
         int interval = 50;
         bool isTest = false;
-        //int MxPort1 = 5;
-        int MxPort1 = 1;
+        int MxPort1 = 5;
+        //int MxPort1 = 1;
         int MxPort2 = 21;
         int MxPort3 = 36;
         int MxPort4 = 56;
@@ -431,7 +431,7 @@ namespace UILAlignProject.PLC
             {
 
 
-                await Task.Delay(70);
+                await Task.Delay(50);
                 try
                 {
                     //*
