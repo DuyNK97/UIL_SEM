@@ -86,13 +86,11 @@
             this.label13 = new System.Windows.Forms.Label();
             this.lblperNG = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.lblNG = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.lblperOK = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.lblOK = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lblPLC4 = new UnilityCommand.SubControl.CustomLabel2();
             this.lblPLC2 = new UnilityCommand.SubControl.CustomLabel2();
@@ -106,7 +104,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.pieChart1 = new CIM.PieChart();
             this.label3 = new System.Windows.Forms.Label();
             this.lbltotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -117,6 +114,9 @@
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
+            this.pieChart1 = new CIM.PieChart();
+            this.lblOK = new System.Windows.Forms.Label();
+            this.lblNG = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -632,9 +632,9 @@
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.Color.White;
+            this.groupBox5.Controls.Add(this.lblNG);
             this.groupBox5.Controls.Add(this.panel2);
             this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.lblNG);
             this.groupBox5.Location = new System.Drawing.Point(1014, 21);
             this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox5.Name = "groupBox5";
@@ -677,33 +677,23 @@
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
+            this.label14.Dock = System.Windows.Forms.DockStyle.Top;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label14.Location = new System.Drawing.Point(103, 17);
+            this.label14.Location = new System.Drawing.Point(3, 28);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(49, 29);
+            this.label14.Size = new System.Drawing.Size(262, 29);
             this.label14.TabIndex = 14;
             this.label14.Text = "NG";
-            // 
-            // lblNG
-            // 
-            this.lblNG.AutoSize = true;
-            this.lblNG.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
-            this.lblNG.Location = new System.Drawing.Point(100, 85);
-            this.lblNG.Name = "lblNG";
-            this.lblNG.Size = new System.Drawing.Size(40, 42);
-            this.lblNG.TabIndex = 17;
-            this.lblNG.Text = "0";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.White;
+            this.groupBox4.Controls.Add(this.lblOK);
             this.groupBox4.Controls.Add(this.panel1);
             this.groupBox4.Controls.Add(this.label20);
-            this.groupBox4.Controls.Add(this.lblOK);
             this.groupBox4.Location = new System.Drawing.Point(703, 19);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox4.Name = "groupBox4";
@@ -745,26 +735,16 @@
             // 
             // label20
             // 
-            this.label20.AutoSize = true;
+            this.label20.Dock = System.Windows.Forms.DockStyle.Top;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
             this.label20.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label20.Location = new System.Drawing.Point(113, 17);
+            this.label20.Location = new System.Drawing.Point(3, 28);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(48, 29);
+            this.label20.Size = new System.Drawing.Size(268, 34);
             this.label20.TabIndex = 15;
             this.label20.Text = "OK";
-            // 
-            // lblOK
-            // 
-            this.lblOK.AutoSize = true;
-            this.lblOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
-            this.lblOK.Location = new System.Drawing.Point(86, 80);
-            this.lblOK.Name = "lblOK";
-            this.lblOK.Size = new System.Drawing.Size(40, 42);
-            this.lblOK.TabIndex = 14;
-            this.lblOK.Text = "0";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // groupBox6
             // 
@@ -963,14 +943,6 @@
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
-            // pieChart1
-            // 
-            this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(370, 215);
-            this.pieChart1.TabIndex = 12;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -1077,6 +1049,38 @@
             this.lblTime.TabIndex = 24;
             this.lblTime.Text = "time";
             // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(255, 15);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(370, 215);
+            this.pieChart1.TabIndex = 12;
+            // 
+            // lblOK
+            // 
+            this.lblOK.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
+            this.lblOK.Location = new System.Drawing.Point(3, 62);
+            this.lblOK.Name = "lblOK";
+            this.lblOK.Size = new System.Drawing.Size(268, 42);
+            this.lblOK.TabIndex = 18;
+            this.lblOK.Text = "0";
+            this.lblOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblNG
+            // 
+            this.lblNG.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblNG.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
+            this.lblNG.Location = new System.Drawing.Point(3, 57);
+            this.lblNG.Name = "lblNG";
+            this.lblNG.Size = new System.Drawing.Size(262, 42);
+            this.lblNG.TabIndex = 21;
+            this.lblNG.Text = "0";
+            this.lblNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1107,11 +1111,9 @@
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -1145,13 +1147,11 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label lblperNG;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label lblNG;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label lblperOK;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label lblOK;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label19;
@@ -1214,6 +1214,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn testtime;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label lblNG;
+        private System.Windows.Forms.Label lblOK;
     }
 }
 
