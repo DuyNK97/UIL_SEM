@@ -27,7 +27,8 @@ namespace UILAlignProject.PLC
         public event EventHandler HaveNewSampleEvent;
         int interval = 50;
         bool isTest = false;
-        int MxPort1 = 5;
+        //int MxPort1 = 5;
+        int MxPort1 = 1;
         int MxPort2 = 21;
         int MxPort3 = 36;
         int MxPort4 = 56;
@@ -914,6 +915,24 @@ namespace UILAlignProject.PLC
             short[] res4 = PLCExtension.ConvertStringToShortArr(((string)currvalue));
             return WriteWord($"ZR{regrister}", res4.Length, indexPLC, ref res4);
         }
+        //public bool WriteDString(string data, int indexPlc, string register ,int length)
+        //{            
+        //    int targetLength = length*2; 
+        //    if (data.Length < targetLength)
+        //    {               
+        //        data = data.PadRight(targetLength, '\0');
+        //    }
+
+        //    short[] shortData = new short[data.Length];
+        //    for (int i = 0; i < data.Length; i++)
+        //    {
+        //        shortData[i] = (short)data[i]; 
+        //    }
+
+        //    return WriteWord(register, shortData.Length, indexPlc, ref shortData);
+        //}
+
+
         public bool WriteWord(string register, int leng, int indexPlc, ref short[] data)
         {
             ActUtlType64Class plc = PlcWrite1;
