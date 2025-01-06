@@ -35,53 +35,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
-            this.labelDate = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnFormSearch = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.lblperNG = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.lblNG = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label21 = new System.Windows.Forms.Label();
-            this.lblperOK = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.lblOK = new System.Windows.Forms.Label();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.lblPLC4 = new UnilityCommand.SubControl.CustomLabel2();
-            this.lblPLC2 = new UnilityCommand.SubControl.CustomLabel2();
-            this.lblPLC3 = new UnilityCommand.SubControl.CustomLabel2();
-            this.lblPLC1 = new UnilityCommand.SubControl.CustomLabel2();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbltotal = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.MessageTimer = new System.Windows.Forms.Timer(this.components);
-            this.lblalert = new Sunny.UI.UILabel();
-            this.btnClearData = new System.Windows.Forms.Button();
-            this.lblTime = new System.Windows.Forms.Label();
             this.index = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fbondcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -114,8 +67,55 @@
             this.Result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Remark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.testtime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button2 = new System.Windows.Forms.Button();
+            this.labelDate = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnFormSearch = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lblperNG = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lblNG = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.lblperOK = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lblOK = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.lblPLC4 = new UnilityCommand.SubControl.CustomLabel2();
+            this.lblPLC2 = new UnilityCommand.SubControl.CustomLabel2();
+            this.lblPLC3 = new UnilityCommand.SubControl.CustomLabel2();
+            this.lblPLC1 = new UnilityCommand.SubControl.CustomLabel2();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.pieChart1 = new CIM.PieChart();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lbltotal = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.MessageTimer = new System.Windows.Forms.Timer(this.components);
+            this.lblalert = new Sunny.UI.UILabel();
+            this.btnClearData = new System.Windows.Forms.Button();
+            this.lblTime = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -220,6 +220,260 @@
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1_CellFormatting);
             // 
+            // index
+            // 
+            this.index.HeaderText = "No.";
+            this.index.MinimumWidth = 6;
+            this.index.Name = "index";
+            this.index.ReadOnly = true;
+            this.index.Width = 125;
+            // 
+            // QR
+            // 
+            this.QR.HeaderText = "Top Housing\nQR";
+            this.QR.MinimumWidth = 6;
+            this.QR.Name = "QR";
+            this.QR.ReadOnly = true;
+            this.QR.Width = 300;
+            // 
+            // fbondcode
+            // 
+            this.fbondcode.HeaderText = "1st Glue Code";
+            this.fbondcode.MinimumWidth = 6;
+            this.fbondcode.Name = "fbondcode";
+            this.fbondcode.ReadOnly = true;
+            this.fbondcode.Width = 125;
+            // 
+            // foutput
+            // 
+            this.foutput.HeaderText = "1st F-Ouput/ E-Input";
+            this.foutput.MinimumWidth = 6;
+            this.foutput.Name = "foutput";
+            this.foutput.ReadOnly = true;
+            this.foutput.Width = 125;
+            // 
+            // box1_glue_amount
+            // 
+            this.box1_glue_amount.HeaderText = "1st Glue Amount";
+            this.box1_glue_amount.MinimumWidth = 6;
+            this.box1_glue_amount.Name = "box1_glue_amount";
+            this.box1_glue_amount.ReadOnly = true;
+            this.box1_glue_amount.Width = 125;
+            // 
+            // box1_glue_dischargevolume_vision
+            // 
+            this.box1_glue_dischargevolume_vision.HeaderText = "1st  Glue discharge\nvolume Vision";
+            this.box1_glue_dischargevolume_vision.MinimumWidth = 6;
+            this.box1_glue_dischargevolume_vision.Name = "box1_glue_dischargevolume_vision";
+            this.box1_glue_dischargevolume_vision.ReadOnly = true;
+            this.box1_glue_dischargevolume_vision.Width = 125;
+            // 
+            // sbondocde
+            // 
+            this.sbondocde.HeaderText = "2nd Glue Code";
+            this.sbondocde.MinimumWidth = 6;
+            this.sbondocde.Name = "sbondocde";
+            this.sbondocde.ReadOnly = true;
+            this.sbondocde.Width = 125;
+            // 
+            // soutput
+            // 
+            this.soutput.HeaderText = "2nd F-Ouput/ E-Input";
+            this.soutput.MinimumWidth = 6;
+            this.soutput.Name = "soutput";
+            this.soutput.ReadOnly = true;
+            this.soutput.Width = 125;
+            // 
+            // insulator_bar_code
+            // 
+            this.insulator_bar_code.HeaderText = "Insulator\nbar code";
+            this.insulator_bar_code.MinimumWidth = 6;
+            this.insulator_bar_code.Name = "insulator_bar_code";
+            this.insulator_bar_code.ReadOnly = true;
+            this.insulator_bar_code.Width = 125;
+            // 
+            // box1_glueoverflow_vison
+            // 
+            this.box1_glueoverflow_vison.HeaderText = "1st Glue\noverflow vision";
+            this.box1_glueoverflow_vison.MinimumWidth = 6;
+            this.box1_glueoverflow_vison.Name = "box1_glueoverflow_vison";
+            this.box1_glueoverflow_vison.ReadOnly = true;
+            this.box1_glueoverflow_vison.Width = 125;
+            // 
+            // box1_heated_air_curing
+            // 
+            this.box1_heated_air_curing.HeaderText = "1st heated Air curing";
+            this.box1_heated_air_curing.MinimumWidth = 6;
+            this.box1_heated_air_curing.Name = "box1_heated_air_curing";
+            this.box1_heated_air_curing.ReadOnly = true;
+            this.box1_heated_air_curing.Width = 200;
+            // 
+            // box2_glue_amount
+            // 
+            this.box2_glue_amount.HeaderText = "2nd Glue Amount";
+            this.box2_glue_amount.MinimumWidth = 6;
+            this.box2_glue_amount.Name = "box2_glue_amount";
+            this.box2_glue_amount.ReadOnly = true;
+            this.box2_glue_amount.Width = 125;
+            // 
+            // box2_glue_dischargevolume_vision
+            // 
+            this.box2_glue_dischargevolume_vision.HeaderText = "2nd Glue discharge\nvolume Vision";
+            this.box2_glue_dischargevolume_vision.MinimumWidth = 6;
+            this.box2_glue_dischargevolume_vision.Name = "box2_glue_dischargevolume_vision";
+            this.box2_glue_dischargevolume_vision.ReadOnly = true;
+            this.box2_glue_dischargevolume_vision.Width = 125;
+            // 
+            // FPCBbar_code
+            // 
+            this.FPCBbar_code.HeaderText = "FPCB\nbar code";
+            this.FPCBbar_code.MinimumWidth = 6;
+            this.FPCBbar_code.Name = "FPCBbar_code";
+            this.FPCBbar_code.ReadOnly = true;
+            this.FPCBbar_code.Width = 125;
+            // 
+            // box2_glueoverflow_vision
+            // 
+            this.box2_glueoverflow_vision.HeaderText = "2nd Glue\noverflow vision";
+            this.box2_glueoverflow_vision.MinimumWidth = 6;
+            this.box2_glueoverflow_vision.Name = "box2_glueoverflow_vision";
+            this.box2_glueoverflow_vision.ReadOnly = true;
+            this.box2_glueoverflow_vision.Width = 125;
+            // 
+            // box2_heated_air_curing
+            // 
+            this.box2_heated_air_curing.HeaderText = "2nd heated Air curing";
+            this.box2_heated_air_curing.MinimumWidth = 6;
+            this.box2_heated_air_curing.Name = "box2_heated_air_curing";
+            this.box2_heated_air_curing.ReadOnly = true;
+            this.box2_heated_air_curing.Width = 200;
+            // 
+            // tbondcode
+            // 
+            this.tbondcode.HeaderText = "3rd Glue Code";
+            this.tbondcode.MinimumWidth = 6;
+            this.tbondcode.Name = "tbondcode";
+            this.tbondcode.ReadOnly = true;
+            this.tbondcode.Width = 125;
+            // 
+            // toutput
+            // 
+            this.toutput.HeaderText = "3rd F-Ouput/ E-Input";
+            this.toutput.MinimumWidth = 6;
+            this.toutput.Name = "toutput";
+            this.toutput.ReadOnly = true;
+            this.toutput.Width = 125;
+            // 
+            // box2_heigh
+            // 
+            this.box2_heigh.HeaderText = "Box 2 heigh";
+            this.box2_heigh.MinimumWidth = 6;
+            this.box2_heigh.Name = "box2_heigh";
+            this.box2_heigh.ReadOnly = true;
+            this.box2_heigh.Width = 125;
+            // 
+            // box3_glue_amount
+            // 
+            this.box3_glue_amount.HeaderText = "3rd Glue Amount";
+            this.box3_glue_amount.MinimumWidth = 6;
+            this.box3_glue_amount.Name = "box3_glue_amount";
+            this.box3_glue_amount.ReadOnly = true;
+            this.box3_glue_amount.Width = 125;
+            // 
+            // box3_glue_dischargevolume_vision
+            // 
+            this.box3_glue_dischargevolume_vision.HeaderText = "3rd Glue discharge\nvolume Vision";
+            this.box3_glue_dischargevolume_vision.MinimumWidth = 6;
+            this.box3_glue_dischargevolume_vision.Name = "box3_glue_dischargevolume_vision";
+            this.box3_glue_dischargevolume_vision.ReadOnly = true;
+            this.box3_glue_dischargevolume_vision.Width = 125;
+            // 
+            // box3_heated_air_curing
+            // 
+            this.box3_heated_air_curing.HeaderText = "3rd heated Air curing";
+            this.box3_heated_air_curing.MinimumWidth = 6;
+            this.box3_heated_air_curing.Name = "box3_heated_air_curing";
+            this.box3_heated_air_curing.ReadOnly = true;
+            this.box3_heated_air_curing.Width = 200;
+            // 
+            // box3_glueoverflow_vision
+            // 
+            this.box3_glueoverflow_vision.HeaderText = "3rd Glue\noverflow vision";
+            this.box3_glueoverflow_vision.MinimumWidth = 6;
+            this.box3_glueoverflow_vision.Name = "box3_glueoverflow_vision";
+            this.box3_glueoverflow_vision.ReadOnly = true;
+            this.box3_glueoverflow_vision.Width = 125;
+            // 
+            // tighness_and_location_vision
+            // 
+            this.tighness_and_location_vision.HeaderText = "Tightness and location vision";
+            this.tighness_and_location_vision.MinimumWidth = 6;
+            this.tighness_and_location_vision.Name = "tighness_and_location_vision";
+            this.tighness_and_location_vision.ReadOnly = true;
+            this.tighness_and_location_vision.Width = 125;
+            // 
+            // height_parallelism
+            // 
+            this.height_parallelism.HeaderText = "Height /\n Parallelism";
+            this.height_parallelism.MinimumWidth = 6;
+            this.height_parallelism.Name = "height_parallelism";
+            this.height_parallelism.ReadOnly = true;
+            this.height_parallelism.Width = 125;
+            // 
+            // resistance
+            // 
+            this.resistance.HeaderText = "Resistance";
+            this.resistance.MinimumWidth = 6;
+            this.resistance.Name = "resistance";
+            this.resistance.ReadOnly = true;
+            this.resistance.Width = 125;
+            // 
+            // air_leakagetest_detail
+            // 
+            this.air_leakagetest_detail.HeaderText = "Air Leakage\nTest Detail";
+            this.air_leakagetest_detail.MinimumWidth = 6;
+            this.air_leakagetest_detail.Name = "air_leakagetest_detail";
+            this.air_leakagetest_detail.ReadOnly = true;
+            this.air_leakagetest_detail.Width = 125;
+            // 
+            // air_leakagetest_result
+            // 
+            this.air_leakagetest_result.HeaderText = "Air Leakage\nTest Result";
+            this.air_leakagetest_result.MinimumWidth = 6;
+            this.air_leakagetest_result.Name = "air_leakagetest_result";
+            this.air_leakagetest_result.ReadOnly = true;
+            this.air_leakagetest_result.Width = 125;
+            // 
+            // Port
+            // 
+            this.Port.HeaderText = "Port";
+            this.Port.MinimumWidth = 6;
+            this.Port.Name = "Port";
+            this.Port.ReadOnly = true;
+            this.Port.Width = 125;
+            // 
+            // Result
+            // 
+            this.Result.HeaderText = "Result";
+            this.Result.MinimumWidth = 6;
+            this.Result.Name = "Result";
+            this.Result.ReadOnly = true;
+            this.Result.Width = 125;
+            // 
+            // Remark
+            // 
+            this.Remark.HeaderText = "Remark";
+            this.Remark.Name = "Remark";
+            this.Remark.ReadOnly = true;
+            // 
+            // testtime
+            // 
+            this.testtime.HeaderText = "Test time";
+            this.testtime.MinimumWidth = 6;
+            this.testtime.Name = "testtime";
+            this.testtime.ReadOnly = true;
+            this.testtime.Width = 250;
+            // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -277,6 +531,17 @@
             this.panel3.Size = new System.Drawing.Size(1930, 79);
             this.panel3.TabIndex = 24;
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1000, 31);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 19;
+            this.button6.Text = "changerework";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(893, 31);
@@ -285,6 +550,7 @@
             this.button5.TabIndex = 18;
             this.button5.Text = "button4";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
@@ -295,6 +561,7 @@
             this.button4.TabIndex = 17;
             this.button4.Text = "button3";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
@@ -305,6 +572,7 @@
             this.button3.TabIndex = 16;
             this.button3.Text = "button2";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button1
@@ -315,6 +583,7 @@
             this.button1.TabIndex = 15;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
@@ -679,6 +948,14 @@
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(255, 15);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(370, 215);
+            this.pieChart1.TabIndex = 12;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -784,278 +1061,6 @@
             this.lblTime.Size = new System.Drawing.Size(604, 34);
             this.lblTime.TabIndex = 24;
             this.lblTime.Text = "time";
-            // 
-            // index
-            // 
-            this.index.HeaderText = "No.";
-            this.index.MinimumWidth = 6;
-            this.index.Name = "index";
-            this.index.ReadOnly = true;
-            this.index.Width = 125;
-            // 
-            // QR
-            // 
-            this.QR.HeaderText = "Top Housing\nQR";
-            this.QR.MinimumWidth = 6;
-            this.QR.Name = "QR";
-            this.QR.ReadOnly = true;
-            this.QR.Width = 300;
-            // 
-            // fbondcode
-            // 
-            this.fbondcode.HeaderText = "1st Glue Code";
-            this.fbondcode.MinimumWidth = 6;
-            this.fbondcode.Name = "fbondcode";
-            this.fbondcode.ReadOnly = true;
-            this.fbondcode.Width = 125;
-            // 
-            // foutput
-            // 
-            this.foutput.HeaderText = "1st F-Ouput/ E-Input";
-            this.foutput.MinimumWidth = 6;
-            this.foutput.Name = "foutput";
-            this.foutput.ReadOnly = true;
-            this.foutput.Width = 125;
-            // 
-            // box1_glue_amount
-            // 
-            this.box1_glue_amount.HeaderText = "1st Glue Amount";
-            this.box1_glue_amount.MinimumWidth = 6;
-            this.box1_glue_amount.Name = "box1_glue_amount";
-            this.box1_glue_amount.ReadOnly = true;
-            this.box1_glue_amount.Width = 125;
-            // 
-            // box1_glue_dischargevolume_vision
-            // 
-            this.box1_glue_dischargevolume_vision.HeaderText = "1st  Glue discharge\nvolume Vision";
-            this.box1_glue_dischargevolume_vision.MinimumWidth = 6;
-            this.box1_glue_dischargevolume_vision.Name = "box1_glue_dischargevolume_vision";
-            this.box1_glue_dischargevolume_vision.ReadOnly = true;
-            this.box1_glue_dischargevolume_vision.Width = 125;
-            // 
-            // sbondocde
-            // 
-            this.sbondocde.HeaderText = "2nd Glue Code";
-            this.sbondocde.MinimumWidth = 6;
-            this.sbondocde.Name = "sbondocde";
-            this.sbondocde.ReadOnly = true;
-            this.sbondocde.Width = 125;
-            // 
-            // soutput
-            // 
-            this.soutput.HeaderText = "2nd F-Ouput/ E-Input";
-            this.soutput.MinimumWidth = 6;
-            this.soutput.Name = "soutput";
-            this.soutput.ReadOnly = true;
-            this.soutput.Width = 125;
-            // 
-            // insulator_bar_code
-            // 
-            this.insulator_bar_code.HeaderText = "Insulator\nbar code";
-            this.insulator_bar_code.MinimumWidth = 6;
-            this.insulator_bar_code.Name = "insulator_bar_code";
-            this.insulator_bar_code.ReadOnly = true;
-            this.insulator_bar_code.Width = 125;
-            // 
-            // box1_glueoverflow_vison
-            // 
-            this.box1_glueoverflow_vison.HeaderText = "1st Glue\noverflow vision";
-            this.box1_glueoverflow_vison.MinimumWidth = 6;
-            this.box1_glueoverflow_vison.Name = "box1_glueoverflow_vison";
-            this.box1_glueoverflow_vison.ReadOnly = true;
-            this.box1_glueoverflow_vison.Width = 125;
-            // 
-            // box1_heated_air_curing
-            // 
-            this.box1_heated_air_curing.HeaderText = "1st heated Air curing";
-            this.box1_heated_air_curing.MinimumWidth = 6;
-            this.box1_heated_air_curing.Name = "box1_heated_air_curing";
-            this.box1_heated_air_curing.ReadOnly = true;
-            this.box1_heated_air_curing.Width = 200;
-            // 
-            // box2_glue_amount
-            // 
-            this.box2_glue_amount.HeaderText = "2nd Glue Amount";
-            this.box2_glue_amount.MinimumWidth = 6;
-            this.box2_glue_amount.Name = "box2_glue_amount";
-            this.box2_glue_amount.ReadOnly = true;
-            this.box2_glue_amount.Width = 125;
-            // 
-            // box2_glue_dischargevolume_vision
-            // 
-            this.box2_glue_dischargevolume_vision.HeaderText = "2nd Glue discharge\nvolume Vision";
-            this.box2_glue_dischargevolume_vision.MinimumWidth = 6;
-            this.box2_glue_dischargevolume_vision.Name = "box2_glue_dischargevolume_vision";
-            this.box2_glue_dischargevolume_vision.ReadOnly = true;
-            this.box2_glue_dischargevolume_vision.Width = 125;
-            // 
-            // FPCBbar_code
-            // 
-            this.FPCBbar_code.HeaderText = "FPCB\nbar code";
-            this.FPCBbar_code.MinimumWidth = 6;
-            this.FPCBbar_code.Name = "FPCBbar_code";
-            this.FPCBbar_code.ReadOnly = true;
-            this.FPCBbar_code.Width = 125;
-            // 
-            // box2_glueoverflow_vision
-            // 
-            this.box2_glueoverflow_vision.HeaderText = "2nd Glue\noverflow vision";
-            this.box2_glueoverflow_vision.MinimumWidth = 6;
-            this.box2_glueoverflow_vision.Name = "box2_glueoverflow_vision";
-            this.box2_glueoverflow_vision.ReadOnly = true;
-            this.box2_glueoverflow_vision.Width = 125;
-            // 
-            // box2_heated_air_curing
-            // 
-            this.box2_heated_air_curing.HeaderText = "2nd heated Air curing";
-            this.box2_heated_air_curing.MinimumWidth = 6;
-            this.box2_heated_air_curing.Name = "box2_heated_air_curing";
-            this.box2_heated_air_curing.ReadOnly = true;
-            this.box2_heated_air_curing.Width = 200;
-            // 
-            // tbondcode
-            // 
-            this.tbondcode.HeaderText = "3rd Glue Code";
-            this.tbondcode.MinimumWidth = 6;
-            this.tbondcode.Name = "tbondcode";
-            this.tbondcode.ReadOnly = true;
-            this.tbondcode.Width = 125;
-            // 
-            // toutput
-            // 
-            this.toutput.HeaderText = "3rd F-Ouput/ E-Input";
-            this.toutput.MinimumWidth = 6;
-            this.toutput.Name = "toutput";
-            this.toutput.ReadOnly = true;
-            this.toutput.Width = 125;
-            // 
-            // box2_heigh
-            // 
-            this.box2_heigh.HeaderText = "Box 2 heigh";
-            this.box2_heigh.MinimumWidth = 6;
-            this.box2_heigh.Name = "box2_heigh";
-            this.box2_heigh.ReadOnly = true;
-            this.box2_heigh.Width = 125;
-            // 
-            // box3_glue_amount
-            // 
-            this.box3_glue_amount.HeaderText = "3rd Glue Amount";
-            this.box3_glue_amount.MinimumWidth = 6;
-            this.box3_glue_amount.Name = "box3_glue_amount";
-            this.box3_glue_amount.ReadOnly = true;
-            this.box3_glue_amount.Width = 125;
-            // 
-            // box3_glue_dischargevolume_vision
-            // 
-            this.box3_glue_dischargevolume_vision.HeaderText = "3rd Glue discharge\nvolume Vision";
-            this.box3_glue_dischargevolume_vision.MinimumWidth = 6;
-            this.box3_glue_dischargevolume_vision.Name = "box3_glue_dischargevolume_vision";
-            this.box3_glue_dischargevolume_vision.ReadOnly = true;
-            this.box3_glue_dischargevolume_vision.Width = 125;
-            // 
-            // box3_heated_air_curing
-            // 
-            this.box3_heated_air_curing.HeaderText = "3rd heated Air curing";
-            this.box3_heated_air_curing.MinimumWidth = 6;
-            this.box3_heated_air_curing.Name = "box3_heated_air_curing";
-            this.box3_heated_air_curing.ReadOnly = true;
-            this.box3_heated_air_curing.Width = 200;
-            // 
-            // box3_glueoverflow_vision
-            // 
-            this.box3_glueoverflow_vision.HeaderText = "3rd Glue\noverflow vision";
-            this.box3_glueoverflow_vision.MinimumWidth = 6;
-            this.box3_glueoverflow_vision.Name = "box3_glueoverflow_vision";
-            this.box3_glueoverflow_vision.ReadOnly = true;
-            this.box3_glueoverflow_vision.Width = 125;
-            // 
-            // tighness_and_location_vision
-            // 
-            this.tighness_and_location_vision.HeaderText = "Tightness and location vision";
-            this.tighness_and_location_vision.MinimumWidth = 6;
-            this.tighness_and_location_vision.Name = "tighness_and_location_vision";
-            this.tighness_and_location_vision.ReadOnly = true;
-            this.tighness_and_location_vision.Width = 125;
-            // 
-            // height_parallelism
-            // 
-            this.height_parallelism.HeaderText = "Height /\n Parallelism";
-            this.height_parallelism.MinimumWidth = 6;
-            this.height_parallelism.Name = "height_parallelism";
-            this.height_parallelism.ReadOnly = true;
-            this.height_parallelism.Width = 125;
-            // 
-            // resistance
-            // 
-            this.resistance.HeaderText = "Resistance";
-            this.resistance.MinimumWidth = 6;
-            this.resistance.Name = "resistance";
-            this.resistance.ReadOnly = true;
-            this.resistance.Width = 125;
-            // 
-            // air_leakagetest_detail
-            // 
-            this.air_leakagetest_detail.HeaderText = "Air Leakage\nTest Detail";
-            this.air_leakagetest_detail.MinimumWidth = 6;
-            this.air_leakagetest_detail.Name = "air_leakagetest_detail";
-            this.air_leakagetest_detail.ReadOnly = true;
-            this.air_leakagetest_detail.Width = 125;
-            // 
-            // air_leakagetest_result
-            // 
-            this.air_leakagetest_result.HeaderText = "Air Leakage\nTest Result";
-            this.air_leakagetest_result.MinimumWidth = 6;
-            this.air_leakagetest_result.Name = "air_leakagetest_result";
-            this.air_leakagetest_result.ReadOnly = true;
-            this.air_leakagetest_result.Width = 125;
-            // 
-            // Port
-            // 
-            this.Port.HeaderText = "Port";
-            this.Port.MinimumWidth = 6;
-            this.Port.Name = "Port";
-            this.Port.ReadOnly = true;
-            this.Port.Width = 125;
-            // 
-            // Result
-            // 
-            this.Result.HeaderText = "Result";
-            this.Result.MinimumWidth = 6;
-            this.Result.Name = "Result";
-            this.Result.ReadOnly = true;
-            this.Result.Width = 125;
-            // 
-            // Remark
-            // 
-            this.Remark.HeaderText = "Remark";
-            this.Remark.Name = "Remark";
-            this.Remark.ReadOnly = true;
-            // 
-            // testtime
-            // 
-            this.testtime.HeaderText = "Test time";
-            this.testtime.MinimumWidth = 6;
-            this.testtime.Name = "testtime";
-            this.testtime.ReadOnly = true;
-            this.testtime.Width = 250;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(1000, 31);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 19;
-            this.button6.Text = "changerework";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // pieChart1
-            // 
-            this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(370, 215);
-            this.pieChart1.TabIndex = 12;
             // 
             // FormMain
             // 

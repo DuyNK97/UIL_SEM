@@ -815,7 +815,7 @@ namespace CIM
         //Read data 
         #region
 
-#if DEBUG
+#if !DEBUG
         private void ReadData1(string QRcode, string glue_amount, string box1dispenser_status, string glue_discharge_volume_vision, string insulator_bar_code, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string Bond, string Thawingtime,string reworkinfo)
         {
 #else
@@ -910,7 +910,7 @@ namespace CIM
            
         }
 
-#if DEBUG
+#if !DEBUG
         private void ReadData2(string QRcode, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string box2dispenser_status, string glue_amount, string glue_discharge_volume_vision, string fpcb_bar_code, string glue_overflow_vision, string Bond, string Thawingtime,string reworkinfo)
         {
 #else
@@ -1003,7 +1003,7 @@ namespace CIM
                 Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;TestTime: {formattedDateTime}, ###");
             }
         }
-#if DEBUG
+#if !DEBUG
         private void ReadData3(string QRcode, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string DISTANCE, string glue_amount, string glue_discharge_volume_vision, string Bond, string Thawingtime,string reworkinfo)
         {
 
@@ -1089,7 +1089,7 @@ namespace CIM
                 Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;TestTime: {formattedDateTime}, ###");
             }
         }
-#if DEBUG
+#if !DEBUG
         private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName,string reworkinfo)
         {
 
@@ -2716,26 +2716,26 @@ namespace CIM
         private void button1_Click(object sender, EventArgs e)
         {
 
-            ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","R1,R13");
+           // ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","R1,R13");
             a++;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25","R2");
+          //  ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25","R2");
             a1++;
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25","R3");
+           // ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25","R3");
             a2++;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"R4");
+           // ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"R4");
             a3++;
         }
 
