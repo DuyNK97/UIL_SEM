@@ -370,7 +370,7 @@ namespace CIM
 
         private void HandleChangeRework(int indexPLC, bool currentValue)
         {
-            string reworkinfo = SingleTonPlcControl.Instance.GetValueRegister((int)EPLC.PLC_1, "REWORK_INFO").ToString().Trim();
+            string reworkinfo = SingleTonPlcControl.Instance.GetValueRegister(indexPLC, "REWORK_INFO").ToString().Trim();
             switch (indexPLC)
             {
                 case (int)EPLC.PLC_1:
@@ -387,6 +387,7 @@ namespace CIM
 
                 case (int)EPLC.PLC_4:
                     Global.CurrModeB4 = currentValue ? (int)ERework.REWORK : (int)ERework.NORMAL;
+                   
                     break;
 
                 default:
