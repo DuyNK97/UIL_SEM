@@ -342,7 +342,7 @@ namespace CIM
                 else if (obj.Title == "CHANGE_MODE_REWORK")
                 {
                     HandleChangeRework(obj.IndexPLC, (bool)obj.CurrentValue);
-                   
+
                 }
                 else if (obj.Title == "CHANGE_MODE_STATE")
                 {
@@ -1353,7 +1353,8 @@ namespace CIM
                 .ToList();
 
                 string remark = string.Join(",", reworks);
-
+                if (string.IsNullOrEmpty(remark))
+                    remark = "Empty";
 
                 EXCELDATA data1 = new EXCELDATA
                 {
@@ -2722,26 +2723,26 @@ namespace CIM
         private void button1_Click(object sender, EventArgs e)
         {
 
-           // ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","R1,R13");
+           //ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","");
             a++;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-          //  ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25","R2");
+            //ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25","");
             a1++;
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-           // ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25","R3");
+            //ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25","");
             a2++;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-           // ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"R4");
+            //ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"");
             a3++;
         }
 

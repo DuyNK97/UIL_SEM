@@ -82,11 +82,13 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lblNG = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
             this.lblperNG = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lblOK = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.lblperOK = new System.Windows.Forms.Label();
@@ -104,6 +106,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pieChart1 = new CIM.PieChart();
             this.label3 = new System.Windows.Forms.Label();
             this.lbltotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -114,9 +117,6 @@
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
-            this.pieChart1 = new CIM.PieChart();
-            this.lblOK = new System.Windows.Forms.Label();
-            this.lblNG = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -139,7 +139,7 @@
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label9.Location = new System.Drawing.Point(16, -4);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(118, 25);
+            this.label9.Size = new System.Drawing.Size(97, 20);
             this.label9.TabIndex = 21;
             this.label9.Text = "Master Data";
             // 
@@ -202,7 +202,7 @@
             this.Remark,
             this.testtime});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 28);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 23);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -217,7 +217,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1879, 448);
+            this.dataGridView1.Size = new System.Drawing.Size(1879, 453);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1_CellFormatting);
             // 
@@ -497,7 +497,7 @@
             this.labelDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDate.Location = new System.Drawing.Point(28, 57);
             this.labelDate.Name = "labelDate";
-            this.labelDate.Size = new System.Drawing.Size(0, 24);
+            this.labelDate.Size = new System.Drawing.Size(0, 18);
             this.labelDate.TabIndex = 16;
             // 
             // timer1
@@ -608,7 +608,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label1.Location = new System.Drawing.Point(222, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(375, 36);
+            this.label1.Size = new System.Drawing.Size(309, 29);
             this.label1.TabIndex = 14;
             this.label1.Text = "Master Data Management";
             // 
@@ -643,6 +643,18 @@
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
+            // lblNG
+            // 
+            this.lblNG.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblNG.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
+            this.lblNG.Location = new System.Drawing.Point(3, 55);
+            this.lblNG.Name = "lblNG";
+            this.lblNG.Size = new System.Drawing.Size(262, 65);
+            this.lblNG.TabIndex = 21;
+            this.lblNG.Text = "0";
+            this.lblNG.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.label13);
@@ -660,7 +672,7 @@
             this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(79)))), ((int)(((byte)(79)))));
             this.label13.Location = new System.Drawing.Point(115, 37);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(73, 25);
+            this.label13.Size = new System.Drawing.Size(59, 20);
             this.label13.TabIndex = 21;
             this.label13.Text = "vs total";
             // 
@@ -671,19 +683,19 @@
             this.lblperNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(35)))), ((int)(((byte)(24)))));
             this.lblperNG.Location = new System.Drawing.Point(25, 36);
             this.lblperNG.Name = "lblperNG";
-            this.lblperNG.Size = new System.Drawing.Size(41, 25);
+            this.lblperNG.Size = new System.Drawing.Size(32, 20);
             this.lblperNG.TabIndex = 20;
             this.lblperNG.Text = "0%";
             // 
             // label14
             // 
             this.label14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.Red;
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label14.Location = new System.Drawing.Point(3, 28);
+            this.label14.Location = new System.Drawing.Point(3, 23);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(262, 29);
+            this.label14.Size = new System.Drawing.Size(262, 32);
             this.label14.TabIndex = 14;
             this.label14.Text = "NG";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -702,6 +714,18 @@
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             // 
+            // lblOK
+            // 
+            this.lblOK.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
+            this.lblOK.Location = new System.Drawing.Point(3, 57);
+            this.lblOK.Name = "lblOK";
+            this.lblOK.Size = new System.Drawing.Size(268, 65);
+            this.lblOK.TabIndex = 18;
+            this.lblOK.Text = "0";
+            this.lblOK.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label21);
@@ -718,7 +742,7 @@
             this.label21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(79)))), ((int)(((byte)(79)))));
             this.label21.Location = new System.Drawing.Point(105, 45);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(73, 25);
+            this.label21.Size = new System.Drawing.Size(59, 20);
             this.label21.TabIndex = 18;
             this.label21.Text = "vs total";
             // 
@@ -729,17 +753,17 @@
             this.lblperOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(122)))), ((int)(((byte)(72)))));
             this.lblperOK.Location = new System.Drawing.Point(30, 43);
             this.lblperOK.Name = "lblperOK";
-            this.lblperOK.Size = new System.Drawing.Size(41, 25);
+            this.lblperOK.Size = new System.Drawing.Size(32, 20);
             this.lblperOK.TabIndex = 17;
             this.lblperOK.Text = "0%";
             // 
             // label20
             // 
             this.label20.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.Color.LimeGreen;
             this.label20.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label20.Location = new System.Drawing.Point(3, 28);
+            this.label20.Location = new System.Drawing.Point(3, 23);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(268, 34);
             this.label20.TabIndex = 15;
@@ -783,7 +807,7 @@
             this.lblPLC4.Name = "lblPLC4";
             this.lblPLC4.Radius = 50;
             this.lblPLC4.ReadOnly = true;
-            this.lblPLC4.Size = new System.Drawing.Size(106, 21);
+            this.lblPLC4.Size = new System.Drawing.Size(93, 19);
             this.lblPLC4.TabIndex = 29;
             this.lblPLC4.Text = "Connected";
             // 
@@ -803,7 +827,7 @@
             this.lblPLC2.Name = "lblPLC2";
             this.lblPLC2.Radius = 50;
             this.lblPLC2.ReadOnly = true;
-            this.lblPLC2.Size = new System.Drawing.Size(106, 21);
+            this.lblPLC2.Size = new System.Drawing.Size(93, 19);
             this.lblPLC2.TabIndex = 28;
             this.lblPLC2.Text = "Connected";
             // 
@@ -823,7 +847,7 @@
             this.lblPLC3.Name = "lblPLC3";
             this.lblPLC3.Radius = 50;
             this.lblPLC3.ReadOnly = true;
-            this.lblPLC3.Size = new System.Drawing.Size(106, 21);
+            this.lblPLC3.Size = new System.Drawing.Size(93, 19);
             this.lblPLC3.TabIndex = 27;
             this.lblPLC3.Text = "Connected";
             // 
@@ -843,7 +867,7 @@
             this.lblPLC1.Name = "lblPLC1";
             this.lblPLC1.Radius = 50;
             this.lblPLC1.ReadOnly = true;
-            this.lblPLC1.Size = new System.Drawing.Size(106, 21);
+            this.lblPLC1.Size = new System.Drawing.Size(93, 19);
             this.lblPLC1.TabIndex = 1;
             this.lblPLC1.Text = "Connected";
             // 
@@ -855,7 +879,7 @@
             this.label11.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label11.Location = new System.Drawing.Point(11, -4);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(117, 29);
+            this.label11.Size = new System.Drawing.Size(94, 25);
             this.label11.TabIndex = 13;
             this.label11.Text = "IO Status";
             // 
@@ -866,7 +890,7 @@
             this.label19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label19.Location = new System.Drawing.Point(290, 164);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(72, 25);
+            this.label19.Size = new System.Drawing.Size(57, 20);
             this.label19.TabIndex = 22;
             this.label19.Text = "PLC 4";
             // 
@@ -877,7 +901,7 @@
             this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label16.Location = new System.Drawing.Point(26, 163);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(72, 25);
+            this.label16.Size = new System.Drawing.Size(57, 20);
             this.label16.TabIndex = 21;
             this.label16.Text = "PLC 3";
             // 
@@ -888,7 +912,7 @@
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label17.Location = new System.Drawing.Point(26, 85);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(72, 25);
+            this.label17.Size = new System.Drawing.Size(57, 20);
             this.label17.TabIndex = 19;
             this.label17.Text = "PLC 1";
             // 
@@ -899,7 +923,7 @@
             this.label18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.label18.Location = new System.Drawing.Point(290, 87);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(72, 25);
+            this.label18.Size = new System.Drawing.Size(57, 20);
             this.label18.TabIndex = 20;
             this.label18.Text = "PLC 2";
             // 
@@ -910,7 +934,7 @@
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(90)))), ((int)(((byte)(237)))));
             this.label5.Location = new System.Drawing.Point(12, -2);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 25);
+            this.label5.Size = new System.Drawing.Size(74, 20);
             this.label5.TabIndex = 20;
             this.label5.Text = "Statistics";
             // 
@@ -943,26 +967,34 @@
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(255, 15);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(370, 215);
+            this.pieChart1.TabIndex = 12;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label3.Location = new System.Drawing.Point(52, 15);
+            this.label3.Location = new System.Drawing.Point(74, 32);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 29);
+            this.label3.Size = new System.Drawing.Size(59, 26);
             this.label3.TabIndex = 10;
             this.label3.Text = "Total";
             // 
             // lbltotal
             // 
             this.lbltotal.AutoSize = true;
-            this.lbltotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbltotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbltotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
-            this.lbltotal.Location = new System.Drawing.Point(21, 83);
+            this.lbltotal.Location = new System.Drawing.Point(53, 109);
             this.lbltotal.Name = "lbltotal";
-            this.lbltotal.Size = new System.Drawing.Size(103, 42);
+            this.lbltotal.Size = new System.Drawing.Size(111, 46);
             this.lbltotal.TabIndex = 11;
             this.lbltotal.Text = "0 EA";
             // 
@@ -993,7 +1025,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(1790, 4);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 25);
+            this.label4.Size = new System.Drawing.Size(79, 21);
             this.label4.TabIndex = 16;
             this.label4.Text = "Design by";
             // 
@@ -1048,38 +1080,6 @@
             this.lblTime.Size = new System.Drawing.Size(604, 34);
             this.lblTime.TabIndex = 24;
             this.lblTime.Text = "time";
-            // 
-            // pieChart1
-            // 
-            this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(370, 215);
-            this.pieChart1.TabIndex = 12;
-            // 
-            // lblOK
-            // 
-            this.lblOK.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
-            this.lblOK.Location = new System.Drawing.Point(3, 62);
-            this.lblOK.Name = "lblOK";
-            this.lblOK.Size = new System.Drawing.Size(268, 42);
-            this.lblOK.TabIndex = 18;
-            this.lblOK.Text = "0";
-            this.lblOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblNG
-            // 
-            this.lblNG.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblNG.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
-            this.lblNG.Location = new System.Drawing.Point(3, 57);
-            this.lblNG.Name = "lblNG";
-            this.lblNG.Size = new System.Drawing.Size(262, 42);
-            this.lblNG.TabIndex = 21;
-            this.lblNG.Text = "0";
-            this.lblNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormMain
             // 
