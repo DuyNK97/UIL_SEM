@@ -106,7 +106,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.pieChart1 = new CIM.PieChart();
             this.label3 = new System.Windows.Forms.Label();
             this.lbltotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -117,6 +116,7 @@
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
+            this.pieChart1 = new CIM.PieChart();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -543,7 +543,6 @@
             this.button7.TabIndex = 20;
             this.button7.Text = "changerework";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Visible = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
@@ -554,7 +553,6 @@
             this.button6.TabIndex = 19;
             this.button6.Text = "changerework";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button5
@@ -565,7 +563,6 @@
             this.button5.TabIndex = 18;
             this.button5.Text = "button4";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
@@ -576,7 +573,6 @@
             this.button4.TabIndex = 17;
             this.button4.Text = "button3";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
@@ -587,7 +583,6 @@
             this.button3.TabIndex = 16;
             this.button3.Text = "button2";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button1
@@ -598,7 +593,6 @@
             this.button1.TabIndex = 15;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
@@ -639,7 +633,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox5.Size = new System.Drawing.Size(268, 236);
+            this.groupBox5.Size = new System.Drawing.Size(274, 235);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
@@ -650,7 +644,7 @@
             this.lblNG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(19)))), ((int)(((byte)(84)))));
             this.lblNG.Location = new System.Drawing.Point(3, 55);
             this.lblNG.Name = "lblNG";
-            this.lblNG.Size = new System.Drawing.Size(262, 65);
+            this.lblNG.Size = new System.Drawing.Size(268, 65);
             this.lblNG.TabIndex = 21;
             this.lblNG.Text = "0";
             this.lblNG.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -659,7 +653,7 @@
             // 
             this.panel2.Controls.Add(this.label13);
             this.panel2.Controls.Add(this.lblperNG);
-            this.panel2.Location = new System.Drawing.Point(25, 131);
+            this.panel2.Location = new System.Drawing.Point(27, 128);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(215, 94);
             this.panel2.TabIndex = 20;
@@ -695,7 +689,7 @@
             this.label14.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label14.Location = new System.Drawing.Point(3, 23);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(262, 32);
+            this.label14.Size = new System.Drawing.Size(268, 32);
             this.label14.TabIndex = 14;
             this.label14.Text = "NG";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -967,14 +961,6 @@
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
-            // pieChart1
-            // 
-            this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(370, 215);
-            this.pieChart1.TabIndex = 12;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -1080,6 +1066,14 @@
             this.lblTime.Size = new System.Drawing.Size(604, 34);
             this.lblTime.TabIndex = 24;
             this.lblTime.Text = "time";
+            // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(255, 15);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(370, 215);
+            this.pieChart1.TabIndex = 12;
             // 
             // FormMain
             // 

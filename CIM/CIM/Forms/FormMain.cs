@@ -1091,10 +1091,10 @@ namespace CIM
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
         }
 #if !DEBUG
-        private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName,string reworkinfo)
+        private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName,string reworkinfo,string bendingPinLeft, string bendingPinRight,string bendingPinDiff)
         {
 
-#else
+#else     
         private void ReadData4()
         {
             if (SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode") == null)
@@ -1121,6 +1121,11 @@ namespace CIM
             var BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING").ToString().Trim();
 
             var LeakName = SingleTonPlcControl.Instance.GetValueRegister(4, "Leak_Name").ToString().Trim();
+
+            var bendingPinLeft = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinLeft");
+            var bendingPinRight = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinRight");
+            var bendingPinDiff = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinDiff");
+
 
             //var maxRetries = 2;
             //var attempts = 0;
@@ -1230,6 +1235,9 @@ namespace CIM
                 || string.IsNullOrWhiteSpace(height_parallelism_detail2.ToString().Trim())
                 || string.IsNullOrWhiteSpace(height_parallelism_detail3.ToString().Trim())
                 || string.IsNullOrWhiteSpace(height_parallelism_detail4.ToString().Trim())
+                || string.IsNullOrWhiteSpace(bendingPinLeft.ToString().Trim())
+                || string.IsNullOrWhiteSpace(bendingPinRight.ToString().Trim())
+                || string.IsNullOrWhiteSpace(bendingPinDiff.ToString().Trim())
                 || string.IsNullOrWhiteSpace(resistance)
             )
             {
@@ -1265,7 +1273,7 @@ namespace CIM
                         //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
 
                     }
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
 
 
 
@@ -1296,7 +1304,7 @@ namespace CIM
 
 
                     }
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
                 }
 
                 List<string> Box1results = ReadFilesAndSearchV2(PLClog1, QRcode.ToString());
@@ -1997,6 +2005,10 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45020, "REWORK_INFO", EnumRegisterType.STRING, 2, true, false, 4)); //rework info 
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 45302, "WRITE_REWORK_INFO", EnumRegisterType.STRING, 2, true, false, 4));
 
+
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 40574, "BendingPinLeft", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 40576, "BendingPinRight", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 40578, "BendingPinDiff", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
 
 
         }
@@ -2723,26 +2735,26 @@ namespace CIM
         private void button1_Click(object sender, EventArgs e)
         {
 
-           //ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","");
+          // ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","");
             a++;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25","");
+           // ReadData2($"QRcode{a1}","138", "138", "130", "140", "OK","25","OK",$"FPCBbarcode {a}","OK", "Bond 2nd", "2024-12-17 14:30:25","");
             a1++;
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25","");
+           // ReadData3($"QRcode{a2}", "OK", "138", "138", "130", "140",$"{a}", "25","OK", "Bond 3rd", "2024-12-19 10:30:25","");
             a2++;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            //ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"");
+           // ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"","21","21.3","0.3");
             a3++;
         }
 
