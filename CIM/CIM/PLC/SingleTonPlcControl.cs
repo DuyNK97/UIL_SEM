@@ -429,9 +429,7 @@ namespace UILAlignProject.PLC
             Task.Delay(5000).Wait();
             while (true)
             {
-
-
-                await Task.Delay(50);
+                await Task.Delay(25);
                 try
                 {
                     //*
