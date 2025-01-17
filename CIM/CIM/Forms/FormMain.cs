@@ -49,6 +49,7 @@ namespace CIM
         public static string model = ConfigurationManager.AppSettings["MODEL"].ToString();
 
         public static string rowdisplay = ConfigurationManager.AppSettings["rowdisplay"];
+        private bool isClosing = false;
 
         int rowsdisplay = 100;
 
@@ -841,7 +842,7 @@ namespace CIM
         #region
 
 #if !DEBUG
-        private void ReadData1(string QRcode, string glue_amount, string box1dispenser_status, string glue_discharge_volume_vision, string insulator_bar_code, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string Bond, string Thawingtime,string reworkinfo)
+        private void ReadData1(string QRcode, string glue_amount, string box1dispenser_status, string glue_discharge_volume_vision, string insulator_bar_code, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string Bond, string Thawingtime, string reworkinfo)
         {
 #else
 
@@ -862,20 +863,31 @@ namespace CIM
             int hours = 0;
             int minutes = 0;
             int seconds = 0;
+
+            
+
+
             var Bond = SingleTonPlcControl.Instance.GetValueRegister(1, "Box1BondCode").ToString().Trim();
             var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(1, "Box1Thawingtime").ToString().Trim();
             if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
             {
-                var Inputtime = nowDate - thawingTimeDate;
-                inputTimeHours = Math.Round(Inputtime.TotalHours, 2);
+                //thawingTimeDate= DateTime.Parse("2025-01-09 16:04:07");
+                //nowDate = DateTime.Parse("2025-01-10 01:55:00");
+                //var Inputtime = nowDate - thawingTimeDate;
+                //inputTimeHours = Inputtime.TotalHours;
 
-                hours = (int)inputTimeHours;
+                //hours = (int)inputTimeHours;
 
-                double fractionalHours = inputTimeHours - hours;
-                minutes = (int)(fractionalHours * 60);
+                //double fractionalHours = inputTimeHours - hours;
+                //minutes = (int)(fractionalHours * 60);
 
-                double fractionalMinutes = fractionalHours * 60 - minutes;
-                seconds = (int)(fractionalMinutes * 60);
+                //double fractionalMinutes = fractionalHours * 60 - minutes;
+                //seconds = (int)(fractionalMinutes * 60);
+                TimeSpan timeDifference = nowDate - thawingTimeDate;
+                hours = timeDifference.Hours;
+                minutes = timeDifference.Minutes;
+                seconds = timeDifference.Seconds;
+
             }
 
             var glue_amount = SingleTonPlcControl.Instance.GetValueRegister(1, "BOX1GLUE_AMOUNT").ToString().Trim();
@@ -935,7 +947,7 @@ namespace CIM
         }
 
 #if !DEBUG
-        private void ReadData2(string QRcode, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string box2dispenser_status, string glue_amount, string glue_discharge_volume_vision, string fpcb_bar_code, string glue_overflow_vision, string Bond, string Thawingtime,string reworkinfo)
+        private void ReadData2(string QRcode, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string box2dispenser_status, string glue_amount, string glue_discharge_volume_vision, string fpcb_bar_code, string glue_overflow_vision, string Bond, string Thawingtime, string reworkinfo)
         {
 #else
         private void ReadData2()
@@ -961,15 +973,23 @@ namespace CIM
             var Thawingtime = SingleTonPlcControl.Instance.GetValueRegister(2, "Box2Thawingtime").ToString().Trim();
             if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
             {
-                var Inputtime = nowDate - thawingTimeDate;
-                inputTimeHours = Math.Round(Inputtime.TotalHours, 2);
-                hours = (int)inputTimeHours;
+                //thawingTimeDate= DateTime.Parse("2025-01-09 16:04:07");
+                //nowDate = DateTime.Parse("2025-01-10 01:55:00");
+                //var Inputtime = nowDate - thawingTimeDate;
+                //inputTimeHours = Inputtime.TotalHours;
 
-                double fractionalHours = inputTimeHours - hours;
-                minutes = (int)(fractionalHours * 60);
+                //hours = (int)inputTimeHours;
 
-                double fractionalMinutes = fractionalHours * 60 - minutes;
-                seconds = (int)(fractionalMinutes * 60);
+                //double fractionalHours = inputTimeHours - hours;
+                //minutes = (int)(fractionalHours * 60);
+
+                //double fractionalMinutes = fractionalHours * 60 - minutes;
+                //seconds = (int)(fractionalMinutes * 60);
+
+                TimeSpan timeDifference = nowDate - thawingTimeDate;
+                hours = timeDifference.Hours;
+                minutes = timeDifference.Minutes;
+                seconds = timeDifference.Seconds;
             }
 
 
@@ -1029,7 +1049,7 @@ namespace CIM
             Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
         }
 #if !DEBUG
-        private void ReadData3(string QRcode, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string DISTANCE, string glue_amount, string glue_discharge_volume_vision, string Bond, string Thawingtime,string reworkinfo)
+        private void ReadData3(string QRcode, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string DISTANCE, string glue_amount, string glue_discharge_volume_vision, string Bond, string Thawingtime, string reworkinfo)
         {
 
 #else
@@ -1098,15 +1118,33 @@ namespace CIM
 
             if (DateTime.TryParse(Thawingtime, out thawingTimeDate) && DateTime.TryParse(formattedDateTime, out nowDate))
             {
-                var Inputtime = nowDate - thawingTimeDate;
-                inputTimeHours = Math.Round(Inputtime.TotalHours, 2);
-                hours = (int)inputTimeHours;
 
-                double fractionalHours = inputTimeHours - hours;
-                minutes = (int)(fractionalHours * 60);
+                //thawingTimeDate= DateTime.Parse("2025-01-09 16:04:07");
+                //nowDate = DateTime.Parse("2025-01-10 01:55:00");
+                //var Inputtime = nowDate - thawingTimeDate;
+                //inputTimeHours = Inputtime.TotalHours;
 
-                double fractionalMinutes = fractionalHours * 60 - minutes;
-                seconds = (int)(fractionalMinutes * 60);
+                //hours = (int)inputTimeHours;
+
+                //double fractionalHours = inputTimeHours - hours;
+                //minutes = (int)(fractionalHours * 60);
+
+                //double fractionalMinutes = fractionalHours * 60 - minutes;
+                //seconds = (int)(fractionalMinutes * 60);
+
+                TimeSpan timeDifference = nowDate - thawingTimeDate;
+                hours = timeDifference.Hours;
+                minutes = timeDifference.Minutes;
+                seconds = timeDifference.Seconds;
+                //var Inputtime = nowDate - thawingTimeDate;
+                //inputTimeHours = Inputtime.TotalHours;
+                //hours = (int)inputTimeHours;
+
+                //double fractionalHours = inputTimeHours - hours;
+                //minutes = (int)(fractionalHours * 60);
+
+                //double fractionalMinutes = fractionalHours * 60 - minutes;
+                //seconds = (int)(fractionalMinutes * 60);
             }
             reworkinfo = "";
 #endif
@@ -1145,19 +1183,19 @@ namespace CIM
 
             }
             Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
-            
+
             if (title.Trim() == "ReadData31")
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, 3, "WriteData31", true, EnumReadOrWrite.WRITE);
             }
-            else 
+            else
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, 3, "WriteData32", true, EnumReadOrWrite.WRITE);
             }
-                
+
         }
 #if !DEBUG
-        private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName,string reworkinfo,string bendingPinLeft, string bendingPinRight,string bendingPinDiff)
+        private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName, string reworkinfo, string bendingPinLeft, string bendingPinRight, string bendingPinDiff)
         {
 
 #else     
@@ -1339,6 +1377,7 @@ namespace CIM
                         //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
 
                     }
+                    //Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
 
 
@@ -1370,8 +1409,12 @@ namespace CIM
 
 
                     }
+                    //Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+
                 }
+                //Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+                //}
 
                 List<string> Box1results = ReadFilesAndSearchV2(PLClog1, QRcode.ToString());
                 List<string> Box2results = ReadFilesAndSearchV2(PLClog2, QRcode.ToString());
@@ -2100,9 +2143,9 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 45302, "WRITE_REWORK_INFO", EnumRegisterType.STRING, 2, true, false, 4));
 
 
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 40574, "BendingPinLeft", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 40576, "BendingPinRight", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
-            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 40578, "BendingPinDiff", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45184, "BendingPinLeft", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45186, "BendingPinRight", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45188, "BendingPinDiff", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
 
 
         }
@@ -2828,7 +2871,6 @@ namespace CIM
         public static int a3 = 1;
         private void button1_Click(object sender, EventArgs e)
         {
-
             // ReadData1($"QRcode{a}","20","OK", "OK",$"INSU {a}", "OK","138","138","130","140","Bond 1st","2024-12-18 15:30:25","");
             a++;
         }
@@ -2865,6 +2907,31 @@ namespace CIM
             string reworkinfo = "R15";
             SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_1, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
             //SingleTonPlcControl.Instance.WriteDString(reworkinfo, 1, "WRITE_REWORK_INFO", 2);
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isClosing)
+            {
+                string message = "Do you want to close this Application?";
+                string title = "Close Window";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result = MessageBox.Show(message, title, buttons, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    isClosing = true;
+                    Application.ExitThread();
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+
+
         }
 
         private void btnFormSearch_Click(object sender, EventArgs e)
