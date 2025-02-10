@@ -588,51 +588,65 @@ namespace CIM
             {
                 try
                 {
-                    clients[clientIndex].Connect(ipAddress, port); // Synchronous connect
-                    if (clients[clientIndex].Connected)
-                    {
-                        streams[clientIndex] = clients[clientIndex].GetStream();
-                        connected[clientIndex] = true;
-                        WriteLog($"Connected to server {ipAddress} on port {port}.");
-                        SendataConnect(clientIndex); // sendata de ket noi toi LEAK Test
-                        StartReceiving(clientIndex); // bat dau nhan du lieu
-                    }
+                    clients[clientIndex] = new TcpClient(ipAddress, port);  // Kết nối tới server
+                    streams[clientIndex] = clients[clientIndex].GetStream();  // Lấy Stream
+                    connected[clientIndex] = true;  // Đánh dấu đã kết nối
+                    WriteLog($"Client {clientIndex} connected to {ipAddress} on port {port}.");
+                    SendataConnect(clientIndex);  // Gửi dữ liệu khi kết nối thành công
+
+                    // Bắt đầu nhận dữ liệu từ server
+                    StartReceiving(clientIndex);
+                    break;  // Nếu kết nối thành công thì thoát khỏi vòng lặp
                 }
                 catch (SocketException ex)
                 {
                     WriteLog($"SocketException for client {clientIndex}: {ex.Message}");
-                    //throw; // Rethrow the exception to handle retry logic
                 }
                 catch (Exception ex)
                 {
-                    WriteLog($"Connection error for client {clientIndex}: {ex.Message}");
+                    WriteLog($"Error connecting client {clientIndex}: {ex.Message}");
                 }
+
                 attempt++;
-                Thread.Sleep(100);
+                WriteLog($"Attempt {attempt} failed, retrying in 5 seconds...");
+                Thread.Sleep(5000); // Đợi 5 giây trước khi thử lại
+            }
+
+            if (!connected[clientIndex])
+            {
+                WriteLog($"Failed to connect client {clientIndex} after 10 attempts.");
             }
         }
-        private async void SendataConnect(int connect)
+
+        private void Reconnect(int clientIndex)
+        {
+            WriteLog($"Client {clientIndex} lost connection. Reconnecting...");
+            Disconnect(clientIndex);  
+            ConnectClient(clientIndex, serverIPs[clientIndex], 23);  
+        }
+        private async void SendataConnect(int clientIndex)
         {
             try
             {
-                string message = "1\r\n";
+                string message = "1\r\n";  
                 byte[] data = Encoding.UTF8.GetBytes(message);
-                if (connected[connect])
+
+                if (connected[clientIndex] && clients[clientIndex].Connected)
                 {
-                    await streams[connect].WriteAsync(data, 0, data.Length);
-                    WriteLog($"Conect to client {connect + 1}.");
+                    await streams[clientIndex].WriteAsync(data, 0, data.Length);  
+                    WriteLog($"Client {clientIndex + 1} connected, data sent.");
                 }
                 else
                 {
-                    WriteLog($"client {connect + 1} is null");
+                    WriteLog($"Client {clientIndex + 1} is not connected.");
                 }
-
             }
             catch (Exception ex)
             {
-                WriteLog($"Error: {ex.Message}");
+                WriteLog($"Error sending data: {ex.Message}");
             }
         }
+
         private void StartReceiving(int clientIndex)
         {
             try
@@ -640,21 +654,111 @@ namespace CIM
                 byte[] buffer = new byte[1024];
                 while (connected[clientIndex])
                 {
-                    int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    UpdateAirTestStastus(clientIndex, clients[clientIndex].Connected);
+                    if (!clients[clientIndex].Connected)
+                    {
+                      
+                        Reconnect(clientIndex);  
+                    }
 
-                    Task.Run(() => ExtractValueSccm(message, clientIndex));
+                    if (clients[clientIndex].Connected)
+                    {
+                        int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
+                        string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+                        //SendataConnect(clientIndex);  
+                        Task.Run(() => ExtractValueSccm(message, clientIndex));  
+                    }
+
+                    Thread.Sleep(100); 
                 }
             }
             catch (Exception ex)
             {
-                if (connected[clientIndex])
-                {
-                    WriteLog($"Error: {ex.Message}");
-                    connected[clientIndex] = false;
-                }
+                WriteLog($"Error in StartReceiving: {ex.Message}");
+                connected[clientIndex] = false;  
+                Reconnect(clientIndex);  
             }
         }
+
+        public void Disconnect(int index)
+        {
+            try
+            {
+                if (streams[index] != null)
+                {
+                    streams[index].Close();  // Đóng Stream
+                }
+                if (clients[index] != null)
+                {
+                    clients[index].Close();  // Đóng TcpClient
+                }
+                connected[index] = false;  // Đánh dấu kết nối đã mất
+                WriteLog($"Client {index} disconnected.");
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Error disconnecting client {index}: {ex.Message}");
+            }
+        }
+
+
+
+
+        private void UpdateAirTestStastus(int index, bool value)
+        {
+            try
+            {
+                switch (index)
+                {
+                    case 0:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak11status");
+                        WriteLog($"AirTest status:{value}-" + "D810.0");
+                        break;
+                    case 1:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak12status");
+                        WriteLog($"AirTest status:{value}-" + "D810.1");
+                        break;
+                    case 2:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak21status");
+                        WriteLog($"AirTest status:{value}-" + "D810.2");
+                        break;
+                    case 3:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak22status");
+                        WriteLog($"AirTest status: {value}-" + "D810.3");
+                        break;
+                    case 4:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak31status");
+                        WriteLog($"AirTest status: {value}-" + "D810.4");
+                        break;
+                    case 5:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak32status");
+                        WriteLog($"AirTest status: {value}-" + "D810.5");
+                        break;
+                    case 6:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak41status");
+                        WriteLog($"AirTest status: {value}-" + "D810.6");
+                        break;
+                    case 7:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak42status");
+                        WriteLog($"AirTest status: {value}-" + "D810.7");
+                        break;
+                    case 8:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak51status");
+                        WriteLog($"AirTest status: {value}-" + "D810.8");
+                        break;
+                    case 9:
+                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak52status");
+                        WriteLog($"AirTest status: {value}-" + "D810.9");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Error while sending data to PLC: {ex.Message}");
+            }
+        }
+
         private void ExtractValueSccm(string input, int clientIndex)
         {
             if (input.Contains("sccm"))
@@ -2146,6 +2250,19 @@ namespace CIM
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45184, "BendingPinLeft", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45186, "BendingPinRight", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
             pLCIOs.Add(new PLCIO(EnumReadOrWrite.READ, 45188, "BendingPinDiff", EnumRegisterType.FLOAT, 2, true, true, 4)); //Register read model
+
+            //alarm air leak test
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak11status", EnumRegisterType.BITINWORD, 0, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak12status", EnumRegisterType.BITINWORD, 1, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak21status", EnumRegisterType.BITINWORD, 2, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak22status", EnumRegisterType.BITINWORD, 3, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak31status", EnumRegisterType.BITINWORD, 4, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak32status", EnumRegisterType.BITINWORD, 5, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak41status", EnumRegisterType.BITINWORD, 6, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak42status", EnumRegisterType.BITINWORD, 7, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak51status", EnumRegisterType.BITINWORD, 8, true, false, 4));
+            pLCIOs.Add(new PLCIO(EnumReadOrWrite.WRITE, 810, "Leak52status", EnumRegisterType.BITINWORD, 9, true, false, 4));
+
 
 
         }
