@@ -327,35 +327,35 @@ namespace CIM
                 {
                     UpdateStatus(obj.IndexPLC, obj.CurrentValue);
                 }
-                else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
-                {
-                    var qrCode = SingleTonPlcControl.Instance.GetValueRegister(obj.IndexPLC, "BOX4CountBarcode");
+                //else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
+                //{
+                //    var qrCode = SingleTonPlcControl.Instance.GetValueRegister(obj.IndexPLC, "BOX4CountBarcode");
 
-                    if (qrCode != null)
-                    {
-                        if (!string.IsNullOrWhiteSpace(qrCode.ToString().Trim()))
-                        {
-                            print.Add(qrCode.ToString().Trim());
-                        }
-                    }
+                //    if (qrCode != null)
+                //    {
+                //        if (!string.IsNullOrWhiteSpace(qrCode.ToString().Trim()))
+                //        {
+                //            print.Add(qrCode.ToString().Trim());
+                //        }
+                //    }
 
-                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
-                    WriteLog("On bit WritePrint in PLC 4");
-                }
-                else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
-                {
-                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
-                    WriteLog("OFF bit WritePrint in PLC 4");
-                }
-                else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
-                {
-                    CountPrint(obj.IndexPLC);
-                    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
-                }
-                else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
-                {
-                    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
-                }
+                //    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
+                //    WriteLog("On bit WritePrint in PLC 4");
+                //}
+                //else if (obj.Title == "ReadPrint" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
+                //{
+                //    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WritePrint", true, EnumReadOrWrite.WRITE);
+                //    WriteLog("OFF bit WritePrint in PLC 4");
+                //}
+                //else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == true && obj.IndexPLC == 4)
+                //{
+                //    CountPrint(obj.IndexPLC);
+                //    SingleTonPlcControl.Instance.SetValueRegister(true, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
+                //}
+                //else if (obj.Title == "EndTray" && (bool)obj.CurrentValue == false && obj.IndexPLC == 4)
+                //{
+                //    SingleTonPlcControl.Instance.SetValueRegister(false, obj.IndexPLC, "WRITE_END_TRAY", true, EnumReadOrWrite.WRITE);
+                //}
                 else if (obj.Title == "CHANGE_MODE_REWORK")
                 {
                     HandleChangeRework(obj.IndexPLC, (bool)obj.CurrentValue);
@@ -581,6 +581,42 @@ namespace CIM
         {
             Task.Run(() => ConnectClient(clientIndex, ipAddress, port));
         }
+        //private void ConnectClient(int clientIndex, string ipAddress, int port)
+        //{
+        //    int attempt = 0;
+        //    while (attempt < 10)
+        //    {
+        //        try
+        //        {
+        //            clients[clientIndex] = new TcpClient(ipAddress, port);  // Kết nối tới server
+        //            streams[clientIndex] = clients[clientIndex].GetStream();  // Lấy Stream
+        //            connected[clientIndex] = true;  // Đánh dấu đã kết nối
+        //            WriteLog($"Client {clientIndex} connected to {ipAddress} on port {port}.");
+        //            SendataConnect(clientIndex);  // Gửi dữ liệu khi kết nối thành công
+
+        //            // Bắt đầu nhận dữ liệu từ server
+        //            StartReceiving(clientIndex);
+        //            break;  // Nếu kết nối thành công thì thoát khỏi vòng lặp
+        //        }
+        //        catch (SocketException ex)
+        //        {
+        //            WriteLog($"SocketException for client {clientIndex}: {ex.Message}");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            WriteLog($"Error connecting client {clientIndex}: {ex.Message}");
+        //        }
+
+        //        attempt++;
+        //        WriteLog($"Attempt {attempt} failed, retrying in 5 seconds...");
+        //        Thread.Sleep(5000); // Đợi 5 giây trước khi thử lại
+        //    }
+
+        //    if (!connected[clientIndex])
+        //    {
+        //        WriteLog($"Failed to connect client {clientIndex} after 10 attempts.");
+        //    }
+        //}
         private void ConnectClient(int clientIndex, string ipAddress, int port)
         {
             int attempt = 0;
@@ -588,65 +624,51 @@ namespace CIM
             {
                 try
                 {
-                    clients[clientIndex] = new TcpClient(ipAddress, port);  // Kết nối tới server
-                    streams[clientIndex] = clients[clientIndex].GetStream();  // Lấy Stream
-                    connected[clientIndex] = true;  // Đánh dấu đã kết nối
-                    WriteLog($"Client {clientIndex} connected to {ipAddress} on port {port}.");
-                    SendataConnect(clientIndex);  // Gửi dữ liệu khi kết nối thành công
-
-                    // Bắt đầu nhận dữ liệu từ server
-                    StartReceiving(clientIndex);
-                    break;  // Nếu kết nối thành công thì thoát khỏi vòng lặp
+                    clients[clientIndex].Connect(ipAddress, port); // Synchronous connect
+                    if (clients[clientIndex].Connected)
+                    {
+                        streams[clientIndex] = clients[clientIndex].GetStream();
+                        connected[clientIndex] = true;
+                        WriteLog($"Connected to server {ipAddress} on port {port}.");
+                        SendataConnect(clientIndex); // sendata de ket noi toi LEAK Test
+                        StartReceiving(clientIndex); // bat dau nhan du lieu
+                    }
                 }
                 catch (SocketException ex)
                 {
                     WriteLog($"SocketException for client {clientIndex}: {ex.Message}");
+                    //throw; // Rethrow the exception to handle retry logic
                 }
                 catch (Exception ex)
                 {
-                    WriteLog($"Error connecting client {clientIndex}: {ex.Message}");
+                    WriteLog($"Connection error for client {clientIndex}: {ex.Message}");
                 }
-
                 attempt++;
-                WriteLog($"Attempt {attempt} failed, retrying in 5 seconds...");
-                Thread.Sleep(5000); // Đợi 5 giây trước khi thử lại
-            }
-
-            if (!connected[clientIndex])
-            {
-                WriteLog($"Failed to connect client {clientIndex} after 10 attempts.");
+                Thread.Sleep(100);
             }
         }
-
-        private void Reconnect(int clientIndex)
-        {
-            WriteLog($"Client {clientIndex} lost connection. Reconnecting...");
-            Disconnect(clientIndex);  
-            ConnectClient(clientIndex, serverIPs[clientIndex], 23);  
-        }
-        private async void SendataConnect(int clientIndex)
+        private async void SendataConnect(int connect)
         {
             try
             {
-                string message = "1\r\n";  
+                string message = "1\r\n";
                 byte[] data = Encoding.UTF8.GetBytes(message);
-
-                if (connected[clientIndex] && clients[clientIndex].Connected)
+                if (connected[connect])
                 {
-                    await streams[clientIndex].WriteAsync(data, 0, data.Length);  
-                    WriteLog($"Client {clientIndex + 1} connected, data sent.");
+                    await streams[connect].WriteAsync(data, 0, data.Length);
+                    WriteLog($"Conect to client {connect + 1}.");
                 }
                 else
                 {
-                    WriteLog($"Client {clientIndex + 1} is not connected.");
+                    WriteLog($"client {connect + 1} is null");
                 }
+
             }
             catch (Exception ex)
             {
-                WriteLog($"Error sending data: {ex.Message}");
+                WriteLog($"Error: {ex.Message}");
             }
         }
-
         private void StartReceiving(int clientIndex)
         {
             try
@@ -654,32 +676,84 @@ namespace CIM
                 byte[] buffer = new byte[1024];
                 while (connected[clientIndex])
                 {
-                    UpdateAirTestStastus(clientIndex, clients[clientIndex].Connected);
-                    if (!clients[clientIndex].Connected)
-                    {
-                      
-                        Reconnect(clientIndex);  
-                    }
+                    int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                    if (clients[clientIndex].Connected)
-                    {
-                        int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
-                        string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-                        //SendataConnect(clientIndex);  
-                        Task.Run(() => ExtractValueSccm(message, clientIndex));  
-                    }
-
-                    Thread.Sleep(100); 
+                    Task.Run(() => ExtractValueSccm(message, clientIndex));
                 }
             }
             catch (Exception ex)
             {
-                WriteLog($"Error in StartReceiving: {ex.Message}");
-                connected[clientIndex] = false;  
-                Reconnect(clientIndex);  
+                if (connected[clientIndex])
+                {
+                    WriteLog($"Error: {ex.Message}");
+                    connected[clientIndex] = false;
+                }
             }
         }
+
+        //private void Reconnect(int clientIndex)
+        //{
+        //    WriteLog($"Client {clientIndex} lost connection. Reconnecting...");
+        //    Disconnect(clientIndex);  
+        //    ConnectClient(clientIndex, serverIPs[clientIndex], 23);  
+        //}
+        //private async void SendataConnect(int clientIndex)
+        //{
+        //    try
+        //    {
+        //        string message = "1\r\n";  
+        //        byte[] data = Encoding.UTF8.GetBytes(message);
+
+        //        if (connected[clientIndex] && clients[clientIndex].Connected)
+        //        {
+        //            await streams[clientIndex].WriteAsync(data, 0, data.Length);  
+        //            WriteLog($"Client {clientIndex + 1} connected, data sent.");
+        //        }
+        //        else
+        //        {
+        //            WriteLog($"Client {clientIndex + 1} is not connected.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        WriteLog($"Error sending data: {ex.Message}");
+        //    }
+        //}
+
+        //private void StartReceiving(int clientIndex)
+        //{
+        //    try
+        //    {
+        //        byte[] buffer = new byte[1024];
+        //        while (connected[clientIndex])
+        //        {
+        //            UpdateAirTestStastus(clientIndex, clients[clientIndex].Connected);
+        //            if (!clients[clientIndex].Connected)
+        //            {
+
+        //                Reconnect(clientIndex);  
+        //            }
+
+        //            if (clients[clientIndex].Connected)
+        //            {
+        //                int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
+        //                string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+        //                //SendataConnect(clientIndex);  
+        //                Task.Run(() => ExtractValueSccm(message, clientIndex));  
+        //            }
+
+        //            Thread.Sleep(100); 
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        WriteLog($"Error in StartReceiving: {ex.Message}");
+        //        connected[clientIndex] = false;  
+        //        Reconnect(clientIndex);  
+        //    }
+        //}
 
         public void Disconnect(int index)
         {
@@ -1305,77 +1379,48 @@ namespace CIM
 #else     
         private void ReadData4()
         {
+            EXCELDATA data1 = new EXCELDATA();
             if (SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode") == null)
+            {
+                Task.Run(() => WriteLog("QRcode - SingleTonPlcControl.Instance.GetValueRegister(4, BOX4Barcode) == null "));
                 return;
+            } 
+            
 
             var QRcode = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode").ToString().Trim();
 
             if (string.IsNullOrWhiteSpace(QRcode))
+            {
+                Task.Run(() => WriteLog("QRcode - IsNullOrWhiteSpace "));
                 return;
+            }
+
+            if (string.IsNullOrEmpty(QRcode))
+            {
+                Task.Run(() => WriteLog("QRcode - IsNullOrEmpty " ));
+                return;
+            }
 
             string tightness_and_location_vision = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4TIGHTNESS_AND_LOCATION_VISION") ? "OK" : "NG";
             string height_parallelism_result = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_RESULT") ? "OK" : "NG";
 
-            var height_parallelism_detail1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL1");
-            var height_parallelism_detail2 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL2");
-            var height_parallelism_detail3 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL3");
-            var height_parallelism_detail4 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL4");
+            var height_parallelism_detail1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL1").ToString().Trim();
+            var height_parallelism_detail2 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL2").ToString().Trim();
+            var height_parallelism_detail3 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL3").ToString().Trim();
+            var height_parallelism_detail4 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4HEIGHT_PARALLELISM_DETAIL4").ToString().Trim();
 
             //fpcb
-            var fpcb4Left = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_LEFT");
-            var fpcb4Right = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_RIGHT");
+            var fpcb4Left = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_LEFT").ToString().Trim();
+            var fpcb4Right = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_FPCB_RIGHT").ToString().Trim();
             var warping = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4_WARPING"); //độ vênh
             var air_leakage_test_detail = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL").ToString().Trim();
             var BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_DETAIL_STRING").ToString().Trim();
 
             var LeakName = SingleTonPlcControl.Instance.GetValueRegister(4, "Leak_Name").ToString().Trim();
 
-            var bendingPinLeft = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinLeft");
-            var bendingPinRight = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinRight");
-            var bendingPinDiff = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinDiff");
-
-
-            //var maxRetries = 2;
-            //var attempts = 0;
-            //double resistanceValue = 0;
-            //bool isValid = false;
-
-            //while (attempts < maxRetries)
-            //{
-            //    var resistanceRaw = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
-
-            //    if (double.TryParse(resistanceRaw, out resistanceValue))
-            //    {
-            //        resistanceValue = Math.Round(resistanceValue, 2);
-            //        if (resistanceValue >= 54 && resistanceValue <= 66)
-            //        {
-            //            isValid = true;
-            //            break;
-            //        }
-            //    }
-
-            //    attempts++; 
-            //}
-
-            //string resistance = isValid? resistanceValue.ToString("0.##"): "0.00";       
-
-            //resistance = resistance == "1" ? "NG" : (resistance + "Ω");
-
-            //var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
-            //var resistance1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance1").ToString();
-
-            //if (double.TryParse(resistance, out double resistanceValue))
-            //{
-            //    resistanceValue = Math.Round(resistanceValue, 2);
-            //    resistance = resistanceValue.ToString("0.##");  // Định dạng lại chuỗi, bỏ ".00" nếu không cần
-            //}
-            //else
-            //{
-            //    resistance = "0.00";
-            //}
-            //resistance = resistance == "1" ? "NG" : (resistance + "Ω");
-
-
+            var bendingPinLeft = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinLeft").ToString().Trim();
+            var bendingPinRight = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinRight").ToString().Trim();
+            var bendingPinDiff = SingleTonPlcControl.Instance.GetValueRegister(4, "BendingPinDiff").ToString().Trim();
 
 
             if (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING == null)
@@ -1384,9 +1429,9 @@ namespace CIM
             }
 
             string air_leakage_test_result = (bool)SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4AIR_LEAKAGE_TEST_RESULT") ? "OK" : "NG";
+			Task.Run(() => WriteLog($"QRcode {QRcode.ToString()} - Airresult:{air_leakage_test_result} "));
 
-
-            var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
+			var resistance = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance").ToString();
             var resistance1 = SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4resistance1").ToString();
             var reworkinfo = "";
 
@@ -1429,10 +1474,6 @@ namespace CIM
                 resistance = resistance == "1" ? "NG" : (resistance + "Ω");
             }
 
-
-
-
-            //final result return true or false
             bool finalResult = tightness_and_location_vision == "OK" && height_parallelism_result == "OK" && air_leakage_test_result == "OK";
 
             //if empty data send to PLC miss data
@@ -1453,10 +1494,9 @@ namespace CIM
                 Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC4"));
             }
 
-
-
             if (!string.IsNullOrEmpty(QRcode.ToString().Trim()) && QRcode != "False")
             {
+
                 if (air_leakage_test_result == "OK")
                 {
                     //fake data if air = 0
@@ -1464,8 +1504,6 @@ namespace CIM
                     {
                         air_leakage_test_detail = Math.Round(new Random().NextDouble() * (0.1854 - 0.061607) + 0.061607, 5).ToString();
                     }
-
-                    //parse value air leakage test and 3 value after dot, ex: plc return air leakage test: 4.7E-05 => parse to 0.0000047 => get 3 value after dot: 0.000
                     air_leakage_test_detail = ParseValueAirLeakageTest(air_leakage_test_detail);
 
 
@@ -1477,15 +1515,9 @@ namespace CIM
                             SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
                             Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
                         }
-
-                        //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
-
                     }
-                    //Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
-
-
-
+					Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
+					Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
                 }
                 else
                 {
@@ -1513,24 +1545,26 @@ namespace CIM
 
 
                     }
-                    //Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
-                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
-
-                }
-                //Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
-                //}
-
+					Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
+					//Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+					Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+					
+				}
+               
                 List<string> Box1results = ReadFilesAndSearchV2(PLClog1, QRcode.ToString());
                 List<string> Box2results = ReadFilesAndSearchV2(PLClog2, QRcode.ToString());
                 List<string> Box3results = ReadFilesAndSearchV2(PLClog3, QRcode.ToString());
                 List<string> Box4results = ReadFilesAndSearchV2(PLClog4, QRcode.ToString());
+				
 
-                string lastrowdata1 = Box1results.LastOrDefault();
+				string lastrowdata1 = Box1results.LastOrDefault();
                 string lastrowdata2 = Box2results.LastOrDefault();
                 string lastrowdata3 = Box3results.LastOrDefault();
                 string lastrowdata4 = Box4results.LastOrDefault();
 
-                BOX1RESULT box1data = new BOX1RESULT();
+				Task.Run(() => WriteLog($"QRcode -{QRcode.ToString()}-1-{lastrowdata1}-2-{lastrowdata2}-3-{lastrowdata3}-4-{lastrowdata4} "));
+
+				BOX1RESULT box1data = new BOX1RESULT();
                 BOX2RESULT box2data = new BOX2RESULT();
                 BOX3RESULT box3data = new BOX3RESULT();
                 BOX4RESULT box4data = new BOX4RESULT();
@@ -1573,11 +1607,13 @@ namespace CIM
                 .Where(r => !string.IsNullOrEmpty(r))
                 .ToList();
 
+               
+
                 string remark = string.Join(",", reworks);
                 if (string.IsNullOrEmpty(remark))
                     remark = "Empty";
 
-                EXCELDATA data1 = new EXCELDATA
+                 data1 = new EXCELDATA
                 {
                     NO = No,
                     TOPHOUSING = box4data.TOPHOUSING,

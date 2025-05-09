@@ -49,8 +49,16 @@ namespace CIM.Class
 
                     if (!Directory.Exists(logFilePath))
                     {
-                        Directory.CreateDirectory(logFilePath);
-                    }
+						try
+						{
+							Directory.CreateDirectory(logFilePath);
+						}
+						catch (Exception dirEx)
+						{
+							FormMain.WriteLog($"[{DateTime.Now}] Error creating directory {logFilePath}: {dirEx.Message}\n");
+							return;
+						}
+					}
 
                     logFilePath = Path.Combine(logFilePath, DateTime.Now.ToString("dd") + ".csv");
 
@@ -62,7 +70,8 @@ namespace CIM.Class
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error writing log: {ex.Message}");
+				    FormMain.WriteLog($"Error writing log: {ex.Message}");
+					Console.WriteLine($"Error writing log: {ex.Message}");
                 }
             }
         }
