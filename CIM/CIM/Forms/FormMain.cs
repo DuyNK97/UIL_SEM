@@ -1476,6 +1476,21 @@ namespace CIM
 
             bool finalResult = tightness_and_location_vision == "OK" && height_parallelism_result == "OK" && air_leakage_test_result == "OK";
 
+
+			BOX4RESULT b4data = new BOX4RESULT { 
+                TOPHOUSING = QRcode,
+                TIGHTNESS_AND_LOCATION_VISION =$"{warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision}",
+				HEIGHT_PARALLELISM= $"{height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}",
+                RESISTANCE= resistance,
+                AIR_LEAKAGE_TEST_DETAIL= air_leakage_test_detail,
+                AIR_LEAKAGE_TEST_RESULT= air_leakage_test_result,
+                B4rework= reworkinfo,
+				Leak_Name= LeakName,
+                TestTime= formattedDateTime,
+
+
+			};
+
             //if empty data send to PLC miss data
             if (string.IsNullOrWhiteSpace(QRcode)
                 || string.IsNullOrWhiteSpace(tightness_and_location_vision)
@@ -1603,7 +1618,7 @@ namespace CIM
                 {
                     box4data = SpiltData4(lastrowdata4);
                 }
-                List<string> reworks = new List<string> { box1data.B1rework, box2data.B2rework, box3data.B3rework, box4data.B4rework }
+                List<string> reworks = new List<string> { box1data.B1rework, box2data.B2rework, box3data.B3rework, b4data.B4rework }
                 .Where(r => !string.IsNullOrEmpty(r))
                 .ToList();
 
@@ -1616,7 +1631,7 @@ namespace CIM
                  data1 = new EXCELDATA
                 {
                     NO = No,
-                    TOPHOUSING = box4data.TOPHOUSING,
+                    TOPHOUSING = b4data.TOPHOUSING,
                     BOX1_BOND = box1data.BondCode,
                     BOX1_OUPUTTIME = box1data.Output + "/" + box1data.Input,
                     BOX1_GLUE_AMOUNT = box1data.GLUE_AMOUNT,
@@ -1637,13 +1652,13 @@ namespace CIM
                     BOX3_GLUE_OVERFLOW_VISION = box3data.GLUE_DISCHARGE_VOLUME_VISION,
                     BOX3_BOND = box3data.BondCode,
                     BOX3_OUPUTTIME = box3data.Output + "/" + box3data.Input,
-                    BOX4_AIR_LEAKAGE_TEST_DETAIL = box4data.AIR_LEAKAGE_TEST_DETAIL,
+                    BOX4_AIR_LEAKAGE_TEST_DETAIL = b4data.AIR_LEAKAGE_TEST_DETAIL,
                     BOX3_HEATED_AIR_CURING = box3data.BOX3_HEATED_AIR_CURING,
-                    BOX4_TIGHTNESS_AND_LOCATION_VISION = box4data.TIGHTNESS_AND_LOCATION_VISION,
-                    BOX4_HEIGHT_PARALLELISM = box4data.HEIGHT_PARALLELISM,
-                    BOX4_RESISTANCE = box4data.RESISTANCE,
-                    BOX4_AIR_LEAKAGE_TEST_RESULT = box4data.AIR_LEAKAGE_TEST_RESULT,
-                    BOX4_LEAK_NAME = box4data.Leak_Name,
+                    BOX4_TIGHTNESS_AND_LOCATION_VISION = b4data.TIGHTNESS_AND_LOCATION_VISION,
+                    BOX4_HEIGHT_PARALLELISM = b4data.HEIGHT_PARALLELISM,
+                    BOX4_RESISTANCE = b4data.RESISTANCE,
+                    BOX4_AIR_LEAKAGE_TEST_RESULT = b4data.AIR_LEAKAGE_TEST_RESULT,
+                    BOX4_LEAK_NAME = b4data.Leak_Name,
                     BOX4_TestTime = DateTime.Now,
                     Remark = remark
 
@@ -1754,7 +1769,7 @@ namespace CIM
 
                             //insert excel with mark duplicate
                             // CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true, finalResult);// khong co reworkinfo
-                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, data1.Remark, true, finalResult);
+                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, b4data, data1.Remark, true, finalResult);
 
                             //if status mode is box 4 is rework, will increase quantity OK, NG, total, update chart
                             if (Global.CurrentModeBox4 == (int)ERework.REWORK)
@@ -1783,7 +1798,7 @@ namespace CIM
 
                             //save excel
                             //CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, false, finalResult);// khong co reworkinfo
-                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, data1.Remark, false, finalResult);
+                            CreateExcelFile(logFilePathALL, box1data, box2data, box3data, b4data, data1.Remark, false, finalResult);
 
                             //update quantity, chart, write file
                             if (finalResult)
@@ -1815,7 +1830,7 @@ namespace CIM
 
                         SqlLite.Instance.InsertSEM_DATA(data1, "Doublicate");
                         //CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, excelrow, true, finalResult);
-                        CreateExcelFile(logFilePathALL, box1data, box2data, box3data, box4data, data1.Remark, true, finalResult);
+                        CreateExcelFile(logFilePathALL, box1data, box2data, box3data, b4data, data1.Remark, true, finalResult);
 
                         //if status mode is box 4 is rework, will increase quantity OK, NG, total, save file txt, update chart
                         if (Global.CurrentModeBox4 == (int)ERework.REWORK)
