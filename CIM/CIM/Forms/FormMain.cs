@@ -30,6 +30,7 @@ using MathNet.Numerics;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using NPOI.SS.Formula.Functions;
 using QRCoder;
+using System.Diagnostics;
 
 namespace CIM
 {
@@ -291,6 +292,7 @@ namespace CIM
                             // WriteLog("On bit WriteData in PLC 3");
                             break;
                         case 4:
+                            //ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25", "20.25", "25.25", "10", "60", "58", "0.0005", "OK", "0.0008", "Leak name1", "", "21", "21.3", "0.3");
                             ReadData4();
                             SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
                             // WriteLog("On bit WriteData in PLC 4");
@@ -544,8 +546,8 @@ namespace CIM
         private bool[] connected = new bool[10];
         private readonly string[] serverIPs = new string[]
         {
-            "192.168.3.170","192.168.3.171", "192.168.3.172", "192.168.3.173", "192.168.3.174",
-            "192.168.3.175", "192.168.3.176","192.168.3.177", "192.168.3.178","192.168.3.179"
+            "192.168.3.170","192.168.3.171", "192.168.1.48", "192.168.3.173", "192.168.3.174",
+            "192.168.3.175", "192.168.3.176","192.168.3.177","192.168.1.31", "192.168.3.178"
         };
         private void ConnectAirTest()
         {
@@ -581,42 +583,6 @@ namespace CIM
         {
             Task.Run(() => ConnectClient(clientIndex, ipAddress, port));
         }
-        //private void ConnectClient(int clientIndex, string ipAddress, int port)
-        //{
-        //    int attempt = 0;
-        //    while (attempt < 10)
-        //    {
-        //        try
-        //        {
-        //            clients[clientIndex] = new TcpClient(ipAddress, port);  // Kết nối tới server
-        //            streams[clientIndex] = clients[clientIndex].GetStream();  // Lấy Stream
-        //            connected[clientIndex] = true;  // Đánh dấu đã kết nối
-        //            WriteLog($"Client {clientIndex} connected to {ipAddress} on port {port}.");
-        //            SendataConnect(clientIndex);  // Gửi dữ liệu khi kết nối thành công
-
-        //            // Bắt đầu nhận dữ liệu từ server
-        //            StartReceiving(clientIndex);
-        //            break;  // Nếu kết nối thành công thì thoát khỏi vòng lặp
-        //        }
-        //        catch (SocketException ex)
-        //        {
-        //            WriteLog($"SocketException for client {clientIndex}: {ex.Message}");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            WriteLog($"Error connecting client {clientIndex}: {ex.Message}");
-        //        }
-
-        //        attempt++;
-        //        WriteLog($"Attempt {attempt} failed, retrying in 5 seconds...");
-        //        Thread.Sleep(5000); // Đợi 5 giây trước khi thử lại
-        //    }
-
-        //    if (!connected[clientIndex])
-        //    {
-        //        WriteLog($"Failed to connect client {clientIndex} after 10 attempts.");
-        //    }
-        //}
         private void ConnectClient(int clientIndex, string ipAddress, int port)
         {
             int attempt = 0;
@@ -637,7 +603,6 @@ namespace CIM
                 catch (SocketException ex)
                 {
                     WriteLog($"SocketException for client {clientIndex}: {ex.Message}");
-                    //throw; // Rethrow the exception to handle retry logic
                 }
                 catch (Exception ex)
                 {
@@ -646,7 +611,7 @@ namespace CIM
                 attempt++;
                 Thread.Sleep(100);
             }
-        }
+            }
         private async void SendataConnect(int connect)
         {
             try
@@ -662,11 +627,10 @@ namespace CIM
                 {
                     WriteLog($"client {connect + 1} is null");
                 }
-
             }
             catch (Exception ex)
             {
-                WriteLog($"Error: {ex.Message}");
+                WriteLog($"Error sending data: {ex.Message}");
             }
         }
         private void StartReceiving(int clientIndex)
@@ -676,10 +640,26 @@ namespace CIM
                 byte[] buffer = new byte[1024];
                 while (connected[clientIndex])
                 {
+                    //CheckConnectionStatus();
+                    UpdateAirTestStastus(clientIndex, connected[clientIndex]);
+                    // UpdateAirTestStastus(clientIndex, clients[clientIndex].Connected);
+                    if (!IsSocketConnected(clients[clientIndex]))
+                    {
+
+                        WriteLog($"Detected disconnection at client {clientIndex}. Reconnecting...");
+                        connected[clientIndex] = false;
+                        UpdateAirTestStastus(clientIndex, connected[clientIndex]);
+                        //Reconnect(clientIndex);
+                        return;
+                    }
+
+
                     int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                     Task.Run(() => ExtractValueSccm(message, clientIndex));
+
+
                 }
             }
             catch (Exception ex)
@@ -691,69 +671,66 @@ namespace CIM
                 }
             }
         }
+        private bool IsSocketConnected(TcpClient client)
+        {
+            try
+            {
+                if (client == null || !client.Connected) return false;
 
-        //private void Reconnect(int clientIndex)
-        //{
-        //    WriteLog($"Client {clientIndex} lost connection. Reconnecting...");
-        //    Disconnect(clientIndex);  
-        //    ConnectClient(clientIndex, serverIPs[clientIndex], 23);  
-        //}
-        //private async void SendataConnect(int clientIndex)
-        //{
-        //    try
-        //    {
-        //        string message = "1\r\n";  
-        //        byte[] data = Encoding.UTF8.GetBytes(message);
+                if (client.Client.Poll(0, SelectMode.SelectRead))
+                {
+                    byte[] buff = new byte[1];
+                    if (client.Client.Receive(buff, SocketFlags.Peek) == 0)
+                    {
+                        return false;
+                    }
+                }
 
-        //        if (connected[clientIndex] && clients[clientIndex].Connected)
-        //        {
-        //            await streams[clientIndex].WriteAsync(data, 0, data.Length);  
-        //            WriteLog($"Client {clientIndex + 1} connected, data sent.");
-        //        }
-        //        else
-        //        {
-        //            WriteLog($"Client {clientIndex + 1} is not connected.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WriteLog($"Error sending data: {ex.Message}");
-        //    }
-        //}
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
-        //private void StartReceiving(int clientIndex)
-        //{
-        //    try
-        //    {
-        //        byte[] buffer = new byte[1024];
-        //        while (connected[clientIndex])
-        //        {
-        //            UpdateAirTestStastus(clientIndex, clients[clientIndex].Connected);
-        //            if (!clients[clientIndex].Connected)
-        //            {
+        private void CheckConnectionStatus()
+        {
+            lock (lockObject)
+            {
+                try
+                {
+                    int trueCount = connected.Count(x => x == true);
 
-        //                Reconnect(clientIndex);  
-        //            }
 
-        //            if (clients[clientIndex].Connected)
-        //            {
-        //                int bytesRead = streams[clientIndex].Read(buffer, 0, buffer.Length);
-        //                string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    if (trueCount == 1)
+                    {
+                        Console.WriteLine("✅ Tất cả 10 kết nối đều hoạt động!");
 
-        //                //SendataConnect(clientIndex);  
-        //                Task.Run(() => ExtractValueSccm(message, clientIndex));  
-        //            }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"⚠️ Chỉ có {trueCount} kết nối hoạt động, thiếu {10 - trueCount} kết nối");
 
-        //            Thread.Sleep(100); 
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WriteLog($"Error in StartReceiving: {ex.Message}");
-        //        connected[clientIndex] = false;  
-        //        Reconnect(clientIndex);  
-        //    }
-        //}
+                        for (int i = 0; i < connected.Length; i++)
+                        {
+
+                            UpdateAirTestStastus(i, connected[i]);
+
+
+                        }
+                    }
+
+                    Console.WriteLine(new string('-', 50));
+                   
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi kiểm tra kết nối: {ex.Message}");
+                }
+            }
+        }
 
         public void Disconnect(int index)
         {
@@ -786,44 +763,44 @@ namespace CIM
                 switch (index)
                 {
                     case 0:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak11status");
-                        WriteLog($"AirTest status:{value}-" + "D810.0");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak11status");
+                        WriteLog($"AirTest status:{!value}-" + "D810.0");
                         break;
                     case 1:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak12status");
-                        WriteLog($"AirTest status:{value}-" + "D810.1");
+                       // SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak12status");
+                        WriteLog($"AirTest status:{!value}-" + "D810.1");
                         break;
                     case 2:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak21status");
-                        WriteLog($"AirTest status:{value}-" + "D810.2");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak21status");
+                        WriteLog($"AirTest status:{!value}-" + "D810.2");
                         break;
                     case 3:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak22status");
-                        WriteLog($"AirTest status: {value}-" + "D810.3");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak22status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.3");
                         break;
                     case 4:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak31status");
-                        WriteLog($"AirTest status: {value}-" + "D810.4");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak31status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.4");
                         break;
                     case 5:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak32status");
-                        WriteLog($"AirTest status: {value}-" + "D810.5");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak32status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.5");
                         break;
                     case 6:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak41status");
-                        WriteLog($"AirTest status: {value}-" + "D810.6");
+                       // SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak41status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.6");
                         break;
                     case 7:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak42status");
-                        WriteLog($"AirTest status: {value}-" + "D810.7");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak42status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.7");
                         break;
                     case 8:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak51status");
-                        WriteLog($"AirTest status: {value}-" + "D810.8");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak51status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.8");
                         break;
                     case 9:
-                        SingleTonPlcControl.Instance.SetValueRegister(value, 4, "Leak52status");
-                        WriteLog($"AirTest status: {value}-" + "D810.9");
+                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak52status");
+                        WriteLog($"AirTest status: {!value}-" + "D810.9");
                         break;
                 }
             }
@@ -843,10 +820,10 @@ namespace CIM
                 {
                     string sccmValue = match.Groups[1].Value;
 
-                    if (sccmValue.Trim() == "0")
-                    {
-                        sccmValue = "0.061607";
-                    }
+                    //if (sccmValue.Trim() == "0")
+                    //{
+                    //    sccmValue = "0.061607";
+                    //}
 
                     Task.Run(() => HandleReadAirTest(sccmValue, clientIndex, true));
                 }
@@ -899,7 +876,7 @@ namespace CIM
             }
             else
             {
-                a = new float[1] { 0.061607f };
+                a = new float[1] { 99f };
             }
 
             switch (index)
@@ -1376,10 +1353,10 @@ namespace CIM
         private void ReadData4(string QRcode, string tightness_and_location_vision, string height_parallelism_result, string height_parallelism_detail1, string height_parallelism_detail2, string height_parallelism_detail3, string height_parallelism_detail4, string fpcb4Left, string fpcb4Right, string warping, string resistance, string resistance1, string air_leakage_test_detail, string air_leakage_test_result, string BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, string LeakName, string reworkinfo, string bendingPinLeft, string bendingPinRight, string bendingPinDiff)
         {
 
-#else     
+#else
         private void ReadData4()
         {
-            EXCELDATA data1 = new EXCELDATA();
+           
             if (SingleTonPlcControl.Instance.GetValueRegister(4, "BOX4Barcode") == null)
             {
                 Task.Run(() => WriteLog("QRcode - SingleTonPlcControl.Instance.GetValueRegister(4, BOX4Barcode) == null "));
@@ -1436,7 +1413,7 @@ namespace CIM
             var reworkinfo = "";
 
 #endif
-
+            EXCELDATA data1 = new EXCELDATA();
             string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             if (double.TryParse(resistance, out double resistanceValue))
             {
@@ -1477,20 +1454,6 @@ namespace CIM
             bool finalResult = tightness_and_location_vision == "OK" && height_parallelism_result == "OK" && air_leakage_test_result == "OK";
 
 
-			BOX4RESULT b4data = new BOX4RESULT { 
-                TOPHOUSING = QRcode,
-                TIGHTNESS_AND_LOCATION_VISION =$"{warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision}",
-				HEIGHT_PARALLELISM= $"{height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}",
-                RESISTANCE= resistance,
-                AIR_LEAKAGE_TEST_DETAIL= air_leakage_test_detail,
-                AIR_LEAKAGE_TEST_RESULT= air_leakage_test_result,
-                B4rework= reworkinfo,
-				Leak_Name= LeakName,
-                TestTime= formattedDateTime,
-
-
-			};
-
             //if empty data send to PLC miss data
             if (string.IsNullOrWhiteSpace(QRcode)
                 || string.IsNullOrWhiteSpace(tightness_and_location_vision)
@@ -1508,18 +1471,43 @@ namespace CIM
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
                 Task.Run(() => WriteLog("On bit MISS_DATA - " + "PLC4"));
             }
+            BOX4RESULT b4data = new BOX4RESULT
+            {
+                TOPHOUSING = QRcode,
+                TIGHTNESS_AND_LOCATION_VISION = $"{warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision}",
+                HEIGHT_PARALLELISM = $"{height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}",
+                RESISTANCE = resistance,
+                AIR_LEAKAGE_TEST_DETAIL = air_leakage_test_detail,
+                AIR_LEAKAGE_TEST_RESULT = air_leakage_test_result,
+                B4rework = reworkinfo,
+                Leak_Name = LeakName,
+                TestTime = formattedDateTime,
+
+
+            };
 
             if (!string.IsNullOrEmpty(QRcode.ToString().Trim()) && QRcode != "False")
             {
 
                 if (air_leakage_test_result == "OK")
                 {
-                    //fake data if air = 0
-                    if (air_leakage_test_detail == "0")
+
+                    if (float.TryParse(air_leakage_test_detail.ToString(), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float parsedValue))
                     {
-                        air_leakage_test_detail = Math.Round(new Random().NextDouble() * (0.1854 - 0.061607) + 0.061607, 5).ToString();
+                        float roundedValue = (float)Math.Round(parsedValue, 3, MidpointRounding.AwayFromZero);
+
+                        string result = roundedValue.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
+
+                        air_leakage_test_detail = result;
                     }
-                    air_leakage_test_detail = ParseValueAirLeakageTest(air_leakage_test_detail);
+                    else
+                    {
+                        air_leakage_test_detail = ParseValueAirLeakageTest(air_leakage_test_detail);
+                        WriteLog("Air leak data convert :"+air_leakage_test_detail+"convert :"+ float.TryParse(air_leakage_test_detail, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float parsedValue1));
+                    }
+
+                    b4data.AIR_LEAKAGE_TEST_DETAIL = air_leakage_test_detail;
+
 
 
                     if (Global.CurrModeB4 == (int)ERework.REWORK)
@@ -1531,21 +1519,32 @@ namespace CIM
                             Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
                         }
                     }
-					Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
-					Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+                    Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
+                    Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING))
+                    if (string.IsNullOrWhiteSpace(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING) || BOX4AIR_LEAKAGE_TEST_DETAIL_STRING == "99")
                     {
                         BOX4AIR_LEAKAGE_TEST_DETAIL_STRING = "SL";
                     }
 
-                    //BOX4AIR_LEAKAGE_TEST_DETAIL_STRING => return type number "5.41325" or string "SL"
                     bool isNumber = Double.TryParse(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING, out double result);
                     string box4AirTestDetailString = string.Empty;
 
-                    box4AirTestDetailString = isNumber ? (ParseValueAirLeakageTest(BOX4AIR_LEAKAGE_TEST_DETAIL_STRING) + " SCCM") : (BOX4AIR_LEAKAGE_TEST_DETAIL_STRING + "-0000");
+                    if (isNumber)
+                    {
+                        float roundedValue = (float)Math.Round(result, 3, MidpointRounding.AwayFromZero);
+
+                        box4AirTestDetailString = roundedValue.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture);
+
+                    }
+                    else
+                    {
+                        box4AirTestDetailString = BOX4AIR_LEAKAGE_TEST_DETAIL_STRING + "-0000";
+                    }                  
+
+                    b4data.AIR_LEAKAGE_TEST_DETAIL = box4AirTestDetailString;
 
 
                     if (Global.CurrModeB4 == (int)ERework.REWORK)
@@ -1562,7 +1561,7 @@ namespace CIM
                     }
 					Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
 					//Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
-					Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
+					Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} SCCM ; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
 					
 				}
                
@@ -1861,8 +1860,8 @@ namespace CIM
         private string ParseValueAirLeakageTest(string value)
         {
             return Decimal.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out decimal parsedValue)
-                    ? (Math.Floor(parsedValue * 1000) / 1000).ToString("0.000", System.Globalization.CultureInfo.InvariantCulture)
-                    : value;
+             ? Math.Round(parsedValue, 2, MidpointRounding.AwayFromZero).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)
+             : value;
         }
 
         private string GetUniqueFilePathD(string path, string tophousing)
@@ -2528,7 +2527,7 @@ namespace CIM
                 string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 bool fileExists = File.Exists(path);
-                using (var writer = new StreamWriter(path, true, Encoding.UTF8))
+                using (var writer = new StreamWriter(path, true, new UTF8Encoding(false)))
                 {
                     if (!fileExists)
                     {
@@ -3058,7 +3057,7 @@ namespace CIM
 
         private void button5_Click(object sender, EventArgs e)
         {
-            // ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58","0.001","OK", "OK", "Leak name1" ,"","21","21.3","0.3");
+            //ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25","20.25","25.25","10","60","58", "0.002887", "NG", "0.027055", "Leak name1" ,"","21","21.3","0.3");
             a3++;
         }
 

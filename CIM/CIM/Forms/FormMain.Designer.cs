@@ -106,6 +106,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pieChart1 = new CIM.PieChart();
             this.label3 = new System.Windows.Forms.Label();
             this.lbltotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -116,7 +117,6 @@
             this.lblalert = new Sunny.UI.UILabel();
             this.btnClearData = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
-            this.pieChart1 = new CIM.PieChart();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -967,6 +967,14 @@
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(255, 15);
+            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(370, 215);
+            this.pieChart1.TabIndex = 12;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -1073,14 +1081,6 @@
             this.lblTime.TabIndex = 24;
             this.lblTime.Text = "time";
             // 
-            // pieChart1
-            // 
-            this.pieChart1.Location = new System.Drawing.Point(255, 15);
-            this.pieChart1.Margin = new System.Windows.Forms.Padding(4);
-            this.pieChart1.Name = "pieChart1";
-            this.pieChart1.Size = new System.Drawing.Size(370, 215);
-            this.pieChart1.TabIndex = 12;
-            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1103,6 +1103,7 @@
             this.Text = "CIM UI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ZoomScaleRect = new System.Drawing.Rectangle(19, 19, 1920, 1055);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
