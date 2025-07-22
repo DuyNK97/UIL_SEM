@@ -1,8 +1,9 @@
-﻿using System.IO;
-using System.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace CIM.Class
 {
@@ -75,6 +76,77 @@ namespace CIM.Class
                 }
             }
         }
+
+        public static void WriteLogBox_bak(string logFilePath, int boxIndex, params string[] logMessages)
+        {
+            lock (_lockWriteBox[boxIndex]) // Khóa tương ứng với file log được chọn
+            {
+                try
+                {
+                    logFilePath = Path.Combine(logFilePath, DateTime.Now.ToString("yyyy"), DateTime.Now.ToString("MM"));
+
+                    if (!Directory.Exists(logFilePath))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(logFilePath);
+                        }
+                        catch (Exception dirEx)
+                        {
+                            FormMain.WriteLog($"[{DateTime.Now}] Error creating directory {logFilePath}: {dirEx.Message}\n");
+                            return;
+                        }
+                    }
+
+                    logFilePath = Path.Combine(logFilePath, DateTime.Now.ToString("dd") + ".csv");
+
+                    WriteToFile(logFilePath, logMessages);
+                }
+                catch (Exception ex)
+                {
+                    FormMain.WriteLog($"Error writing log: {ex.Message}");
+                    Console.WriteLine($"Error writing log: {ex.Message}");
+                }
+            }
+        }
+        private static void WriteToFile(string filePath, string[] logMessages)
+        {
+            const int maxRetries = 3;
+            const int baseDelayMs = 50;
+            const int bufferSize = 8192; // 8KB buffer
+
+            for (int attempt = 0; attempt < maxRetries; attempt++)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read, bufferSize))
+                    using (BufferedStream bs = new BufferedStream(fs, bufferSize))
+                    using (StreamWriter writer = new StreamWriter(bs, new UTF8Encoding(true)))
+                    {
+                        string logEntry = string.Join(";", logMessages);
+                        writer.WriteLine(logEntry);
+                        writer.Flush();
+                        bs.Flush();
+                        fs.Flush();
+                    }
+                    return;
+                }
+                catch (IOException ioEx) when (attempt < maxRetries - 1)
+                {
+                    int delay = baseDelayMs * (attempt + 1);
+                    Thread.Sleep(delay);
+                }
+                catch (Exception ex)
+                {
+                    FormMain.WriteLog($"[{DateTime.Now}] Error writing to {filePath}: {ex.Message}");
+                    throw;
+                }
+            }
+
+            throw new IOException($"Failed to write to file {filePath} after {maxRetries} attempts");
+        }
+
+
 
         public static void WriteFileToTxt(string filePath, Dictionary<string, string> values)
         {

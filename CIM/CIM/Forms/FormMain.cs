@@ -546,8 +546,8 @@ namespace CIM
         private bool[] connected = new bool[10];
         private readonly string[] serverIPs = new string[]
         {
-            "192.168.3.170","192.168.3.171", "192.168.1.48", "192.168.3.173", "192.168.3.174",
-            "192.168.3.175", "192.168.3.176","192.168.3.177","192.168.1.31", "192.168.3.178"
+            "192.168.3.170","192.168.3.171", "192.168.3.172", "192.168.3.173", "192.168.3.174",
+            "192.168.3.175", "192.168.3.176","192.168.3.177","192.168.3.178", "192.168.3.179"
         };
         private void ConnectAirTest()
         {
@@ -762,44 +762,44 @@ namespace CIM
             {
                 switch (index)
                 {
-                    case 0:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak11status");
+                    case 1:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak11status");
                         WriteLog($"AirTest status:{!value}-" + "D810.0");
                         break;
-                    case 1:
-                       // SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak12status");
+                    case 0:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak12status");
                         WriteLog($"AirTest status:{!value}-" + "D810.1");
                         break;
-                    case 2:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak21status");
+                    case 3:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak21status");
                         WriteLog($"AirTest status:{!value}-" + "D810.2");
                         break;
-                    case 3:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak22status");
+                    case 2:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak22status");
                         WriteLog($"AirTest status: {!value}-" + "D810.3");
                         break;
-                    case 4:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak31status");
+                    case 5:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak31status");
                         WriteLog($"AirTest status: {!value}-" + "D810.4");
                         break;
-                    case 5:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak32status");
+                    case 4:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak32status");
                         WriteLog($"AirTest status: {!value}-" + "D810.5");
                         break;
-                    case 6:
-                       // SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak41status");
+                    case 7:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak41status");
                         WriteLog($"AirTest status: {!value}-" + "D810.6");
                         break;
-                    case 7:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak42status");
+                    case 6:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak42status");
                         WriteLog($"AirTest status: {!value}-" + "D810.7");
                         break;
-                    case 8:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak51status");
+                    case 9:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak51status");
                         WriteLog($"AirTest status: {!value}-" + "D810.8");
                         break;
-                    case 9:
-                        //SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak52status");
+                    case 8:
+                        SingleTonPlcControl.Instance.SetValueRegister(!value, 4, "Leak52status");
                         WriteLog($"AirTest status: {!value}-" + "D810.9");
                         break;
                 }
@@ -884,52 +884,52 @@ namespace CIM
                 case 0:
                     WriteToPLC("ZR302672", a);
                     WritestringToZR(sccm, 4, "302680");
-                    WriteLog($"AirTest data:{index}-\"ZR302672\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 1.2-\"ZR302672\" - {sccm} -{a[0]}");
                     break;
                 case 1:
                     WriteToPLC("ZR302772", a);
                     WritestringToZR(sccm, 4, "302780");
-                    WriteLog($"AirTest data:{index}-\"ZR302772\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 1.1-\"ZR302772\" - {sccm} -{a[0]}");
                     break;
                 case 2:
                     WriteToPLC("ZR302872", a);
                     WritestringToZR(sccm, 4, "302880");
-                    WriteLog($"AirTest data:{index}-\"ZR302872\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 2.2-\"ZR302872\" - {sccm} -{a[0]}");
                     break;
                 case 3:
                     WriteToPLC("ZR302972", a);
                     WritestringToZR(sccm, 4, "302980");
-                    WriteLog($"AirTest data:{index}-\"ZR302972\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 2.1-\"ZR302972\" - {sccm} -{a[0]}");
                     break;
                 case 4:
                     WriteToPLC("ZR303072", a);
                     WritestringToZR(sccm, 4, "303080");
-                    WriteLog($"AirTest data:{index}-\"ZR303072\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 3.2-\"ZR303072\" - {sccm} -{a[0]}");
                     break;
                 case 5:
                     WriteToPLC("ZR303172", a);
                     WritestringToZR(sccm, 4, "303180");
-                    WriteLog($"AirTest data:{index}-\"ZR303172\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 3.1-\"ZR303172\" - {sccm} -{a[0]}");
                     break;
                 case 6:
                     WriteToPLC("ZR303272", a);
                     WritestringToZR(sccm, 4, "303280");
-                    WriteLog($"AirTest data:{index}-\"ZR303272\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 4.2-\"ZR303272\" - {sccm} -{a[0]}");
                     break;
                 case 7:
                     WriteToPLC("ZR303372", a);
                     WritestringToZR(sccm, 4, "303380");
-                    WriteLog($"AirTest data:{index}-\"ZR303372\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 4.1-\"ZR303372\" - {sccm} -{a[0]}");
                     break;
                 case 8:
                     WriteToPLC("ZR303472", a);
                     WritestringToZR(sccm, 4, "303480");
-                    WriteLog($"AirTest data:{index}-\"ZR303472\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 5.2-\"ZR303472\" - {sccm} -{a[0]}");
                     break;
                 case 9:
                     WriteToPLC("ZR303572", a);
                     WritestringToZR(sccm, 4, "303580");
-                    WriteLog($"AirTest data:{index}-\"ZR303572\" - {sccm} -{a[0]}");
+                    WriteLog($"AirTest data:{index} 5.1-\"ZR303572\" - {sccm} -{a[0]}");
                     break;
             }
         }
@@ -1488,6 +1488,20 @@ namespace CIM
 
             if (!string.IsNullOrEmpty(QRcode.ToString().Trim()) && QRcode != "False")
             {
+                if (Global.CurrModeB4 == (int)ERework.REWORK)
+                {
+                    reworkinfo = SingleTonPlcControl.Instance.GetValueRegister((int)EPLC.PLC_4, "REWORK_INFO").ToString().Trim();
+                    b4data.B4rework = reworkinfo;
+                    if (string.IsNullOrWhiteSpace(reworkinfo))
+                    {
+                        SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
+                        Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
+                    }
+
+
+                }
+               
+
 
                 if (air_leakage_test_result == "OK")
                 {
@@ -1510,15 +1524,7 @@ namespace CIM
 
 
 
-                    if (Global.CurrModeB4 == (int)ERework.REWORK)
-                    {
-                        reworkinfo = SingleTonPlcControl.Instance.GetValueRegister((int)EPLC.PLC_4, "REWORK_INFO").ToString().Trim();
-                        if (string.IsNullOrWhiteSpace(reworkinfo))
-                        {
-                            SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
-                            Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
-                        }
-                    }
+                   
                     Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
                     Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result}; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {air_leakage_test_detail} SCCM; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
                 }
@@ -1547,18 +1553,7 @@ namespace CIM
                     b4data.AIR_LEAKAGE_TEST_DETAIL = box4AirTestDetailString;
 
 
-                    if (Global.CurrModeB4 == (int)ERework.REWORK)
-                    {
-                        reworkinfo = SingleTonPlcControl.Instance.GetValueRegister((int)EPLC.PLC_4, "REWORK_INFO").ToString().Trim();
-                        if (string.IsNullOrWhiteSpace(reworkinfo))
-                        {
-                            SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
-                            Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
-                        }
-                        //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_4, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
-
-
-                    }
+                  
 					Task.Run(() => WriteLog($" BOX4 data - Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###"));
 					//Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4}/{height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString}; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
 					Global.WriteLogBox(PLClog4, 3, $"Serialnumber:{QRcode}; TIGHTNESS AND LOCATION VISION: {warping}/{fpcb4Left}/{fpcb4Right}/{tightness_and_location_vision} ; HEIGHT PARALLELISM: {height_parallelism_detail1},{height_parallelism_detail2},{height_parallelism_detail3},{height_parallelism_detail4},{bendingPinLeft},{bendingPinRight},{bendingPinDiff}/ {height_parallelism_result} ; resistance:{resistance};air leakage test result: {air_leakage_test_result}; air leakage test detail: {box4AirTestDetailString} SCCM ; Port:{LeakName};Rework:{reworkinfo};TestTime: {formattedDateTime}; ###");
@@ -1612,6 +1607,19 @@ namespace CIM
                 {
                     SetDefaultValueBox3(box3data);
                 }
+                //if (Global.CurrModeB4 == (int)ERework.REWORK)
+                //{
+                //    reworkinfo = SingleTonPlcControl.Instance.GetValueRegister((int)EPLC.PLC_4, "REWORK_INFO").ToString().Trim();
+                //    b4data.B4rework = reworkinfo;
+                //    if (string.IsNullOrWhiteSpace(reworkinfo))
+                //    {
+                //        SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_4, "MISS_DATA", true, EnumReadOrWrite.WRITE);
+                //        Task.Run(() => WriteLog("On bit MISS_DATA rework info - " + "PLC4"));
+                //    }
+
+
+                //}
+
 
                 if (!string.IsNullOrEmpty(lastrowdata4))
                 {
@@ -1626,7 +1634,7 @@ namespace CIM
                 string remark = string.Join(",", reworks);
                 if (string.IsNullOrEmpty(remark))
                     remark = "Empty";
-
+                WriteLog($"Rework:{box1data.B1rework},{box2data.B2rework},{box3data.B3rework},{b4data.B4rework}");
                  data1 = new EXCELDATA
                 {
                     NO = No,
@@ -2007,7 +2015,7 @@ namespace CIM
 
         private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if ((e.ColumnIndex == 3 || e.ColumnIndex == 5 || e.ColumnIndex == 8 || e.ColumnIndex == 10 || e.ColumnIndex == 14 || e.ColumnIndex == 16 || e.ColumnIndex == 17 || e.ColumnIndex == 21 || e.ColumnIndex == 22) && e.Value != null)
+            if ((e.ColumnIndex == 5 || e.ColumnIndex == 9 || e.ColumnIndex == 12 || e.ColumnIndex == 14 || e.ColumnIndex == 20 || e.ColumnIndex == 22 || e.ColumnIndex == 24 || e.ColumnIndex == 27 || e.ColumnIndex == 29) && e.Value != null)
             {
                 string cellValue = e.Value.ToString().Trim();
 
@@ -2441,8 +2449,8 @@ namespace CIM
 
                             worksheet.Cells["A1:X1"].Merge = true;
                             worksheet.Cells["A1"].Value = "We would like to request an update on items that will be added/deleted during actual writing.";
-                            worksheet.Cells["T2:U2"].Merge = true;
-                            worksheet.Cells["T2"].Value = "Air Leakage Test";
+                            //worksheet.Cells["T2:U2"].Merge = true;
+                            //worksheet.Cells["T2"].Value = "Air Leakage Test";
 
                             string[] headers = {
                                 "Top Housing QRCode","1st Bone Code","1st F-Out Put/E-Input", "1st Glue Amount", "1st  Glue discharge volume Vision", "Insulator bar code",
@@ -2571,7 +2579,7 @@ namespace CIM
                         data1.BOX4_AIR_LEAKAGE_TEST_RESULT,
                         data1.BOX4_LEAK_NAME,
                         finalResult ? "OK" : "NG",
-                        data1.Remark,
+                        $"\"{data1.Remark}\"",
                         formattedDateTime.Substring(0, 10),
                         formattedDateTime.Substring(11)
                     };
