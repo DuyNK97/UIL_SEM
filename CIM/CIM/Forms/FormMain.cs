@@ -1581,31 +1581,31 @@ namespace CIM
                 if (!string.IsNullOrEmpty(lastrowdata1))
                 {
                     box1data = SpiltData1(lastrowdata1);
-                    SetDefaultValueBox1(box1data);
+                    //SetDefaultValueBox1(box1data);
                 }
                 else
                 {
-                    SetDefaultValueBox1(box1data);
+                    //SetDefaultValueBox1(box1data);
                 }
 
                 if (!string.IsNullOrEmpty(lastrowdata2))
                 {
                     box2data = SpiltData2(lastrowdata2);
-                    SetDefaultValueBox2(box2data);
+                    //SetDefaultValueBox2(box2data);
                 }
                 else
                 {
-                    SetDefaultValueBox2(box2data);
+                   // SetDefaultValueBox2(box2data);
                 }
 
                 if (!string.IsNullOrEmpty(lastrowdata3))
                 {
                     box3data = SpiltData3(lastrowdata3);
-                    SetDefaultValueBox3(box3data);
+                   // SetDefaultValueBox3(box3data);
                 }
                 else
                 {
-                    SetDefaultValueBox3(box3data);
+                    //SetDefaultValueBox3(box3data);
                 }
                 //if (Global.CurrModeB4 == (int)ERework.REWORK)
                 //{
