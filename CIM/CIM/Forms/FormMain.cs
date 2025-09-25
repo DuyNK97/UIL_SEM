@@ -288,8 +288,14 @@ namespace CIM
                             break;
                         case 3:
                             ReadData3(obj.Title);
-                            //SingleTonPlcControl.Instance.SetValueRegister(true, indexPLC, "WriteData", true, EnumReadOrWrite.WRITE);
-                            // WriteLog("On bit WriteData in PLC 3");
+                            if (obj.Title.Contains("ReadData31"))
+                            {
+                                SingleTonPlcControl.Instance.SetValueRegister(true, 3, "WriteData31", true, EnumReadOrWrite.WRITE);
+                            }
+                            else
+                            {
+                                SingleTonPlcControl.Instance.SetValueRegister(true, 3, "WriteData32", true, EnumReadOrWrite.WRITE);
+                            }
                             break;
                         case 4:
                             //ReadData4($"QRcode{a3}", "OK", "OK", "2.5", "2.5", "2.6", "21.25", "20.25", "25.25", "10", "60", "58", "0.0005", "OK", "0.0008", "Leak name1", "", "21", "21.3", "0.3");
@@ -1149,6 +1155,7 @@ namespace CIM
 
 
 
+
             var heated_air_curing = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING").ToString().Trim();
             var heated_air_curing1 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING1").ToString().Trim();
             var heated_air_curing2 = SingleTonPlcControl.Instance.GetValueRegister(2, "BOX2_HEATED_AIR_CURING2").ToString().Trim();
@@ -1201,7 +1208,8 @@ namespace CIM
 
             }
 
-            Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
+           // Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
+            Task.Run(() => Global.WriteLogBox(PLClog2, 1, $"Serialnumber:{QRcode};2ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;2nd Glue Amount: {glue_amount}mg ; 2nd Glue discharge volume Vision: {glue_discharge_volume_vision} ;FPCB bar code:{fpcb_bar_code}; 2nd Glue overflow vision: {glue_overflow_vision};Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###"));
         }
 #if !DEBUG
         private void ReadData3(string QRcode, string glue_overflow_vision, string heated_air_curing, string heated_air_curing1, string heated_air_curing2, string heated_air_curing3, string DISTANCE, string glue_amount, string glue_discharge_volume_vision, string Bond, string Thawingtime, string reworkinfo)
@@ -1321,7 +1329,7 @@ namespace CIM
             )
             {
                 SingleTonPlcControl.Instance.SetValueRegister(true, (int)EPLC.PLC_3, "MISS_DATA", true, EnumReadOrWrite.WRITE);
-                Console.WriteLine("On bit MISS_DATA -" + "PLC3");
+                Task.Run(() => WriteLog("On bit MISS_DATA -" + "PLC3"));
             }
 
             //Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;TestTime: {formattedDateTime}, ###");
@@ -1337,7 +1345,8 @@ namespace CIM
                 //SingleTonPlcControl.Instance.SetValueRegister(reworkinfo, (int)EPLC.PLC_3, "WRITE_REWORK_INFO", true, EnumReadOrWrite.WRITE);
 
             }
-            Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
+            //Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###");
+            Task.Run(() => Global.WriteLogBox(PLClog3, 2, $"Serialnumber:{QRcode};3ND HEATED AIR CURING:{heated_air_curing}°C,{heated_air_curing1}°C,{heated_air_curing2}°C,{heated_air_curing3}°C ;DISTANCE:{DISTANCE}mm ;3ND Glue Amount: {glue_amount}mg ; 3ND Glue discharge volume Vision: {glue_discharge_volume_vision};3ND Glue overflow vision: {glue_overflow_vision} ;Bond Code:{Bond} ; OutPut: {Thawingtime} ;E-Input: {hours}hr {minutes}m {seconds}s;Rework:{reworkinfo};TestTime: {formattedDateTime}, ###"));
 
             if (title.Trim() == "ReadData31")
             {
